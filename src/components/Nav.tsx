@@ -17,7 +17,7 @@ export const Nav = ({ page, setPage }: NavProps) => {
   return (
     <nav>
       <div className="nav-logo" onClick={() => setPage("home")}>
-        <div className="nav-dot" />
+        <img src="/logo.png" alt="FWKS" className="nav-logo-img" />
         FWKS
       </div>
       <ul className={`nav-links ${menuOpen ? "open" : ""}`}>

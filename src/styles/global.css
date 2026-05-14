@@ -153,6 +153,12 @@ nav {
   letter-spacing: 2px;
 }
 
+.nav-logo-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
 .nav-dot {
   width: 8px;
   height: 8px;
