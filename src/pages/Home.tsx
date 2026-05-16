@@ -1,37 +1,37 @@
 import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Hero } from "../components/Hero";
 import { NuzlockeSection } from "../components/NuzlockeSection";
 import { SeriesSection } from "../components/SeriesSection";
 import { AboutSection } from "../components/AboutSection";
 import { SERIES } from "../data/constants";
 
-interface HomeProps {
-  setPage: (page: string) => void;
-  setActiveSeries: (series: (typeof SERIES)[0]) => void;
-  scrollTarget?: string | null;
-  onScrolled?: () => void;
-}
-
-export const Home = ({ setPage, setActiveSeries, scrollTarget, onScrolled }: HomeProps) => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+export const Home = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!scrollTarget) return;
-    const el = document.getElementById(scrollTarget);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+    if (location.hash) {
+      const id = location.hash.slice(1);
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
     }
-    onScrolled?.();
-  }, [scrollTarget]);
+    window.scrollTo(0, 0);
+  }, [location.hash]);
+
+  const handleSetActiveSeries = (series: (typeof SERIES)[0]) => {
+    navigate(`/series/${series.id}`);
+  };
 
   return (
     <>
-      <Hero setPage={setPage} />
+      <Hero />
       <NuzlockeSection />
       <div id="series">
-        <SeriesSection setPage={setPage} setActiveSeries={setActiveSeries} />
+        <SeriesSection setActiveSeries={handleSetActiveSeries} />
       </div>
       <div id="about">
         <AboutSection />

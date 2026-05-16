@@ -1,24 +1,21 @@
 import { useState } from "react";
-import { SERIES, Run } from "../data/constants";
+import { useParams, useNavigate } from "react-router-dom";
+import { SERIES } from "../data/constants";
 import { SeriesHeader } from "../components/SeriesHeader";
 
-interface SeriesDetailProps {
-  seriesId: string;
-  run: Run;
-  setPage: (page: string) => void;
-}
-
-export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
+export const SeriesDetail = () => {
+  const { seriesId, runId } = useParams<{ seriesId: string; runId: string }>();
+  const navigate = useNavigate();
   const [tab, setTab] = useState("videos");
   const [activeVid, setActiveVid] = useState(0);
+  const [hoverLoc, setHoverLoc] = useState<string | null>(null);
 
   const series = SERIES.find((s) => s.id === seriesId);
-  if (!series) return null;
+  const run = series?.runs.find((r) => r.id === runId);
+  if (!series || !run) return null;
 
   const videos = run.videos;
-
   const locById = Object.fromEntries(run.locations.map((l) => [l.id, l]));
-  const [hoverLoc, setHoverLoc] = useState<string | null>(null);
 
   return (
     <div style={{ paddingTop: "58px", flex: 1 }}>
@@ -28,7 +25,7 @@ export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
         meta={run.label}
         description={series.desc}
         backLabel={series.title}
-        onBack={() => setPage("runs")}
+        onBack={() => navigate(`/series/${series.id}`)}
       />
 
       <div

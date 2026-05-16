@@ -1,12 +1,30 @@
 import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
-interface NavProps {
-  page: string;
-  onNavigate: (id: string) => void;
-}
-
-export const Nav = ({ page, onNavigate }: NavProps) => {
+export const Nav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isHome = location.pathname === "/";
+
+  const handleNav = (id: string) => {
+    if (id === "home") {
+      navigate("/");
+    } else if (id === "series" || id === "about") {
+      if (isHome) {
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      } else {
+        navigate(`/#${id}`);
+      }
+    }
+    setMenuOpen(false);
+  };
+
+  const isActive = (id: string) => {
+    if (id === "home") return isHome && !location.hash;
+    return isHome && location.hash === `#${id}`;
+  };
 
   const navItems = [
     { id: "home", label: "INÍCIO" },
@@ -16,7 +34,7 @@ export const Nav = ({ page, onNavigate }: NavProps) => {
 
   return (
     <nav>
-      <div className="nav-logo" onClick={() => onNavigate("home")}>
+      <div className="nav-logo" onClick={() => handleNav("home")}>
         <img src="/logo.png" alt="FWKS" className="nav-logo-img" />
         FWKS
       </div>
@@ -25,11 +43,10 @@ export const Nav = ({ page, onNavigate }: NavProps) => {
           <li key={id}>
             <a
               href="#"
-              className={page === id || (page === "home" && id === "home") ? "active" : ""}
+              className={isActive(id) ? "active" : ""}
               onClick={(e) => {
                 e.preventDefault();
-                onNavigate(id);
-                setMenuOpen(false);
+                handleNav(id);
               }}
             >
               {label}

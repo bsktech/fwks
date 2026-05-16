@@ -3,11 +3,7 @@ import { GrassBackground } from "./GrassBackground";
 const scrollTo = (id: string) =>
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
-interface HeroProps {
-  setPage: (page: string) => void;
-}
-
-export const Hero = ({ setPage }: HeroProps) => {
+export const Hero = () => {
   return (
     <section className="hero pixel-grid">
       <GrassBackground />

@@ -1,11 +1,10 @@
 import { SERIES } from "../data/constants";
 
 interface SeriesSectionProps {
-  setPage: (page: string) => void;
   setActiveSeries: (series: (typeof SERIES)[0]) => void;
 }
 
-export const SeriesSection = ({ setPage, setActiveSeries }: SeriesSectionProps) => {
+export const SeriesSection = ({ setActiveSeries }: SeriesSectionProps) => {
   return (
     <section className="section" style={{ background: "var(--surface)" }}>
       <div className="section-inner">

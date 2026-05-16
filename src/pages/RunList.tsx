@@ -1,15 +1,11 @@
 import { useEffect } from "react";
-import { SERIES, Run } from "../data/constants";
+import { useParams, useNavigate } from "react-router-dom";
+import { SERIES } from "../data/constants";
 import { SeriesHeader } from "../components/SeriesHeader";
 
-interface RunListProps {
-  seriesId: string;
-  setPage: (page: string) => void;
-  setActiveRun: (run: Run) => void;
-  onBack: () => void;
-}
-
-export const RunList = ({ seriesId, setPage, setActiveRun, onBack }: RunListProps) => {
+export const RunList = () => {
+  const { seriesId } = useParams<{ seriesId: string }>();
+  const navigate = useNavigate();
   const series = SERIES.find((s) => s.id === seriesId);
 
   useEffect(() => {
@@ -17,6 +13,8 @@ export const RunList = ({ seriesId, setPage, setActiveRun, onBack }: RunListProp
   }, []);
 
   if (!series) return null;
+
+  const onBack = () => navigate("/#series");
 
   return (
     <div style={{ paddingTop: "58px", flex: 1 }}>
@@ -52,8 +50,7 @@ export const RunList = ({ seriesId, setPage, setActiveRun, onBack }: RunListProp
                   transition: "transform .2s, box-shadow .2s",
                 }}
                 onClick={() => {
-                  setActiveRun(run);
-                  setPage("detail");
+                  navigate(`/series/${series.id}/runs/${run.id}`);
                 }}
                 onMouseEnter={(e) => {
                   (e.currentTarget as HTMLElement).style.transform = "translateY(-5px)";
