@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { Hero } from "../components/Hero";
 import { NuzlockeSection } from "../components/NuzlockeSection";
-import { RomSection } from "../components/RomSection";
 import { SeriesSection } from "../components/SeriesSection";
 import { AboutSection } from "../components/AboutSection";
 import { SERIES } from "../data/constants";
@@ -20,12 +19,12 @@ export const Home = ({ setPage, setActiveSeries }: HomeProps) => {
     <>
       <Hero setPage={setPage} />
       <NuzlockeSection />
-      <RomSection />
       <SeriesSection setPage={setPage} setActiveSeries={setActiveSeries} />
       <AboutSection />
       <footer>
         <p>
-          ⚡ FWKS · Feito com <span>♥</span> e muitas mortes de Pokémon
+          <img src="/logo.png" alt="Fwks" style={{ height: "1.2em", verticalAlign: "middle", marginRight: "0.4em", opacity: 0.7 }} />
+          Fwks · Feito com <span>♥</span> e muitas mortes de Pokémon
         </p>
         <p>Pokémon © Nintendo / Game Freak · Conteúdo de fã, não afiliado</p>
       </footer>

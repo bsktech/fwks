@@ -1,5 +1,5 @@
 export const GrassBackground = () => {
-  const blades = Array.from({ length: 80 }, (_, i) => ({
+  const blades = Array.from({ length: 300 }, (_, i) => ({
     id: i,
     w: Math.random() * 8 + 5,
     h: Math.random() * 60 + 35,

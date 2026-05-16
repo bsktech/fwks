@@ -46,13 +46,17 @@ export const AboutSection = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: "3.5rem",
+              overflow: "hidden",
               border: "3px solid var(--g400)",
               boxShadow:
                 "0 0 0 6px rgba(74,222,128,.1), 0 0 40px rgba(74,222,128,.15)",
             }}
           >
-            🎮
+            <img
+              src="/logo.png"
+              alt="Fwks logo"
+              style={{ width: "70%", height: "70%", objectFit: "contain" }}
+            />
           </div>
           <div
             style={{
@@ -62,7 +66,7 @@ export const AboutSection = () => {
               letterSpacing: "2px",
             }}
           >
-            FWKS
+            Fwks
           </div>
           <div
             style={{
@@ -97,10 +101,9 @@ export const AboutSection = () => {
               marginBottom: "1rem",
             }}
           >
-            Jogo Pokémon desde os 8 anos e, honestamente, nunca parei. O que
-            começou como uma obsessão de infância virou um canal no YouTube
-            sobre sobreviver a Nuzlockes e mergulhar fundo no mundo dos ROM
-            hacks.
+            A ideia aqui é simples: eu gosto de jogar Pokémon e, já que vou
+            jogar de qualquer jeito, resolvi gravar. Pra me divertir jogando e
+            pra divertir quem tá do outro lado da tela.
           </p>
           <p
             style={{
@@ -110,21 +113,8 @@ export const AboutSection = () => {
               marginBottom: "1rem",
             }}
           >
-            Faço upload com consistência, narro tudo como se minha vida
-            dependesse disso (às vezes depende — no sentido Nuzlocke), e
-            genuinamente choro quando meus Pokémon morrem na tela. Você foi
-            avisado.
-          </p>
-          <p
-            style={{
-              color: "rgba(255,255,255,.6)",
-              fontSize: "0.97rem",
-              lineHeight: 1.9,
-              marginBottom: "1rem",
-            }}
-          >
-            Se você está aqui pela nostalgia, pelos desafios, ou só pra me ver
-            sofrer no Radical Red — bem-vindo, treinador.
+            O foco é Nuzlocke e runs desafiadoras, com narração na hora certa.
+            Se você curte Pokémon e curte desafio, cola junto.
           </p>
           <div
             style={{
@@ -161,66 +151,6 @@ export const AboutSection = () => {
               }}
             >
               ▶ YouTube
-            </button>
-            <button
-              style={{
-                fontFamily: "var(--pixel)",
-                fontSize: "0.37rem",
-                padding: "0.7rem 1.1rem",
-                borderRadius: "var(--r-md)",
-                cursor: "pointer",
-                border: "1.5px solid rgba(74,222,128,.32)",
-                transition: "transform .15s, box-shadow .15s",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                background: "transparent",
-                color: "var(--g300)",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background =
-                  "rgba(74,222,128,.07)";
-                (e.currentTarget as HTMLElement).style.transform =
-                  "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background =
-                  "transparent";
-                (e.currentTarget as HTMLElement).style.transform =
-                  "translateY(0)";
-              }}
-            >
-              𝕏 Twitter/X
-            </button>
-            <button
-              style={{
-                fontFamily: "var(--pixel)",
-                fontSize: "0.37rem",
-                padding: "0.7rem 1.1rem",
-                borderRadius: "var(--r-md)",
-                cursor: "pointer",
-                border: "1.5px solid rgba(147,168,244,.32)",
-                transition: "transform .15s, box-shadow .15s",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "0.4rem",
-                background: "transparent",
-                color: "#93a8f4",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.background =
-                  "rgba(147,168,244,.07)";
-                (e.currentTarget as HTMLElement).style.transform =
-                  "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.background =
-                  "transparent";
-                (e.currentTarget as HTMLElement).style.transform =
-                  "translateY(0)";
-              }}
-            >
-              Discord
             </button>
           </div>
         </div>

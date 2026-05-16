@@ -482,8 +482,8 @@ footer {
 
 footer p {
   font-family: var(--pixel);
-  font-size: 0.3rem;
-  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.5rem;
+  color: rgba(255, 255, 255, 0.35);
   line-height: 2.4;
 }
 

@@ -1,36 +1,36 @@
 export const NuzlockeSection = () => {
   const cards = [
     {
+      icon: "🎯",
+      bar: "linear-gradient(90deg,#16a34a,#4ade80)",
+      label: "REGRA 01",
+      title: "Primeiro Encontro",
+      text: "Em cada nova rota só o primeiro Pokémon que aparecer pode ser capturado. Perdeu a chance? Próxima rota.",
+      tag: "REGRA BASE",
+    },
+    {
       icon: "💀",
       bar: "linear-gradient(90deg,#dc2626,#f87171)",
-      label: "REGRA 01",
-      title: "Morte Permanente",
-      text: "Se um Pokémon desmaiar na batalha, ele está morto para sempre. Sem reviver, sem segunda chance. Você precisa soltá-lo e se despedir. Sim, você vai chorar.",
-      tag: "REGRA MAIS CRUEL",
-    },
-    {
-      icon: "🎲",
-      bar: "linear-gradient(90deg,#16a34a,#4ade80)",
       label: "REGRA 02",
-      title: "Primeiro Encontro",
-      text: "Em cada nova rota, você só pode capturar o primeiro Pokémon que encontrar. Se ele desmaiar antes de você capturar... azar. Siga em frente.",
-      tag: "SEM SEGUNDA CHANCE",
+      title: "Morte Permanente",
+      text: "Pokémon que desmaia sai do jogo de vez. Seis mortes e o run acabou. Volta tudo pro começo.",
+      tag: "REGRA MAIS PESADA",
     },
     {
-      icon: "❤️",
-      bar: "linear-gradient(90deg,#9333ea,#c084fc)",
-      label: "OPCIONAL",
-      title: "Dar Apelidos",
-      text: "A maioria dos jogadores dá apelidos. Isso os torna reais — e faz suas inevitáveis mortes serem 10x mais devastadoras. Altamente recomendado.",
-      tag: "MAS ESSENCIAL",
-    },
-    {
-      icon: "🏆",
+      icon: "⚔️",
       bar: "linear-gradient(90deg,#d97706,#fbbf24)",
-      label: "OBJETIVO",
-      title: "Vencer o Jogo",
-      text: "Vencer os 8 Líderes de Ginásio e a Elite dos Quatro sem perder todo o time. Simples na teoria. De partir a alma na prática. A alegria está na jornada.",
-      tag: "CONDIÇÃO DE VITÓRIA",
+      label: "REGRA 03",
+      title: "Sem Itens em Batalha",
+      text: "Poções e curas ficam proibidos durante a luta. Só vale o que o Pokémon estiver segurando. Planeje antes.",
+      tag: "REGRA DE COMBATE",
+    },
+    {
+      icon: "🔁",
+      bar: "linear-gradient(90deg,#9333ea,#c084fc)",
+      label: "REGRA 04",
+      title: "Cláusula de Duplicatas",
+      text: "Já capturou um Pikachu nessa run? O próximo não conta. Uma espécie por jogo, sem repetir.",
+      tag: "REGRA DE VARIEDADE",
     },
   ];
 
@@ -43,9 +43,9 @@ export const NuzlockeSection = () => {
           O que é um <em>Nuzlocke</em>?
         </h2>
         <p className="section-lead">
-          Nunca ouviu falar? Sem problema. É basicamente Pokémon no modo pesadelo
-          — regras autoimposta que fazem cada batalha ser genuinamente
-          aterrorizante.
+          Nunca ouviu falar? Sem problema. É um conjunto de regras extras que o
+          jogador segue por conta própria pra deixar qualquer jogo de Pokémon
+          muito mais difícil, onde cada decisão pesa.
         </p>
         <div
           style={{

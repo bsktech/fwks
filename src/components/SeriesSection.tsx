@@ -71,22 +71,11 @@ export const SeriesSection = ({ setPage, setActiveSeries }: SeriesSectionProps) 
                   background: s.thumb,
                 }}
               >
-                <span
-                  style={{
-                    fontSize: "3.5rem",
-                    position: "relative",
-                    zIndex: 1,
-                    transition: "transform .3s",
-                  }}
-                  className="series-thumb-emoji"
-                >
-                  {s.emoji}
-                </span>
                 <div
                   style={{
                     position: "absolute",
                     inset: 0,
-                    background: "rgba(0,0,0,.18)",
+                    background: "rgba(0,0,0,.1)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
