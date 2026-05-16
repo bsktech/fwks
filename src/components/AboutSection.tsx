@@ -131,12 +131,10 @@ export const AboutSection = () => {
                 boxShadow: "0 3px 0 #991b1b",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.transform =
-                  "translateY(-2px)";
+                (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)";
               }}
               onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.transform =
-                  "translateY(0)";
+                (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
               }}
             >
               ▶ YouTube

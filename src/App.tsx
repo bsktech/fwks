@@ -50,7 +50,12 @@ function App() {
         </>
       ) : page === "runs" && activeSeries ? (
         <>
-          <RunList seriesId={activeSeries.id} setPage={setPage} setActiveRun={setActiveRun} />
+          <RunList
+            seriesId={activeSeries.id}
+            setPage={setPage}
+            setActiveRun={setActiveRun}
+            onBack={() => { setPage("home"); setScrollTarget("series"); }}
+          />
           <footer>
             <p>
               <img src="/logo.png" alt="Fwks" style={{ height: "1.2em", verticalAlign: "middle", marginRight: "0.4em", opacity: 0.7 }} />

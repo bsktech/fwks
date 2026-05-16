@@ -11,6 +11,7 @@ export const SERIES = [
     typeBg: "#fef3c7",
     typeBorder: "#fcd34d",
     thumb: "url('/red-plus-plus.jpg') center/cover no-repeat",
+    coverImg: "/red-plus-plus.jpg",
     desc: "Nuzlocke em Red++, uma rom hack que atualiza o Red original com correções, novos locais e mecânicas modernas, mantendo a história clássica de Kanto.",
     activeRunId: "run-1",
     runs: [] as Run[], // preenchido abaixo para evitar referência circular com os tipos

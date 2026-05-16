@@ -20,7 +20,7 @@ export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
   const [hoverLoc, setHoverLoc] = useState<string | null>(null);
 
   return (
-    <div>
+    <div style={{ paddingTop: "58px" }}>
       <div
         style={{
           padding: "3.5rem 2rem 3rem",
@@ -68,19 +68,34 @@ export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
           >
             ← {series.title} / {run.label}
           </button>
-          <h1
-            style={{
-              fontFamily: "var(--sans)",
-              fontSize: "clamp(1.5rem, 4vw, 2.5rem)",
-              fontWeight: 900,
-              color: "#fff",
-              lineHeight: 1.2,
-              marginBottom: "0.8rem",
-              letterSpacing: "-0.5px",
-            }}
-          >
-            {series.emoji} <em style={{ fontStyle: "normal", color: "var(--g300)" }}>{series.title}</em>
-          </h1>
+          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", marginBottom: "0.8rem" }}>
+            {(series as any).coverImg && (
+              <img
+                src={(series as any).coverImg}
+                alt={series.title}
+                style={{
+                  width: "64px",
+                  height: "64px",
+                  objectFit: "cover",
+                  borderRadius: "var(--r-md)",
+                  border: "2px solid rgba(74,222,128,.2)",
+                  flexShrink: 0,
+                }}
+              />
+            )}
+            <h1
+              style={{
+                fontFamily: "var(--sans)",
+                fontSize: "clamp(1.5rem, 4vw, 2.5rem)",
+                fontWeight: 900,
+                color: "#fff",
+                lineHeight: 1.2,
+                letterSpacing: "-0.5px",
+              }}
+            >
+              <em style={{ fontStyle: "normal", color: "var(--g300)" }}>{series.title}</em>
+            </h1>
+          </div>
           <p
             style={{
               color: "rgba(255,255,255,.58)",

@@ -5,9 +5,10 @@ interface RunListProps {
   seriesId: string;
   setPage: (page: string) => void;
   setActiveRun: (run: Run) => void;
+  onBack: () => void;
 }
 
-export const RunList = ({ seriesId, setPage, setActiveRun }: RunListProps) => {
+export const RunList = ({ seriesId, setPage, setActiveRun, onBack }: RunListProps) => {
   const series = SERIES.find((s) => s.id === seriesId);
 
   useEffect(() => {
@@ -17,7 +18,7 @@ export const RunList = ({ seriesId, setPage, setActiveRun }: RunListProps) => {
   if (!series) return null;
 
   return (
-    <div>
+    <div style={{ paddingTop: "58px" }}>
       {/* Header */}
       <div
         style={{
@@ -41,53 +42,71 @@ export const RunList = ({ seriesId, setPage, setActiveRun }: RunListProps) => {
           <button
             style={{
               fontFamily: "var(--pixel)",
-              fontSize: "0.32rem",
-              color: "rgba(255,255,255,.38)",
+              fontSize: "0.5rem",
+              color: "var(--g300)",
               background: "none",
-              border: "none",
+              border: "1px solid rgba(74,222,128,.25)",
+              borderRadius: "var(--r-sm)",
               cursor: "pointer",
-              marginBottom: "1rem",
+              marginBottom: "2rem",
               display: "inline-flex",
               alignItems: "center",
-              gap: "0.4rem",
-              padding: 0,
-              transition: "color .2s, transform .15s",
+              gap: "0.5rem",
+              padding: "0.6rem 1rem",
+              transition: "color .2s, border-color .2s, transform .15s",
               letterSpacing: "1px",
             }}
-            onClick={() => setPage("home")}
+            onClick={onBack}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.color = "var(--g300)";
+              (e.currentTarget as HTMLElement).style.borderColor = "var(--g300)";
               (e.currentTarget as HTMLElement).style.transform = "translateX(-2px)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,.38)";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(74,222,128,.25)";
               (e.currentTarget as HTMLElement).style.transform = "translateX(0)";
             }}
           >
             ← Séries
           </button>
-          <h1
-            style={{
-              fontFamily: "var(--sans)",
-              fontSize: "clamp(1.5rem, 4vw, 2.2rem)",
-              fontWeight: 900,
-              color: "#fff",
-              lineHeight: 1.2,
-              marginBottom: "0.5rem",
-              letterSpacing: "-0.5px",
-            }}
-          >
-            {series.emoji}{" "}
-            <em style={{ fontStyle: "normal", color: "var(--g300)" }}>
-              {series.title}
-            </em>
-          </h1>
-          <p style={{ color: "rgba(255,255,255,.45)", fontSize: "0.9rem" }}>
-            {series.runs.length} {series.runs.length === 1 ? "run" : "runs"} •{" "}
-            {series.runs.filter((r) => r.status === "active").length > 0
-              ? "Em andamento"
-              : "Encerrada"}
-          </p>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
+            {(series as any).coverImg && (
+              <img
+                src={(series as any).coverImg}
+                alt={series.title}
+                style={{
+                  width: "72px",
+                  height: "72px",
+                  objectFit: "cover",
+                  borderRadius: "var(--r-md)",
+                  border: "2px solid rgba(74,222,128,.2)",
+                  flexShrink: 0,
+                }}
+              />
+            )}
+            <div>
+              <h1
+                style={{
+                  fontFamily: "var(--sans)",
+                  fontSize: "clamp(1.5rem, 4vw, 2.2rem)",
+                  fontWeight: 900,
+                  color: "#fff",
+                  lineHeight: 1.2,
+                  letterSpacing: "-0.5px",
+                }}
+              >
+                <em style={{ fontStyle: "normal", color: "var(--g300)" }}>
+                  {series.title}
+                </em>
+              </h1>
+              <p style={{ color: "rgba(255,255,255,.45)", fontSize: "0.9rem", marginTop: "0.75rem" }}>
+                {series.runs.length} {series.runs.length === 1 ? "run" : "runs"} •{" "}
+                {series.runs.filter((r) => r.status === "active").length > 0
+                  ? "Em andamento"
+                  : "Encerrada"}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -97,7 +116,6 @@ export const RunList = ({ seriesId, setPage, setActiveRun }: RunListProps) => {
           {series.runs.map((run) => {
             const isActive = run.status === "active";
             const isDead = run.status === "dead";
-            const earnedBadges = run.badges.filter((b) => b.earned);
 
             return (
               <div
@@ -132,7 +150,6 @@ export const RunList = ({ seriesId, setPage, setActiveRun }: RunListProps) => {
                     : "var(--shadow-sm)";
                 }}
               >
-                {/* Top bar */}
                 <div
                   style={{
                     height: "4px",
@@ -145,20 +162,15 @@ export const RunList = ({ seriesId, setPage, setActiveRun }: RunListProps) => {
                 />
 
                 <div style={{ padding: "1.75rem" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      marginBottom: "1rem",
-                    }}
-                  >
+                  <div style={{ marginBottom: "1rem" }}>
                     <span
                       style={{
                         fontFamily: "var(--pixel)",
-                        fontSize: "0.42rem",
+                        fontSize: "0.55rem",
                         color: "var(--ink)",
                         letterSpacing: "1px",
+                        display: "block",
+                        marginBottom: "0.75rem",
                       }}
                     >
                       {run.label}
@@ -166,8 +178,8 @@ export const RunList = ({ seriesId, setPage, setActiveRun }: RunListProps) => {
                     <span
                       style={{
                         fontFamily: "var(--pixel)",
-                        fontSize: "0.28rem",
-                        padding: "0.3rem 0.65rem",
+                        fontSize: "0.45rem",
+                        padding: "0.4rem 0.8rem",
                         borderRadius: "100px",
                         border: "1px solid",
                         color: isActive ? "#15803d" : isDead ? "#dc2626" : "#1d4ed8",
@@ -203,35 +215,18 @@ export const RunList = ({ seriesId, setPage, setActiveRun }: RunListProps) => {
                     {run.progress}
                   </p>
 
-                  <div style={{ display: "flex", gap: "0.6rem", alignItems: "center", flexWrap: "wrap" }}>
-                    <span
-                      style={{
-                        fontFamily: "var(--pixel)",
-                        fontSize: "0.28rem",
-                        background: "var(--ink)",
-                        color: "var(--g300)",
-                        padding: "0.3rem 0.65rem",
-                        borderRadius: "100px",
-                      }}
-                    >
-                      {run.episodeCount} EP
-                    </span>
-                    {earnedBadges.length > 0 && (
-                      <span
-                        style={{
-                          fontFamily: "var(--pixel)",
-                          fontSize: "0.28rem",
-                          color: "#92400e",
-                          background: "#fef9c3",
-                          border: "1px solid #fde047",
-                          padding: "0.3rem 0.65rem",
-                          borderRadius: "100px",
-                        }}
-                      >
-                        {earnedBadges.map((b) => b.emoji).join(" ")}
-                      </span>
-                    )}
-                  </div>
+                  <span
+                    style={{
+                      fontFamily: "var(--pixel)",
+                      fontSize: "0.45rem",
+                      background: "var(--ink)",
+                      color: "var(--g300)",
+                      padding: "0.4rem 0.8rem",
+                      borderRadius: "100px",
+                    }}
+                  >
+                    {run.episodeCount} {run.episodeCount === 1 ? "EP" : "EPS"}
+                  </span>
                 </div>
               </div>
             );
