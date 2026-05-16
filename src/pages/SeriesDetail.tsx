@@ -44,44 +44,58 @@ export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
           style={{
             maxWidth: "1080px",
             margin: "0 auto",
-            padding: "0 2rem",
+            padding: "1rem 2rem",
             display: "flex",
+            gap: "0.5rem",
             overflowX: "auto",
             scrollbarWidth: "none",
           }}
         >
           {[
-            ["videos", "▶ Vídeos"],
-            ["timeline", "📜 Diário"],
-            ["map", "🗺️ Mapa"],
-            ["team", "⚡ Time"],
-          ].map(([id, label]) => (
-            <button
-              key={id}
-              style={{
-                fontFamily: "var(--pixel)",
-                fontSize: "0.38rem",
-                padding: "1.1rem 1.4rem",
-                border: "none",
-                background: "none",
-                cursor: "pointer",
-                color: tab === id ? "var(--g600)" : "var(--ink3)",
-                whiteSpace: "nowrap",
-                borderBottom: tab === id ? "2.5px solid var(--g500)" : "2.5px solid transparent",
-                marginBottom: "-1.5px",
-                transition: "color .2s",
-              }}
-              onClick={() => setTab(id)}
-              onMouseEnter={(e) => {
-                if (tab !== id) (e.currentTarget as HTMLElement).style.color = "var(--g600)";
-              }}
-              onMouseLeave={(e) => {
-                if (tab !== id) (e.currentTarget as HTMLElement).style.color = "var(--ink3)";
-              }}
-            >
-              {label}
-            </button>
-          ))}
+            ["videos", "▶", "Vídeos"],
+            ["timeline", "📜", "Diário"],
+            ["team", "⚡", "Time"],
+          ].map(([id, icon, label]) => {
+            const isActive = tab === id;
+            return (
+              <button
+                key={id}
+                style={{
+                  fontFamily: "var(--sans)",
+                  fontSize: "0.92rem",
+                  fontWeight: 600,
+                  padding: "0.7rem 1.3rem",
+                  borderRadius: "100px",
+                  border: "1.5px solid transparent",
+                  background: isActive ? "var(--g500)" : "transparent",
+                  color: isActive ? "#fff" : "var(--ink3)",
+                  cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.55rem",
+                  whiteSpace: "nowrap",
+                  boxShadow: isActive ? "0 2px 8px rgba(22,163,74,.3)" : "none",
+                  transition: "background .2s, color .2s, box-shadow .2s",
+                }}
+                onClick={() => setTab(id)}
+                onMouseEnter={(e) => {
+                  if (!isActive) {
+                    (e.currentTarget as HTMLElement).style.background = "var(--g50)";
+                    (e.currentTarget as HTMLElement).style.color = "var(--g600)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) {
+                    (e.currentTarget as HTMLElement).style.background = "transparent";
+                    (e.currentTarget as HTMLElement).style.color = "var(--ink3)";
+                  }
+                }}
+              >
+                <span style={{ fontSize: "1rem" }}>{icon}</span>
+                {label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
