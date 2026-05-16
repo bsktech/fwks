@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { Nav } from "./components/Nav";
 import { Home } from "./pages/Home";
-import { Series } from "./pages/Series";
-import { About } from "./pages/About";
 import { RunList } from "./pages/RunList";
 import { SeriesDetail } from "./pages/SeriesDetail";
 import { SERIES, Run } from "./data/constants";
@@ -12,10 +10,23 @@ function App() {
   const [page, setPage] = useState("home");
   const [activeSeries, setActiveSeries] = useState<(typeof SERIES)[0] | null>(null);
   const [activeRun, setActiveRun] = useState<Run | null>(null);
+  const [scrollTarget, setScrollTarget] = useState<string | null>(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (!scrollTarget) {
+      window.scrollTo(0, 0);
+    }
   }, [page]);
+
+  const handleNav = (id: string) => {
+    if (id === "series" || id === "about") {
+      setPage("home");
+      setScrollTarget(id);
+    } else {
+      setScrollTarget(null);
+      setPage(id);
+    }
+  };
 
   const handleSetActiveSeries = (series: (typeof SERIES)[0]) => {
     setActiveSeries(series);
@@ -24,7 +35,7 @@ function App() {
 
   return (
     <>
-      <Nav page={page} setPage={setPage} />
+      <Nav page={page} onNavigate={handleNav} />
 
       {page === "detail" && activeSeries && activeRun ? (
         <>
@@ -48,12 +59,13 @@ function App() {
             <p>Pokémon © Nintendo / Game Freak · Conteúdo de fã, não afiliado</p>
           </footer>
         </>
-      ) : page === "series" ? (
-        <Series setPage={setPage} setActiveSeries={handleSetActiveSeries} />
-      ) : page === "about" ? (
-        <About />
       ) : (
-        <Home setPage={setPage} setActiveSeries={handleSetActiveSeries} />
+        <Home
+          setPage={setPage}
+          setActiveSeries={handleSetActiveSeries}
+          scrollTarget={scrollTarget}
+          onScrolled={() => setScrollTarget(null)}
+        />
       )}
     </>
   );

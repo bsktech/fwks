@@ -2,10 +2,10 @@ import { useState } from "react";
 
 interface NavProps {
   page: string;
-  setPage: (page: string) => void;
+  onNavigate: (id: string) => void;
 }
 
-export const Nav = ({ page, setPage }: NavProps) => {
+export const Nav = ({ page, onNavigate }: NavProps) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navItems = [
@@ -16,7 +16,7 @@ export const Nav = ({ page, setPage }: NavProps) => {
 
   return (
     <nav>
-      <div className="nav-logo" onClick={() => setPage("home")}>
+      <div className="nav-logo" onClick={() => onNavigate("home")}>
         <img src="/logo.png" alt="FWKS" className="nav-logo-img" />
         FWKS
       </div>
@@ -25,10 +25,10 @@ export const Nav = ({ page, setPage }: NavProps) => {
           <li key={id}>
             <a
               href="#"
-              className={page === id ? "active" : ""}
+              className={page === id || (page === "home" && id === "home") ? "active" : ""}
               onClick={(e) => {
                 e.preventDefault();
-                setPage(id);
+                onNavigate(id);
                 setMenuOpen(false);
               }}
             >

@@ -8,19 +8,34 @@ import { SERIES } from "../data/constants";
 interface HomeProps {
   setPage: (page: string) => void;
   setActiveSeries: (series: (typeof SERIES)[0]) => void;
+  scrollTarget?: string | null;
+  onScrolled?: () => void;
 }
 
-export const Home = ({ setPage, setActiveSeries }: HomeProps) => {
+export const Home = ({ setPage, setActiveSeries, scrollTarget, onScrolled }: HomeProps) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    if (!scrollTarget) return;
+    const el = document.getElementById(scrollTarget);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+    onScrolled?.();
+  }, [scrollTarget]);
 
   return (
     <>
       <Hero setPage={setPage} />
       <NuzlockeSection />
-      <SeriesSection setPage={setPage} setActiveSeries={setActiveSeries} />
-      <AboutSection />
+      <div id="series">
+        <SeriesSection setPage={setPage} setActiveSeries={setActiveSeries} />
+      </div>
+      <div id="about">
+        <AboutSection />
+      </div>
       <footer>
         <p>
           <img src="/logo.png" alt="Fwks" style={{ height: "1.2em", verticalAlign: "middle", marginRight: "0.4em", opacity: 0.7 }} />
