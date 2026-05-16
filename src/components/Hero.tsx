@@ -1,5 +1,8 @@
 import { GrassBackground } from "./GrassBackground";
 
+const scrollTo = (id: string) =>
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
 interface HeroProps {
   setPage: (page: string) => void;
 }
@@ -11,7 +14,7 @@ export const Hero = ({ setPage }: HeroProps) => {
       <div className="hero-content">
         <div className="hero-eyebrow">
           <div className="eyebrow-dot" />
-          AO VIVO: NUZLOCKE KANTO EP.24
+          NOVO EP: POKÉMON RED ++ · NUZLOCKE · TEMPORADA 1 · EP 1
         </div>
         <span className="hero-name">Fwks</span>
         <h1 className="hero-title">
@@ -24,10 +27,10 @@ export const Hero = ({ setPage }: HeroProps) => {
           sabe que a jornada é tão boa quanto o destino.
         </p>
         <div className="hero-btns">
-          <button className="btn-primary" onClick={() => setPage("series")}>
+          <button className="btn-primary" onClick={() => scrollTo("series")}>
             ▶ Ver Séries
           </button>
-          <button className="btn-ghost" onClick={() => setPage("about")}>
+          <button className="btn-ghost" onClick={() => scrollTo("about")}>
             Sobre Mim
           </button>
         </div>
