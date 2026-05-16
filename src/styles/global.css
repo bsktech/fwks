@@ -472,24 +472,6 @@ nav {
   font-weight: 500;
 }
 
-/* KANTO BADGES — sprite a partir de /public/kanto-badges.svg (SteGriff) */
-.kanto-badge {
-  width: 56px;
-  height: 56px;
-  background-image: url('/kanto-badges.svg');
-  background-size: 595px auto; /* SVG natural 744×1052 → escalado para ~0.8 */
-  background-repeat: no-repeat;
-  flex-shrink: 0;
-}
-.kanto-badge.kb-boulder { background-position: -54px -65px; }
-.kanto-badge.kb-cascade { background-position: -125px -65px; }
-.kanto-badge.kb-thunder { background-position: -190px -65px; }
-.kanto-badge.kb-rainbow { background-position: -257px -65px; }
-.kanto-badge.kb-soul    { background-position: -325px -65px; }
-.kanto-badge.kb-marsh   { background-position: -394px -65px; }
-.kanto-badge.kb-volcano { background-position: -456px -65px; }
-.kanto-badge.kb-earth   { background-position: -525px -65px; }
-
 /* FOOTER */
 footer {
   background: var(--g900);

@@ -306,7 +306,12 @@ export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
                   }}
                 >
                   {b.id ? (
-                    <div className={`kanto-badge kb-${b.id}`} title={b.name} />
+                    <img
+                      src={`/badges/${b.id}.png`}
+                      alt={b.name}
+                      title={b.name}
+                      style={{ width: "56px", height: "56px", objectFit: "contain" }}
+                    />
                   ) : (
                     <span style={{ fontSize: "1.5rem" }}>{b.emoji}</span>
                   )}
