@@ -220,7 +220,7 @@ export const CURRENT_TEAM = [
 // ─────────────────────────────────────────────────────────────────────────────
 const RUN_1: Run = {
   id: "run-1",
-  label: "Run 1",
+  label: "Temporada 1",
   status: "active",
   episodeCount: 1,
   progress: "Início de Kanto",

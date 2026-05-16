@@ -18,7 +18,7 @@ export const RunList = ({ seriesId, setPage, setActiveRun, onBack }: RunListProp
   if (!series) return null;
 
   return (
-    <div style={{ paddingTop: "58px" }}>
+    <div style={{ paddingTop: "58px", flex: 1 }}>
       {/* Header */}
       <div
         style={{
@@ -99,8 +99,8 @@ export const RunList = ({ seriesId, setPage, setActiveRun, onBack }: RunListProp
                   {series.title}
                 </em>
               </h1>
-              <p style={{ color: "rgba(255,255,255,.45)", fontSize: "0.9rem", marginTop: "0.75rem" }}>
-                {series.runs.length} {series.runs.length === 1 ? "run" : "runs"} •{" "}
+              <p style={{ color: "rgba(255,255,255,.7)", fontSize: "0.9rem", marginTop: "0.75rem" }}>
+                {series.runs.length} {series.runs.length === 1 ? "temporada" : "temporadas"} •{" "}
                 {series.runs.filter((r) => r.status === "active").length > 0
                   ? "Em andamento"
                   : "Encerrada"}

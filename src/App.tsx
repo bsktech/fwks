@@ -38,7 +38,7 @@ function App() {
       <Nav page={page} onNavigate={handleNav} />
 
       {page === "detail" && activeSeries && activeRun ? (
-        <>
+        <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
           <SeriesDetail seriesId={activeSeries.id} run={activeRun} setPage={setPage} />
           <footer>
             <p>
@@ -47,9 +47,9 @@ function App() {
             </p>
             <p>Pokémon © Nintendo / Game Freak · Conteúdo de fã, não afiliado</p>
           </footer>
-        </>
+        </div>
       ) : page === "runs" && activeSeries ? (
-        <>
+        <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
           <RunList
             seriesId={activeSeries.id}
             setPage={setPage}
@@ -63,7 +63,7 @@ function App() {
             </p>
             <p>Pokémon © Nintendo / Game Freak · Conteúdo de fã, não afiliado</p>
           </footer>
-        </>
+        </div>
       ) : (
         <Home
           setPage={setPage}
