@@ -39,6 +39,7 @@ export type RunTeamMember = {
   species: string;
   level: number;
   emoji: string;
+  image?: string;
   location: string;
   dead: boolean;
 };
@@ -208,11 +209,7 @@ export const KANTO_ROUTES: [string, string][] = [
 // TEAM — ordered by capture, dead Pokémon included
 // ─────────────────────────────────────────────────────────────────────────────
 export const CURRENT_TEAM = [
-  { name: "Brasa", species: "Charizard", level: 38, emoji: "🔥", location: "Pallet Town", dead: false },
-  { name: "Asa", species: "Pidgey", level: 12, emoji: "🐦", location: "Rota 1", dead: true },
-  { name: "Fio", species: "Butterfree", level: 34, emoji: "🦋", location: "Floresta Viridian", dead: false },
-  { name: "Luna", species: "Clefairy", level: 28, emoji: "🌙", location: "Mt. Moon", dead: false },
-  { name: "Névoa", species: "Hypno", level: 30, emoji: "😴", location: "Rota 6", dead: false },
+  { name: "Brasa", species: "Charmander", level: 5, emoji: "🔥", image: "/charmander.png", location: "Cidade Pallet", dead: false },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────

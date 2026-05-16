@@ -756,88 +756,115 @@ export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
 
         {/* Team Tab */}
         {tab === "team" && (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "1rem" }}>
-            {run.team.map((p, i) => (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(480px, 540px))", gap: "1.5rem", justifyContent: "center" }}>
+            {run.team.map((p) => (
               <div
                 key={p.name}
                 style={{
                   background: "var(--surface)",
-                  borderRadius: "var(--r-lg)",
-                  padding: "1.4rem 1rem",
+                  borderRadius: "18px",
                   border: p.dead ? "1.5px solid #fca5a5" : "1.5px solid var(--rule)",
-                  textAlign: "center",
-                  boxShadow: "var(--shadow-sm)",
-                  opacity: p.dead ? 0.45 : 1,
+                  boxShadow: "0 4px 20px rgba(0,0,0,.06)",
+                  overflow: "hidden",
+                  display: "grid",
+                  gridTemplateColumns: "200px 1fr",
+                  opacity: p.dead ? 0.5 : 1,
                   filter: p.dead ? "grayscale(.8)" : "none",
                   transition: "transform .2s, box-shadow .2s",
-                  position: "relative",
                 }}
                 onMouseEnter={(e) => {
                   if (!p.dead) {
                     (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-                    (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-green)";
+                    (e.currentTarget as HTMLElement).style.boxShadow = "0 10px 32px rgba(217,119,6,.18)";
                   }
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                  (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-sm)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px rgba(0,0,0,.06)";
                 }}
               >
-                <span
+                <div
                   style={{
-                    fontFamily: "var(--pixel)",
-                    fontSize: "0.26rem",
-                    color: "var(--ink3)",
-                    display: "block",
-                    marginBottom: "0.6rem",
+                    background: "linear-gradient(135deg, #fef3c7, #fde68a)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    padding: "1rem",
                   }}
                 >
-                  #{String(i + 1).padStart(2, "0")}
-                </span>
-                <span style={{ fontSize: "2.4rem", display: "block", marginBottom: "0.6rem" }}>
-                  {p.emoji}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--pixel)",
-                    fontSize: "0.34rem",
-                    color: "var(--ink)",
-                    display: "block",
-                    marginBottom: "0.25rem",
-                  }}
-                >
-                  {p.name}
-                </span>
-                <span style={{ fontSize: "0.78rem", color: "var(--ink3)", fontWeight: 500, display: "block", marginBottom: "0.5rem" }}>
-                  {p.species}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--pixel)",
-                    fontSize: "0.26rem",
-                    color: "var(--ink3)",
-                    display: "block",
-                  }}
-                >
-                  {p.location}
-                </span>
-                {p.dead && (
-                  <span
+                  {p.image ? (
+                    <img
+                      src={p.image}
+                      alt={p.species}
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        maxWidth: "180px",
+                        filter: "drop-shadow(0 4px 12px rgba(217,119,6,.35))",
+                      }}
+                    />
+                  ) : (
+                    <span style={{ fontSize: "5rem" }}>{p.emoji}</span>
+                  )}
+                </div>
+                <div style={{ padding: "1.4rem 1.5rem", display: "flex", flexDirection: "column" }}>
+                  <div
                     style={{
                       fontFamily: "var(--pixel)",
-                      fontSize: "0.26rem",
-                      background: "#fee2e2",
-                      color: "#dc2626",
-                      border: "1px solid #fca5a5",
-                      padding: "0.25rem 0.5rem",
-                      borderRadius: "4px",
-                      display: "inline-block",
-                      marginTop: "0.6rem",
+                      fontSize: "0.55rem",
+                      color: "var(--g600)",
+                      letterSpacing: "2px",
+                      marginBottom: "0.35rem",
                     }}
                   >
-                    💀 CAÍDO
-                  </span>
-                )}
+                    {p.name.toUpperCase()}
+                  </div>
+                  <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "var(--ink)", marginBottom: "1rem" }}>
+                    {p.species}
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.82rem", color: "var(--ink3)", marginBottom: "0.4rem" }}>
+                    <strong style={{ color: "var(--ink)", fontWeight: 700 }}>Nível</strong> {p.level}
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.82rem", color: "var(--ink3)", marginBottom: "0.25rem" }}>
+                    <strong style={{ color: "var(--ink)", fontWeight: 700 }}>Capturado em</strong>
+                  </div>
+                  <div style={{ fontSize: "0.78rem", color: "var(--ink3)" }}>
+                    {p.location}
+                  </div>
+                  <div style={{ display: "flex", gap: "0.35rem", marginTop: "0.9rem" }}>
+                    <span
+                      style={{
+                        fontFamily: "var(--pixel)",
+                        fontSize: "0.3rem",
+                        padding: "0.35rem 0.65rem",
+                        borderRadius: "100px",
+                        color: "#fff",
+                        background: "#d97706",
+                        letterSpacing: "1px",
+                      }}
+                    >
+                      🔥 FOGO
+                    </span>
+                  </div>
+                  {p.dead && (
+                    <span
+                      style={{
+                        fontFamily: "var(--pixel)",
+                        fontSize: "0.3rem",
+                        background: "#fee2e2",
+                        color: "#dc2626",
+                        border: "1px solid #fca5a5",
+                        padding: "0.3rem 0.6rem",
+                        borderRadius: "4px",
+                        display: "inline-block",
+                        marginTop: "0.9rem",
+                        alignSelf: "flex-start",
+                      }}
+                    >
+                      💀 CAÍDO
+                    </span>
+                  )}
+                </div>
               </div>
             ))}
           </div>
