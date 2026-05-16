@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { SERIES, Run } from "../data/constants";
+import { SeriesHeader } from "../components/SeriesHeader";
 
 interface SeriesDetailProps {
   seriesId: string;
@@ -21,93 +22,14 @@ export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
 
   return (
     <div style={{ paddingTop: "58px" }}>
-      <div
-        style={{
-          padding: "3.5rem 2rem 3rem",
-          background: "linear-gradient(160deg, var(--g900) 0%, #0a2218 100%)",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: "50px",
-            background: "linear-gradient(to bottom, transparent, var(--bg))",
-          }}
-        />
-        <div style={{ maxWidth: "1080px", margin: "0 auto" }}>
-          <button
-            style={{
-              fontFamily: "var(--pixel)",
-              fontSize: "0.32rem",
-              color: "rgba(255,255,255,.38)",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              marginBottom: "1rem",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.4rem",
-              padding: 0,
-              transition: "color .2s, transform .15s",
-              letterSpacing: "1px",
-            }}
-            onClick={() => setPage("runs")}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.color = "var(--g300)";
-              (e.currentTarget as HTMLElement).style.transform = "translateX(-2px)";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,.38)";
-              (e.currentTarget as HTMLElement).style.transform = "translateX(0)";
-            }}
-          >
-            ← {series.title} / {run.label}
-          </button>
-          <div style={{ display: "flex", alignItems: "center", gap: "1.5rem", marginBottom: "0.8rem" }}>
-            {(series as any).coverImg && (
-              <img
-                src={(series as any).coverImg}
-                alt={series.title}
-                style={{
-                  width: "64px",
-                  height: "64px",
-                  objectFit: "cover",
-                  borderRadius: "var(--r-md)",
-                  border: "2px solid rgba(74,222,128,.2)",
-                  flexShrink: 0,
-                }}
-              />
-            )}
-            <h1
-              style={{
-                fontFamily: "var(--sans)",
-                fontSize: "clamp(1.5rem, 4vw, 2.5rem)",
-                fontWeight: 900,
-                color: "#fff",
-                lineHeight: 1.2,
-                letterSpacing: "-0.5px",
-              }}
-            >
-              <em style={{ fontStyle: "normal", color: "var(--g300)" }}>{series.title}</em>
-            </h1>
-          </div>
-          <p
-            style={{
-              color: "rgba(255,255,255,.58)",
-              fontSize: "0.98rem",
-              lineHeight: 1.8,
-              maxWidth: "560px",
-            }}
-          >
-            {series.desc}
-          </p>
-        </div>
-      </div>
+      <SeriesHeader
+        coverImg={(series as any).coverImg}
+        title={series.title}
+        meta={run.label}
+        description={series.desc}
+        backLabel={series.title}
+        onBack={() => setPage("runs")}
+      />
 
       <div
         style={{
