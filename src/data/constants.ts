@@ -50,7 +50,7 @@ export type Run = {
   deathNote?: string;
   episodeCount: number;
   progress: string;
-  badges: { name: string; emoji: string; earned: boolean }[];
+  badges: { id?: string; name: string; emoji: string; earned: boolean }[];
   videos: { title: string; ep: string; emoji: string }[];
   timeline: TimelineEvent[];
   locations: KantoLocation[];
@@ -225,14 +225,14 @@ const RUN_1: Run = {
   episodeCount: 1,
   progress: "Início de Kanto",
   badges: [
-    { name: "Pedra", emoji: "🪨", earned: true },
-    { name: "Cascata", emoji: "💧", earned: true },
-    { name: "Trovão", emoji: "⚡", earned: false },
-    { name: "Arco-Íris", emoji: "🌈", earned: false },
-    { name: "Alma", emoji: "💗", earned: false },
-    { name: "Pântano", emoji: "🧠", earned: false },
-    { name: "Vulcão", emoji: "🌋", earned: false },
-    { name: "Terra", emoji: "🌍", earned: false },
+    { id: "boulder", name: "Pedra", emoji: "🪨", earned: false },
+    { id: "cascade", name: "Cascata", emoji: "💧", earned: false },
+    { id: "thunder", name: "Trovão", emoji: "⚡", earned: false },
+    { id: "rainbow", name: "Arco-Íris", emoji: "🌈", earned: false },
+    { id: "soul", name: "Alma", emoji: "💗", earned: false },
+    { id: "marsh", name: "Pântano", emoji: "🧠", earned: false },
+    { id: "volcano", name: "Vulcão", emoji: "🌋", earned: false },
+    { id: "earth", name: "Terra", emoji: "🌍", earned: false },
   ],
   videos: [
     { title: "Ep. 1 — A Jornada Começa", ep: "EP.01", emoji: "🌟" },

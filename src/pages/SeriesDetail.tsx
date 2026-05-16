@@ -287,16 +287,16 @@ export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    gap: "0.35rem",
-                    padding: "0.75rem 1rem",
+                    gap: "0.5rem",
+                    padding: "0.85rem 0.9rem",
                     borderRadius: "var(--r-md)",
-                    minWidth: "64px",
+                    minWidth: "84px",
                     transition: "transform .2s",
                     cursor: "default",
                     background: b.earned ? "#fef9c3" : "var(--surface)",
                     border: b.earned ? "1.5px solid #fde047" : "1.5px solid var(--rule)",
-                    opacity: b.earned ? 1 : 0.4,
-                    filter: b.earned ? "none" : "grayscale(.7)",
+                    opacity: b.earned ? 1 : 0.45,
+                    filter: b.earned ? "none" : "grayscale(1)",
                   }}
                   onMouseEnter={(e) => {
                     (e.currentTarget as HTMLElement).style.transform = "scale(1.08)";
@@ -305,14 +305,19 @@ export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
                     (e.currentTarget as HTMLElement).style.transform = "scale(1)";
                   }}
                 >
-                  <span style={{ fontSize: "1.5rem" }}>{b.emoji}</span>
+                  {b.id ? (
+                    <div className={`kanto-badge kb-${b.id}`} title={b.name} />
+                  ) : (
+                    <span style={{ fontSize: "1.5rem" }}>{b.emoji}</span>
+                  )}
                   <span
                     style={{
                       fontFamily: "var(--pixel)",
-                      fontSize: "0.26rem",
+                      fontSize: "0.3rem",
                       color: "var(--ink2)",
                       textAlign: "center",
                       lineHeight: 1.4,
+                      letterSpacing: "1px",
                     }}
                   >
                     {b.name}
@@ -332,7 +337,7 @@ export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
                 gap: "0.7rem",
               }}
             >
-              DIÁRIO DE AVENTURA — NUZLOCKE KANTO
+              DIÁRIO DE AVENTURA — POKÉMON RED ++ NUZLOCKE TEMPORADA 1
               <div
                 style={{
                   flex: 1,
