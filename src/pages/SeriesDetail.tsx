@@ -102,7 +102,15 @@ export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
       <div style={{ maxWidth: "1080px", margin: "0 auto", padding: "3rem 2rem" }}>
         {/* Videos Tab */}
         {tab === "videos" && (
-          <div>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "minmax(0, 1fr) 320px",
+              gap: "1.5rem",
+              alignItems: "start",
+            }}
+          >
+            {/* Player */}
             <div
               style={{
                 background: "#090909",
@@ -114,7 +122,6 @@ export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
                 alignItems: "center",
                 justifyContent: "center",
                 border: "1.5px solid #1c1c1c",
-                marginBottom: "1.5rem",
               }}
             >
               <div
@@ -144,78 +151,114 @@ export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
                 </p>
               </div>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-              {videos.map((v, i) => (
-                <div
-                  key={i}
-                  style={{
-                    display: "flex",
-                    gap: "1rem",
-                    alignItems: "center",
-                    background: activeVid === i ? "var(--g50)" : "var(--surface)",
-                    borderRadius: "var(--r-md)",
-                    padding: "0.9rem 1.1rem",
-                    cursor: "pointer",
-                    border: activeVid === i ? "1.5px solid var(--g400)" : "1.5px solid var(--rule)",
-                    transition: "border-color .2s, box-shadow .2s, background .2s",
-                    boxShadow: activeVid === i ? "var(--shadow-green)" : "none",
-                  }}
-                  onClick={() => setActiveVid(i)}
-                  onMouseEnter={(e) => {
-                    if (activeVid !== i) {
-                      (e.currentTarget as HTMLElement).style.borderColor = "var(--g300)";
-                      (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-green)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (activeVid !== i) {
-                      (e.currentTarget as HTMLElement).style.borderColor = "var(--rule)";
-                      (e.currentTarget as HTMLElement).style.boxShadow = "none";
-                    }
-                  }}
-                >
-                  <div
-                    style={{
-                      fontFamily: "var(--pixel)",
-                      fontSize: "0.38rem",
-                      minWidth: "28px",
-                      color: activeVid === i ? "var(--g600)" : "var(--ink3)",
-                      textAlign: "center",
-                    }}
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </div>
-                  <div
-                    style={{
-                      width: "76px",
-                      height: "43px",
-                      borderRadius: "var(--r-sm)",
-                      background: "var(--ink)",
-                      flexShrink: 0,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontSize: "1.2rem",
-                    }}
-                  >
-                    {v.emoji}
-                  </div>
-                  <div>
-                    <h4 style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--ink)", marginBottom: "0.2rem" }}>
-                      {v.title}
-                    </h4>
-                    <span
+
+            {/* Lista lateral */}
+            <div
+              style={{
+                background: "var(--surface)",
+                borderRadius: "var(--r-lg)",
+                border: "1.5px solid var(--rule)",
+                overflow: "hidden",
+                boxShadow: "var(--shadow-sm)",
+              }}
+            >
+              <div
+                style={{
+                  padding: "0.9rem 1.1rem",
+                  borderBottom: "1.5px solid var(--rule)",
+                  fontFamily: "var(--pixel)",
+                  fontSize: "0.42rem",
+                  color: "var(--g600)",
+                  letterSpacing: "2px",
+                  background: "var(--g50)",
+                }}
+              >
+                EPISÓDIOS
+              </div>
+              <div>
+                {videos.map((v, i) => {
+                  const isActive = activeVid === i;
+                  return (
+                    <div
+                      key={i}
+                      onClick={() => setActiveVid(i)}
                       style={{
-                        fontFamily: "var(--pixel)",
-                        fontSize: "0.3rem",
-                        color: "var(--ink3)",
+                        display: "flex",
+                        gap: "0.85rem",
+                        alignItems: "center",
+                        padding: "0.8rem 1rem",
+                        paddingLeft: isActive ? "calc(1rem - 3px)" : "1rem",
+                        borderLeft: isActive ? "3px solid var(--g400)" : "3px solid transparent",
+                        borderBottom: i < videos.length - 1 ? "1px solid #f3f4f6" : "none",
+                        background: isActive ? "linear-gradient(90deg, #dcfce7, #f0fdf4)" : "transparent",
+                        cursor: "pointer",
+                        transition: "background .15s",
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!isActive) (e.currentTarget as HTMLElement).style.background = "var(--g50)";
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isActive) (e.currentTarget as HTMLElement).style.background = "transparent";
                       }}
                     >
-                      {v.ep}
-                    </span>
-                  </div>
-                </div>
-              ))}
+                      <div
+                        style={{
+                          width: "64px",
+                          height: "38px",
+                          borderRadius: "var(--r-sm)",
+                          background: "var(--ink)",
+                          flexShrink: 0,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "1.1rem",
+                          position: "relative",
+                        }}
+                      >
+                        {v.emoji}
+                        <span
+                          style={{
+                            position: "absolute",
+                            right: "3px",
+                            bottom: "2px",
+                            color: "#fff",
+                            fontSize: "0.45rem",
+                            background: isActive ? "var(--g500)" : "rgba(0,0,0,.7)",
+                            padding: "1px 4px",
+                            borderRadius: "3px",
+                          }}
+                        >
+                          ▶
+                        </span>
+                      </div>
+                      <div style={{ minWidth: 0 }}>
+                        <h4
+                          style={{
+                            fontSize: "0.85rem",
+                            fontWeight: 700,
+                            color: "var(--ink)",
+                            marginBottom: "0.15rem",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                          }}
+                        >
+                          {v.title}
+                        </h4>
+                        <span
+                          style={{
+                            fontFamily: "var(--pixel)",
+                            fontSize: "0.3rem",
+                            color: "var(--ink3)",
+                          }}
+                        >
+                          {v.ep}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         )}
