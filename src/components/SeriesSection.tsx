@@ -40,7 +40,6 @@ export const SeriesSection = ({ setPage, setActiveSeries }: SeriesSectionProps) 
               }}
               onClick={() => {
                 setActiveSeries(s);
-                setPage("detail");
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.transform =
