@@ -21,7 +21,7 @@ export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
   const [hoverLoc, setHoverLoc] = useState<string | null>(null);
 
   return (
-    <div style={{ paddingTop: "58px" }}>
+    <div style={{ paddingTop: "58px", flex: 1 }}>
       <SeriesHeader
         coverImg={(series as any).coverImg}
         title={series.title}
@@ -812,7 +812,7 @@ export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
                     <span style={{ fontSize: "5rem" }}>{p.emoji}</span>
                   )}
                 </div>
-                <div style={{ padding: "1.4rem 1.5rem", display: "flex", flexDirection: "column" }}>
+                <div style={{ padding: "1.4rem 1.5rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
                   <div
                     style={{
                       fontFamily: "var(--pixel)",
@@ -827,29 +827,11 @@ export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
                   <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "var(--ink)", marginBottom: "1rem" }}>
                     {p.species}
                   </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.82rem", color: "var(--ink3)", marginBottom: "0.4rem" }}>
-                    <strong style={{ color: "var(--ink)", fontWeight: 700 }}>Nível</strong> {p.level}
-                  </div>
                   <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.82rem", color: "var(--ink3)", marginBottom: "0.25rem" }}>
                     <strong style={{ color: "var(--ink)", fontWeight: 700 }}>Capturado em</strong>
                   </div>
                   <div style={{ fontSize: "0.78rem", color: "var(--ink3)" }}>
                     {p.location}
-                  </div>
-                  <div style={{ display: "flex", gap: "0.35rem", marginTop: "0.9rem" }}>
-                    <span
-                      style={{
-                        fontFamily: "var(--pixel)",
-                        fontSize: "0.3rem",
-                        padding: "0.35rem 0.65rem",
-                        borderRadius: "100px",
-                        color: "#fff",
-                        background: "#d97706",
-                        letterSpacing: "1px",
-                      }}
-                    >
-                      🔥 FOGO
-                    </span>
                   </div>
                   {p.dead && (
                     <span
