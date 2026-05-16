@@ -162,7 +162,7 @@ export const SeriesSection = ({ setPage, setActiveSeries }: SeriesSectionProps) 
                       borderRadius: "100px",
                     }}
                   >
-                    {s.episodes} EP
+                    {s.runs.length} {s.runs.length === 1 ? "RUN" : "RUNS"}
                   </span>
                   <span
                     style={{
@@ -171,12 +171,12 @@ export const SeriesSection = ({ setPage, setActiveSeries }: SeriesSectionProps) 
                       padding: "0.3rem 0.65rem",
                       borderRadius: "100px",
                       border: "1px solid",
-                      color: s.statusColor,
-                      background: s.statusBg,
-                      borderColor: s.statusBorder,
+                      color: "#15803d",
+                      background: "#dcfce7",
+                      borderColor: "#86efac",
                     }}
                   >
-                    {s.status}
+                    {s.runs.find((r) => r.id === s.activeRunId)?.status === "active" ? "EM ANDAMENTO" : "ENCERRADA"}
                   </span>
                 </div>
                 <button

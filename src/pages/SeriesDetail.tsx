@@ -1,195 +1,23 @@
 import { useState } from "react";
-import { SERIES, BADGES, TIMELINE_EVENTS, KANTO_GRID, MAP_DATA, CURRENT_TEAM } from "../data/constants";
+import { SERIES, Run } from "../data/constants";
 
 interface SeriesDetailProps {
   seriesId: string;
+  run: Run;
   setPage: (page: string) => void;
 }
 
-export const SeriesDetail = ({ seriesId, setPage }: SeriesDetailProps) => {
+export const SeriesDetail = ({ seriesId, run, setPage }: SeriesDetailProps) => {
   const [tab, setTab] = useState("videos");
   const [activeVid, setActiveVid] = useState(0);
 
   const series = SERIES.find((s) => s.id === seriesId);
   if (!series) return null;
 
-  const videos = [
-    { title: "Ep. 1 — A Jornada Começa", ep: "EP.01", emoji: "🌟" },
-    { title: "Ep. 2 — Pesadelos na Floresta Viridian", ep: "EP.02", emoji: "🌲" },
-    { title: "Ep. 3 — Brock Levou um Troco", ep: "EP.03", emoji: "🪨" },
-    { title: "Ep. 4 — DEX Asa (Não Estou Chorando)", ep: "EP.04", emoji: "💀" },
-    { title: "Ep. 5 — Grind na Rota 4", ep: "EP.05", emoji: "⚔️" },
-    { title: "Ep. 6 — A Misty É Assustadora Pra Valer", ep: "EP.06", emoji: "💧" },
-  ];
+  const videos = run.videos;
 
-  const MapCell = ({ name }: { name: string | null }) => {
-    const [hover, setHover] = useState(false);
-    const data = name ? MAP_DATA[name] : null;
-
-    if (!name)
-      return (
-        <div
-          style={{
-            aspectRatio: "1",
-            borderRadius: "var(--r-sm)",
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "0.2rem",
-            minHeight: "56px",
-            transition: "all .2s",
-            cursor: "default",
-            background: "transparent",
-          }}
-        />
-      );
-
-    const cls = data
-      ? data.gym
-        ? "gym-city"
-        : "route"
-      : "";
-
-    return (
-      <div
-        style={{
-          aspectRatio: "1",
-          borderRadius: "var(--r-sm)",
-          position: "relative",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "0.2rem",
-          minHeight: "56px",
-          transition: "all .2s",
-          cursor: "default",
-          background:
-            cls === "gym-city"
-              ? "rgba(251,191,36,.12)"
-              : cls === "route"
-                ? "rgba(34,197,94,.1)"
-                : "transparent",
-          border:
-            cls === "gym-city"
-              ? "1px solid rgba(251,191,36,.35)"
-              : cls === "route"
-                ? "1px solid rgba(74,222,128,.25)"
-                : "none",
-          opacity: data && !data.visited ? 0.45 : 1,
-        }}
-        onMouseEnter={() => data && setHover(true)}
-        onMouseLeave={() => setHover(false)}
-      >
-        <div style={{ fontSize: "0.8rem", marginBottom: "0.1rem", lineHeight: 1 }}>
-          {data?.gym ? "🏟️" : data ? "🌿" : "🌫️"}
-        </div>
-        <div
-          style={{
-            fontFamily: "var(--pixel)",
-            fontSize: "0.22rem",
-            color: "rgba(255,255,255,.58)",
-            textAlign: "center",
-            lineHeight: 1.5,
-          }}
-        >
-          {name}
-        </div>
-        {hover && data && (
-          <div
-            style={{
-              position: "absolute",
-              bottom: "calc(100% + 10px)",
-              left: "50%",
-              transform: "translateX(-50%)",
-              background: "#152b15",
-              border: "1.5px solid var(--g600)",
-              borderRadius: "var(--r-md)",
-              padding: "0.9rem 1.1rem",
-              minWidth: "170px",
-              zIndex: 20,
-              pointerEvents: "none",
-              boxShadow: "0 4px 20px rgba(0,0,0,.4)",
-            }}
-          >
-            <div
-              style={{
-                position: "absolute",
-                top: "100%",
-                left: "50%",
-                transform: "translateX(-50%)",
-                borderLeft: "7px solid transparent",
-                borderRight: "7px solid transparent",
-                borderTop: "7px solid var(--g600)",
-              }}
-            />
-            <h5
-              style={{
-                fontFamily: "var(--pixel)",
-                fontSize: "0.32rem",
-                color: "var(--g300)",
-                marginBottom: "0.5rem",
-                lineHeight: 1.6,
-              }}
-            >
-              {name.replace("\n", " ")}
-            </h5>
-            {data.gym && (
-              <p style={{ fontSize: "0.74rem", color: "rgba(255,255,255,.65)", lineHeight: 1.6 }}>
-                🏆 {data.badge}
-              </p>
-            )}
-            {data.caught?.length > 0 && (
-              <>
-                <p
-                  style={{
-                    marginTop: "0.4rem",
-                    fontSize: "0.74rem",
-                    color: "rgba(255,255,255,.65)",
-                    lineHeight: 1.6,
-                  }}
-                >
-                  Capturado aqui:
-                </p>
-                <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", marginTop: "0.5rem" }}>
-                  {data.caught.map((p) => (
-                    <span
-                      key={p}
-                      style={{
-                        fontFamily: "var(--pixel)",
-                        fontSize: "0.25rem",
-                        background: "rgba(74,222,128,.12)",
-                        color: "var(--g300)",
-                        padding: "0.25rem 0.5rem",
-                        borderRadius: "4px",
-                        border: "1px solid rgba(74,222,128,.22)",
-                      }}
-                    >
-                      {p}
-                    </span>
-                  ))}
-                </div>
-              </>
-            )}
-            {!data.visited && (
-              <p
-                style={{
-                  fontFamily: "var(--pixel)",
-                  fontSize: "0.28rem",
-                  color: "rgba(255,255,255,.3)",
-                  marginTop: "0.3rem",
-                }}
-              >
-                Não visitado ainda
-              </p>
-            )}
-          </div>
-        )}
-      </div>
-    );
-  };
+  const locById = Object.fromEntries(run.locations.map((l) => [l.id, l]));
+  const [hoverLoc, setHoverLoc] = useState<string | null>(null);
 
   return (
     <div>
@@ -215,34 +43,30 @@ export const SeriesDetail = ({ seriesId, setPage }: SeriesDetailProps) => {
           <button
             style={{
               fontFamily: "var(--pixel)",
-              fontSize: "0.38rem",
-              color: "var(--g300)",
-              background: "rgba(74,222,128,.1)",
-              border: "1px solid rgba(74,222,128,.22)",
+              fontSize: "0.32rem",
+              color: "rgba(255,255,255,.38)",
+              background: "none",
+              border: "none",
               cursor: "pointer",
-              marginBottom: "2rem",
+              marginBottom: "1rem",
               display: "inline-flex",
               alignItems: "center",
-              gap: "0.5rem",
-              padding: "0.5rem 1rem",
-              borderRadius: "100px",
-              transition: "background .2s, transform .15s",
+              gap: "0.4rem",
+              padding: 0,
+              transition: "color .2s, transform .15s",
+              letterSpacing: "1px",
             }}
-            onClick={() => setPage("home")}
+            onClick={() => setPage("runs")}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background =
-                "rgba(74,222,128,.18)";
-              (e.currentTarget as HTMLElement).style.transform =
-                "translateX(-3px)";
+              (e.currentTarget as HTMLElement).style.color = "var(--g300)";
+              (e.currentTarget as HTMLElement).style.transform = "translateX(-2px)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.background =
-                "rgba(74,222,128,.1)";
-              (e.currentTarget as HTMLElement).style.transform =
-                "translateX(0)";
+              (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,.38)";
+              (e.currentTarget as HTMLElement).style.transform = "translateX(0)";
             }}
           >
-            ← Voltar
+            ← {series.title} / {run.label}
           </button>
           <h1
             style={{
@@ -325,61 +149,6 @@ export const SeriesDetail = ({ seriesId, setPage }: SeriesDetailProps) => {
       </div>
 
       <div style={{ maxWidth: "1080px", margin: "0 auto", padding: "3rem 2rem" }}>
-        {/* Badges strip */}
-        <div
-          style={{
-            display: "flex",
-            gap: "0.75rem",
-            flexWrap: "wrap",
-            background: "var(--surface)",
-            borderRadius: "var(--r-xl)",
-            padding: "1.5rem 2rem",
-            border: "1.5px solid var(--rule)",
-            marginBottom: "2.5rem",
-            boxShadow: "var(--shadow-sm)",
-          }}
-        >
-          {BADGES.map((b) => (
-            <div
-              key={b.name}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "0.35rem",
-                padding: "0.75rem 1rem",
-                borderRadius: "var(--r-md)",
-                minWidth: "64px",
-                transition: "transform .2s",
-                cursor: "default",
-                background: b.earned ? "#fef9c3" : "#f9fafb",
-                border: b.earned ? "1.5px solid #fde047" : "1.5px solid var(--rule)",
-                opacity: b.earned ? 1 : 0.45,
-                filter: b.earned ? "none" : "grayscale(.6)",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.transform = "scale(1.08)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.transform = "scale(1)";
-              }}
-            >
-              <span style={{ fontSize: "1.5rem" }}>{b.emoji}</span>
-              <span
-                style={{
-                  fontFamily: "var(--pixel)",
-                  fontSize: "0.26rem",
-                  color: "var(--ink2)",
-                  textAlign: "center",
-                  lineHeight: 1.4,
-                }}
-              >
-                {b.name}
-              </span>
-            </div>
-          ))}
-        </div>
-
         {/* Videos Tab */}
         {tab === "videos" && (
           <div>
@@ -503,6 +272,61 @@ export const SeriesDetail = ({ seriesId, setPage }: SeriesDetailProps) => {
         {/* Timeline Tab */}
         {tab === "timeline" && (
           <div>
+            {/* Badges strip */}
+            <div
+              style={{
+                display: "flex",
+                gap: "0.75rem",
+                flexWrap: "wrap",
+                background: "var(--surface)",
+                borderRadius: "var(--r-xl)",
+                padding: "1.5rem 2rem",
+                border: "1.5px solid var(--rule)",
+                marginBottom: "2.5rem",
+                boxShadow: "var(--shadow-sm)",
+              }}
+            >
+              {run.badges.map((b) => (
+                <div
+                  key={b.name}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "0.35rem",
+                    padding: "0.75rem 1rem",
+                    borderRadius: "var(--r-md)",
+                    minWidth: "64px",
+                    transition: "transform .2s",
+                    cursor: "default",
+                    background: b.earned ? "#fef9c3" : "var(--surface)",
+                    border: b.earned ? "1.5px solid #fde047" : "1.5px solid var(--rule)",
+                    opacity: b.earned ? 1 : 0.4,
+                    filter: b.earned ? "none" : "grayscale(.7)",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.transform = "scale(1.08)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.transform = "scale(1)";
+                  }}
+                >
+                  <span style={{ fontSize: "1.5rem" }}>{b.emoji}</span>
+                  <span
+                    style={{
+                      fontFamily: "var(--pixel)",
+                      fontSize: "0.26rem",
+                      color: "var(--ink2)",
+                      textAlign: "center",
+                      lineHeight: 1.4,
+                    }}
+                  >
+                    {b.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+
             <div
               style={{
                 fontFamily: "var(--pixel)",
@@ -536,7 +360,7 @@ export const SeriesDetail = ({ seriesId, setPage }: SeriesDetailProps) => {
                   borderRadius: "1px",
                 }}
               />
-              {TIMELINE_EVENTS.map((ev) => (
+              {run.timeline.map((ev) => (
                 <div key={ev.id} style={{ position: "relative", marginBottom: "2.25rem" }}>
                   <div
                     style={{
@@ -612,63 +436,70 @@ export const SeriesDetail = ({ seriesId, setPage }: SeriesDetailProps) => {
                       {ev.desc}
                     </p>
                     {(ev.catches.length > 0 || ev.deaths.length > 0 || ev.badge) && (
-                      <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "0.9rem" }}>
-                        {ev.catches.map((c) => (
-                          <span
-                            key={c}
-                            style={{
-                              fontFamily: "var(--pixel)",
-                              fontSize: "0.28rem",
-                              background: "var(--g100)",
-                              color: "var(--g700)",
-                              padding: "0.3rem 0.65rem",
-                              borderRadius: "100px",
-                              border: "1px solid var(--g200)",
-                            }}
-                          >
-                            ✅ {c}
-                          </span>
-                        ))}
-                        {ev.deaths.map((d) => (
-                          <span
-                            key={d}
-                            style={{
-                              fontFamily: "var(--pixel)",
-                              fontSize: "0.28rem",
-                              background: "#fee2e2",
-                              color: "var(--ember)",
-                              padding: "0.3rem 0.65rem",
-                              borderRadius: "100px",
-                              border: "1px solid #fca5a5",
-                            }}
-                          >
-                            ✝ {d}
-                          </span>
-                        ))}
+                      <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginTop: "1.1rem" }}>
+                        {ev.catches.length > 0 && (
+                          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
+                            <span style={{ fontFamily: "var(--pixel)", fontSize: "0.3rem", color: "var(--g600)", minWidth: "80px" }}>
+                              CAPTURA
+                            </span>
+                            {ev.catches.map((c) => (
+                              <span
+                                key={c}
+                                style={{
+                                  fontSize: "0.88rem",
+                                  fontWeight: 600,
+                                  background: "var(--g100)",
+                                  color: "var(--g700)",
+                                  padding: "0.35rem 0.8rem",
+                                  borderRadius: "100px",
+                                  border: "1.5px solid var(--g300)",
+                                }}
+                              >
+                                🟢 {c}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        {ev.deaths.length > 0 && (
+                          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
+                            <span style={{ fontFamily: "var(--pixel)", fontSize: "0.3rem", color: "#dc2626", minWidth: "80px" }}>
+                              CAÍDO
+                            </span>
+                            {ev.deaths.map((d) => (
+                              <span
+                                key={d}
+                                style={{
+                                  fontSize: "0.88rem",
+                                  fontWeight: 600,
+                                  background: "#fee2e2",
+                                  color: "#dc2626",
+                                  padding: "0.35rem 0.8rem",
+                                  borderRadius: "100px",
+                                  border: "1.5px solid #fca5a5",
+                                }}
+                              >
+                                💀 {d}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                         {ev.badge && (
-                          <div
-                            style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              alignItems: "center",
-                              gap: "0.3rem",
-                              padding: "0.55rem 0.85rem",
-                              background: "#fef9c3",
-                              borderRadius: "var(--r-md)",
-                              border: "1.5px solid #fde047",
-                              minWidth: "62px",
-                            }}
-                          >
-                            <span style={{ fontSize: "1.25rem" }}>{ev.badge.emoji}</span>
+                          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
+                            <span style={{ fontFamily: "var(--pixel)", fontSize: "0.3rem", color: "#b45309", minWidth: "80px" }}>
+                              INSÍGNIA
+                            </span>
                             <span
                               style={{
-                                fontFamily: "var(--pixel)",
-                                fontSize: "0.26rem",
-                                color: "var(--ink2)",
-                                textAlign: "center",
+                                fontSize: "0.88rem",
+                                fontWeight: 600,
+                                background: "#fef9c3",
+                                color: "#92400e",
+                                padding: "0.35rem 0.8rem",
+                                borderRadius: "100px",
+                                border: "1.5px solid #fde047",
                               }}
                             >
-                              Insígnia {ev.badge.name}
+                              {ev.badge.emoji} Insígnia {ev.badge.name}
                             </span>
                           </div>
                         )}
@@ -686,241 +517,330 @@ export const SeriesDetail = ({ seriesId, setPage }: SeriesDetailProps) => {
           <div>
             <div
               style={{
-                background: "var(--g900)",
+                background: "linear-gradient(180deg, #1e3a8a 0%, #1e40af 100%)",
                 borderRadius: "var(--r-xl)",
                 padding: "2rem",
                 border: "1.5px solid var(--g700)",
                 overflow: "hidden",
+                position: "relative",
               }}
             >
               <div
                 style={{
                   fontFamily: "var(--pixel)",
                   fontSize: "0.42rem",
-                  color: "var(--g300)",
+                  color: "#fff",
                   letterSpacing: "3px",
                   textAlign: "center",
-                  marginBottom: "1.75rem",
+                  marginBottom: "1.5rem",
                 }}
               >
                 ◆ MAPA DE KANTO ◆
               </div>
               <div
                 style={{
-                  display: "grid",
-                  gap: "0.5rem",
-                  gridTemplateColumns: "repeat(8, 1fr)",
+                  position: "relative",
+                  width: "100%",
+                  aspectRatio: "100 / 100",
+                  borderRadius: "var(--r-lg)",
+                  overflow: "hidden",
+                  background: "#3b82f6",
                 }}
               >
-                {KANTO_GRID.flat().map((cell, i) => (
-                  <MapCell key={i} name={cell} />
-                ))}
+                <svg
+                  viewBox="0 0 100 100"
+                  style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
+                  preserveAspectRatio="none"
+                >
+                  {/* Land mass */}
+                  <path
+                    d="M 18 28 L 78 28 L 92 32 L 94 50 L 92 62 L 86 70 L 76 78 L 68 86 L 30 92 L 18 86 L 14 70 L 14 50 L 12 38 Z"
+                    fill="#65a30d"
+                    stroke="#3f6212"
+                    strokeWidth="0.4"
+                  />
+                  <path
+                    d="M 14 90 L 30 96 L 14 96 Z"
+                    fill="#65a30d"
+                    stroke="#3f6212"
+                    strokeWidth="0.4"
+                  />
+                  {/* Routes (lines connecting locations) */}
+                  {run.routes.map(([a, b], i) => {
+                    const la = locById[a];
+                    const lb = locById[b];
+                    if (!la || !lb) return null;
+                    const visited = la.visited && lb.visited;
+                    return (
+                      <line
+                        key={i}
+                        x1={la.x}
+                        y1={la.y}
+                        x2={lb.x}
+                        y2={lb.y}
+                        stroke={visited ? "#facc15" : "rgba(255,255,255,.45)"}
+                        strokeWidth="0.6"
+                        strokeDasharray={visited ? "0" : "1 1"}
+                        strokeLinecap="round"
+                      />
+                    );
+                  })}
+                </svg>
+
+                {/* Location pins */}
+                {run.locations.map((loc) => {
+                  const isCity = loc.type === "city" || loc.type === "town";
+                  const size = isCity ? 24 : 18;
+                  return (
+                    <div
+                      key={loc.id}
+                      style={{
+                        position: "absolute",
+                        left: `${loc.x}%`,
+                        top: `${loc.y}%`,
+                        transform: "translate(-50%, -50%)",
+                        zIndex: hoverLoc === loc.id ? 10 : 1,
+                      }}
+                      onMouseEnter={() => setHoverLoc(loc.id)}
+                      onMouseLeave={() => setHoverLoc(null)}
+                    >
+                      <div
+                        style={{
+                          width: `${size}px`,
+                          height: `${size}px`,
+                          borderRadius: isCity ? "50%" : "4px",
+                          background: loc.visited
+                            ? isCity
+                              ? loc.gym
+                                ? "#fbbf24"
+                                : "#fff"
+                              : "rgba(255,255,255,.85)"
+                            : isCity
+                              ? "rgba(255,255,255,.35)"
+                              : "rgba(255,255,255,.2)",
+                          border: `2px solid ${loc.visited ? "#1e293b" : "rgba(30,41,59,.5)"}`,
+                          boxShadow: loc.visited ? "0 2px 6px rgba(0,0,0,.3)" : "none",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: "0.7rem",
+                          transition: "transform .15s",
+                          transform: hoverLoc === loc.id ? "scale(1.25)" : "scale(1)",
+                        }}
+                      >
+                        {loc.gym && loc.visited && "🏟️"}
+                      </div>
+
+                      {/* Captured pokemon icons floating around the pin */}
+                      {loc.caught.length > 0 && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: `-${size / 2 + 14}px`,
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            display: "flex",
+                            gap: "2px",
+                          }}
+                        >
+                          {loc.caught.map((p) => (
+                            <span
+                              key={p.species}
+                              title={`${p.name} (${p.species})${p.dead ? " — Caído" : ""}`}
+                              style={{
+                                fontSize: "0.95rem",
+                                lineHeight: 1,
+                                filter: p.dead ? "grayscale(1) opacity(.5)" : "none",
+                                background: "rgba(255,255,255,.92)",
+                                borderRadius: "50%",
+                                width: "22px",
+                                height: "22px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                border: "1.5px solid #1e293b",
+                                boxShadow: "0 1px 3px rgba(0,0,0,.3)",
+                              }}
+                            >
+                              {p.emoji}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Tooltip on hover */}
+                      {hoverLoc === loc.id && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: `${size + 8}px`,
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            background: "#152b15",
+                            border: "1.5px solid var(--g600)",
+                            borderRadius: "var(--r-md)",
+                            padding: "0.7rem 0.9rem",
+                            minWidth: "150px",
+                            pointerEvents: "none",
+                            boxShadow: "0 4px 20px rgba(0,0,0,.5)",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          <h5
+                            style={{
+                              fontFamily: "var(--pixel)",
+                              fontSize: "0.32rem",
+                              color: "var(--g300)",
+                              marginBottom: "0.4rem",
+                            }}
+                          >
+                            {loc.name}
+                          </h5>
+                          {loc.caught.length > 0 ? (
+                            <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                              {loc.caught.map((p) => (
+                                <span
+                                  key={p.species}
+                                  style={{
+                                    fontSize: "0.72rem",
+                                    color: p.dead ? "#fca5a5" : "rgba(255,255,255,.85)",
+                                  }}
+                                >
+                                  {p.emoji} {p.name} ({p.species}){p.dead && " ✝"}
+                                </span>
+                              ))}
+                            </div>
+                          ) : (
+                            <span style={{ fontSize: "0.72rem", color: "rgba(255,255,255,.5)" }}>
+                              {loc.visited ? "Sem capturas" : "Não visitado"}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
+
               <div
                 style={{
                   display: "flex",
                   gap: "1.5rem",
-                  marginTop: "1.5rem",
+                  marginTop: "1.25rem",
                   flexWrap: "wrap",
                   justifyContent: "center",
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <div
-                    style={{
-                      width: "12px",
-                      height: "12px",
-                      borderRadius: "3px",
-                      background: "rgba(34,197,94,.3)",
-                      border: "1px solid rgba(74,222,128,.4)",
-                    }}
-                  />
-                  <span
-                    style={{
-                      fontFamily: "var(--pixel)",
-                      fontSize: "0.28rem",
-                      color: "rgba(255,255,255,.38)",
-                    }}
-                  >
-                    ROTA VISITADA
+                  <div style={{ width: "14px", height: "14px", borderRadius: "50%", background: "#fff", border: "2px solid #1e293b" }} />
+                  <span style={{ fontFamily: "var(--pixel)", fontSize: "0.28rem", color: "rgba(255,255,255,.7)" }}>
+                    CIDADE
                   </span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <div
-                    style={{
-                      width: "12px",
-                      height: "12px",
-                      borderRadius: "3px",
-                      background: "rgba(251,191,36,.25)",
-                      border: "1px solid rgba(251,191,36,.4)",
-                    }}
-                  />
-                  <span
-                    style={{
-                      fontFamily: "var(--pixel)",
-                      fontSize: "0.28rem",
-                      color: "rgba(255,255,255,.38)",
-                    }}
-                  >
-                    CIDADE COM GINÁSIO
+                  <div style={{ width: "12px", height: "12px", borderRadius: "3px", background: "rgba(255,255,255,.85)", border: "2px solid #1e293b" }} />
+                  <span style={{ fontFamily: "var(--pixel)", fontSize: "0.28rem", color: "rgba(255,255,255,.7)" }}>
+                    ROTA
+                  </span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <div style={{ width: "16px", height: "3px", background: "#facc15" }} />
+                  <span style={{ fontFamily: "var(--pixel)", fontSize: "0.28rem", color: "rgba(255,255,255,.7)" }}>
+                    CAMINHO PERCORRIDO
                   </span>
                 </div>
               </div>
-              <p
-                style={{
-                  fontFamily: "var(--pixel)",
-                  fontSize: "0.26rem",
-                  color: "rgba(255,255,255,.22)",
-                  textAlign: "center",
-                  marginTop: "1rem",
-                }}
-              >
-                PASSE O MOUSE PARA VER OS POKÉMON CAPTURADOS
-              </p>
             </div>
           </div>
         )}
 
         {/* Team Tab */}
         {tab === "team" && (
-          <div>
-            <div
-              style={{
-                fontFamily: "var(--pixel)",
-                fontSize: "0.42rem",
-                color: "var(--ink2)",
-                marginBottom: "1.25rem",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.7rem",
-              }}
-            >
-              TIME ATUAL — EP.24
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "1rem" }}>
+            {run.team.map((p, i) => (
               <div
+                key={p.name}
                 style={{
-                  flex: 1,
-                  height: "1.5px",
-                  background: "var(--rule)",
-                  borderRadius: "1px",
+                  background: "var(--surface)",
+                  borderRadius: "var(--r-lg)",
+                  padding: "1.4rem 1rem",
+                  border: p.dead ? "1.5px solid #fca5a5" : "1.5px solid var(--rule)",
+                  textAlign: "center",
+                  boxShadow: "var(--shadow-sm)",
+                  opacity: p.dead ? 0.45 : 1,
+                  filter: p.dead ? "grayscale(.8)" : "none",
+                  transition: "transform .2s, box-shadow .2s",
+                  position: "relative",
                 }}
-              />
-            </div>
-            <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-              {CURRENT_TEAM.filter((p) => !p.dead).map((p) => (
-                <div
-                  key={p.name}
-                  style={{
-                    background: "var(--surface)",
-                    borderRadius: "var(--r-lg)",
-                    padding: "1.25rem 1rem",
-                    border: "1.5px solid var(--rule)",
-                    minWidth: "112px",
-                    textAlign: "center",
-                    boxShadow: "var(--shadow-sm)",
-                    transition: "transform .2s, box-shadow .2s",
-                  }}
-                  onMouseEnter={(e) => {
+                onMouseEnter={(e) => {
+                  if (!p.dead) {
                     (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
                     (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-green)";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                    (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-sm)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-sm)";
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "var(--pixel)",
+                    fontSize: "0.26rem",
+                    color: "var(--ink3)",
+                    display: "block",
+                    marginBottom: "0.6rem",
                   }}
                 >
-                  <span style={{ fontSize: "2.2rem", display: "block", marginBottom: "0.5rem" }}>
-                    {p.emoji}
-                  </span>
+                  #{String(i + 1).padStart(2, "0")}
+                </span>
+                <span style={{ fontSize: "2.4rem", display: "block", marginBottom: "0.6rem" }}>
+                  {p.emoji}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--pixel)",
+                    fontSize: "0.34rem",
+                    color: "var(--ink)",
+                    display: "block",
+                    marginBottom: "0.25rem",
+                  }}
+                >
+                  {p.name}
+                </span>
+                <span style={{ fontSize: "0.78rem", color: "var(--ink3)", fontWeight: 500, display: "block", marginBottom: "0.5rem" }}>
+                  {p.species}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--pixel)",
+                    fontSize: "0.26rem",
+                    color: "var(--ink3)",
+                    display: "block",
+                  }}
+                >
+                  {p.location}
+                </span>
+                {p.dead && (
                   <span
                     style={{
                       fontFamily: "var(--pixel)",
-                      fontSize: "0.33rem",
-                      color: "var(--ink)",
-                      display: "block",
-                      marginBottom: "0.3rem",
+                      fontSize: "0.26rem",
+                      background: "#fee2e2",
+                      color: "#dc2626",
+                      border: "1px solid #fca5a5",
+                      padding: "0.25rem 0.5rem",
+                      borderRadius: "4px",
+                      display: "inline-block",
+                      marginTop: "0.6rem",
                     }}
                   >
-                    {p.name}
+                    💀 CAÍDO
                   </span>
-                  <span style={{ fontSize: "0.78rem", color: "var(--ink3)", fontWeight: 500 }}>
-                    {p.species} · Nv.{p.level}
-                  </span>
-                </div>
-              ))}
-            </div>
-            <div style={{ marginTop: "2.5rem" }}>
-              <div
-                style={{
-                  fontFamily: "var(--pixel)",
-                  fontSize: "0.42rem",
-                  color: "#dc2626",
-                  marginBottom: "1.25rem",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.7rem",
-                }}
-              >
-                MEMORIAL 💀
-                <div
-                  style={{
-                    flex: 1,
-                    height: "1.5px",
-                    background: "var(--rule)",
-                    borderRadius: "1px",
-                  }}
-                />
+                )}
               </div>
-              <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
-                {CURRENT_TEAM.filter((p) => p.dead).map((p) => (
-                  <div
-                    key={p.name}
-                    style={{
-                      background: "var(--surface)",
-                      borderRadius: "var(--r-lg)",
-                      padding: "1.25rem 1rem",
-                      border: "1.5px solid var(--rule)",
-                      minWidth: "112px",
-                      textAlign: "center",
-                      boxShadow: "var(--shadow-sm)",
-                      opacity: 0.5,
-                      filter: "grayscale(.75)",
-                    }}
-                  >
-                    <span style={{ fontSize: "2.2rem", display: "block", marginBottom: "0.5rem" }}>
-                      {p.emoji}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "var(--pixel)",
-                        fontSize: "0.33rem",
-                        color: "var(--ink)",
-                        display: "block",
-                        marginBottom: "0.3rem",
-                      }}
-                    >
-                      {p.name}
-                    </span>
-                    <span style={{ fontSize: "0.78rem", color: "var(--ink3)", fontWeight: 500 }}>
-                      {p.species} · Nv.{p.level}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "var(--pixel)",
-                        fontSize: "0.26rem",
-                        background: "var(--ember)",
-                        color: "#fff",
-                        padding: "0.25rem 0.5rem",
-                        borderRadius: "4px",
-                        display: "inline-block",
-                        marginTop: "0.5rem",
-                      }}
-                    >
-                      CAÍDO
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
         )}
       </div>

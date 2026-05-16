@@ -37,27 +37,16 @@ export const AboutSection = () => {
             gap: "1rem",
           }}
         >
-          <div
+          <img
+            src="/logo.png"
+            alt="Fwks logo"
             style={{
               width: "148px",
               height: "148px",
-              borderRadius: "50%",
-              background: "linear-gradient(135deg, var(--g700), var(--g500))",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              overflow: "hidden",
-              border: "3px solid var(--g400)",
-              boxShadow:
-                "0 0 0 6px rgba(74,222,128,.1), 0 0 40px rgba(74,222,128,.15)",
+              objectFit: "contain",
+              filter: "drop-shadow(0 0 20px rgba(74,222,128,.25))",
             }}
-          >
-            <img
-              src="/logo.png"
-              alt="Fwks logo"
-              style={{ width: "70%", height: "70%", objectFit: "contain" }}
-            />
-          </div>
+          />
           <div
             style={{
               fontFamily: "var(--pixel)",
@@ -75,7 +64,7 @@ export const AboutSection = () => {
               color: "rgba(255,255,255,.28)",
             }}
           >
-            DESDE 2019
+            DESDE 2026
           </div>
         </div>
 
