@@ -252,7 +252,7 @@ const RUN_1: Run = {
   id: "run-1",
   label: "Temporada 1",
   status: "dead",
-  deathNote: "Wipe contra o Gary em Pallet — Brasa não aguentou o Tackle crítico do Squirtle.",
+  deathNote: "Wipe contra o Gary na primeira batalha em Pallet.",
   episodeCount: 1,
   progress: "Encerrada em Pallet",
   badges: [
@@ -318,6 +318,33 @@ const RUN_1: Run = {
   team: CURRENT_TEAM,
 };
 
-SERIES[0].runs = [RUN_1];
+const RUN_2: Run = {
+  id: "run-2",
+  label: "Temporada 2",
+  status: "active",
+  episodeCount: 0,
+  progress: "Aguardando início",
+  badges: [
+    { id: "boulder", name: "Pedra", emoji: "🪨", earned: false },
+    { id: "cascade", name: "Cascata", emoji: "💧", earned: false },
+    { id: "thunder", name: "Trovão", emoji: "⚡", earned: false },
+    { id: "rainbow", name: "Arco-Íris", emoji: "🌈", earned: false },
+    { id: "soul", name: "Alma", emoji: "💗", earned: false },
+    { id: "marsh", name: "Pântano", emoji: "🧠", earned: false },
+    { id: "volcano", name: "Vulcão", emoji: "🌋", earned: false },
+    { id: "earth", name: "Terra", emoji: "🌍", earned: false },
+  ],
+  rulesetName: RUN_1.rulesetName,
+  rulesetTagline: RUN_1.rulesetTagline,
+  rules: RUN_1.rules,
+  videos: [],
+  timeline: [],
+  locations: KANTO_LOCATIONS.map((loc) => ({ ...loc, visited: false, caught: [] })),
+  routes: KANTO_ROUTES,
+  team: [],
+};
+
+SERIES[0].runs = [RUN_1, RUN_2];
+SERIES[0].activeRunId = RUN_2.id;
 
 export const BADGES = RUN_1.badges;
