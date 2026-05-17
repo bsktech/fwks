@@ -87,7 +87,7 @@ export type Run = {
 // ─────────────────────────────────────────────────────────────────────────────
 // TIMELINE EVENTS
 // ─────────────────────────────────────────────────────────────────────────────
-export const TIMELINE_EVENTS = [
+export const TIMELINE_EVENTS: TimelineEvent[] = [
   {
     id: 1,
     emoji: "🌟",
