@@ -84,6 +84,30 @@ export const TIMELINE_EVENTS = [
     badge: null,
     nodeColor: "#d97706",
   },
+  {
+    id: 2,
+    emoji: "💀",
+    location: "CIDADE PALLET",
+    ep: "EP.01",
+    title: "Brasa Cai para Gary",
+    desc: "Mal saí de casa e já encarei o Gary. O Squirtle dele tankou as chamas e veio com um Tackle crítico bem na hora errada. Brasa não resistiu.",
+    catches: [],
+    deaths: ["Charmander (Brasa) — Nv.5"],
+    badge: null,
+    nodeColor: "#dc2626",
+  },
+  {
+    id: 3,
+    emoji: "🪦",
+    location: "CIDADE PALLET",
+    ep: "EP.01",
+    title: "Temporada Finalizada — Wipe",
+    desc: "Com Brasa caído, o time inteiro se foi. Pela regra, time inteiro morto = run acabada. Sem segunda chance, sem reload. Até a próxima temporada.",
+    catches: [],
+    deaths: [],
+    badge: null,
+    nodeColor: "#0d2b14",
+  },
   // {
   //   id: 2,
   //   emoji: "🌿",
@@ -218,7 +242,7 @@ export const KANTO_ROUTES: [string, string][] = [
 // TEAM — ordered by capture, dead Pokémon included
 // ─────────────────────────────────────────────────────────────────────────────
 export const CURRENT_TEAM = [
-  { name: "Brasa", species: "Charmander", level: 5, emoji: "🔥", image: "/charmander.png", location: "Cidade Pallet", dead: false },
+  { name: "Brasa", species: "Charmander", level: 5, emoji: "🔥", image: "/charmander.png", location: "Cidade Pallet", dead: true },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -227,9 +251,10 @@ export const CURRENT_TEAM = [
 const RUN_1: Run = {
   id: "run-1",
   label: "Temporada 1",
-  status: "active",
+  status: "dead",
+  deathNote: "Wipe contra o Gary em Pallet — Brasa não aguentou o Tackle crítico do Squirtle.",
   episodeCount: 1,
-  progress: "Início de Kanto",
+  progress: "Encerrada em Pallet",
   badges: [
     { id: "boulder", name: "Pedra", emoji: "🪨", earned: false },
     { id: "cascade", name: "Cascata", emoji: "💧", earned: false },
@@ -266,7 +291,22 @@ const RUN_1: Run = {
     {
       emoji: "💀",
       title: "Desmaiou, morreu",
-      desc: "Pokémon que cai em batalha é considerado morto e vai pro box permanente — não pode ser usado nunca mais. Se o time inteiro cair, a run acaba e recomeço do zero.",
+      desc: "Pokémon que cai em batalha é considerado morto e vai pro box permanente — não pode ser usado nunca mais, nem como HM-slave.",
+    },
+    {
+      emoji: "🪦",
+      title: "Wipe acaba a run",
+      desc: "Se o time inteiro cair (todos os 6 Pokémon mortos), a temporada acaba ali. Não tem reload nem segunda chance — começo uma nova run do zero.",
+    },
+    {
+      emoji: "⚖️",
+      title: "Level cap por boss",
+      desc: "Nenhum Pokémon do time pode passar do nível do Pokémon mais forte do próximo líder de ginásio / boss (ex.: Gary). Time precisa estar managed, sem overlevel.",
+    },
+    {
+      emoji: "🔢",
+      title: "Team cap por boss",
+      desc: "Não posso levar mais Pokémon pra batalha do que o próprio boss. Se o líder usa 2 Pokémon, eu também só posso usar 2. Se usa 6, posso levar até 6.",
     },
   ],
   videos: [
