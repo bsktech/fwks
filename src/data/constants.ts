@@ -191,6 +191,7 @@ export const KANTO_LOCATIONS: KantoLocation[] = [
   { id: "viridian", name: "Viridian City", type: "city", gym: true, x: 28, y: 66, visited: true, caught: [] },
   { id: "route2", name: "Rota 2", type: "route", x: 28, y: 56, visited: true, caught: [] },
   { id: "viridian-forest", name: "Floresta Viridian", type: "forest", x: 28, y: 46, visited: true, caught: [{ species: "Caterpie", name: "Fio", emoji: "🐛" }] },
+  { id: "route22", name: "Rota 22", type: "route", x: 18, y: 66, visited: false, caught: [] },
   { id: "pewter", name: "Pewter City", type: "city", gym: true, x: 28, y: 36, visited: true, caught: [] },
   // East from Pewter
   { id: "route3", name: "Rota 3", type: "route", x: 38, y: 36, visited: true, caught: [] },
@@ -217,6 +218,7 @@ export const KANTO_LOCATIONS: KantoLocation[] = [
 export const KANTO_ROUTES: [string, string][] = [
   ["pallet", "route1"],
   ["route1", "viridian"],
+  ["viridian", "route22"],
   ["viridian", "route2"],
   ["route2", "viridian-forest"],
   ["viridian-forest", "pewter"],
@@ -325,17 +327,65 @@ const RUN_2_TIMELINE: TimelineEvent[] = [
     location: "CIDADE PALLET",
     ep: "EP.01",
     title: "A Jornada Começa",
-    desc: "Depois do wipe da Temporada 1, decidi mudar a estratégia. Escolhi Squirtle como inicial e o batizei de 'Onda'. Hora de tentar de novo!",
-    catches: ["Squirtle (Onda)"],
+    desc: "Depois do wipe da Temporada 1, decidi mudar a estratégia. Escolhi Squirtle como inicial e o batizei de 'Filipinas'. Tema dessa run: nomes de países. Hora de tentar de novo!",
+    catches: ["Squirtle (Filipinas)"],
     deaths: [],
     badge: null,
     nodeColor: "#d97706",
+  },
+  {
+    id: 2,
+    emoji: "🇨🇦",
+    location: "ROTA 1",
+    ep: "EP.01",
+    title: "Primeiro Encontro",
+    desc: "Apareceu um Zigzagoon na grama da Rota 1. Capturado e batizado de Canadá.",
+    catches: ["Zigzagoon (Canadá)"],
+    deaths: [],
+    badge: null,
+    nodeColor: "#16a34a",
+  },
+  {
+    id: 3,
+    emoji: "🇲🇨",
+    location: "ROTA 22",
+    ep: "EP.02",
+    title: "Desvio pela Rota 22",
+    desc: "Antes de seguir para o norte, dei uma passada na Rota 22. Encontrei um Meowth e o adicionei ao time como Mônaco.",
+    catches: ["Meowth (Mônaco)"],
+    deaths: [],
+    badge: null,
+    nodeColor: "#16a34a",
+  },
+  {
+    id: 4,
+    emoji: "🇳🇴",
+    location: "ROTA 2",
+    ep: "EP.02",
+    title: "Voador no Caminho",
+    desc: "Subindo pela Rota 2, um Pidgey apareceu na grama. Captura tranquila — bem-vindo, Noruega.",
+    catches: ["Pidgey (Noruega)"],
+    deaths: [],
+    badge: null,
+    nodeColor: "#16a34a",
+  },
+  {
+    id: 5,
+    emoji: "🇨🇷",
+    location: "FLORESTA VIRIDIAN",
+    ep: "EP.02",
+    title: "Pelo Coração da Floresta",
+    desc: "Na Floresta Viridian, o primeiro encontro foi um Caterpie. Não é o mais animador, mas vai virar um Butterfree decente. Apelidei de Costa Rica.",
+    catches: ["Caterpie (Costa Rica)"],
+    deaths: [],
+    badge: null,
+    nodeColor: "#16a34a",
   },
 ];
 
 const RUN_2_TEAM: RunTeamMember[] = [
   {
-    name: "Onda",
+    name: "Filipinas",
     species: "Squirtle",
     level: 5,
     emoji: "💧",
@@ -343,25 +393,73 @@ const RUN_2_TEAM: RunTeamMember[] = [
     location: "Cidade Pallet",
     dead: false,
   },
+  {
+    name: "Canadá",
+    species: "Zigzagoon",
+    level: 3,
+    emoji: "🦝",
+    image: "/zigzagoon.png",
+    location: "Rota 1",
+    dead: false,
+  },
+  {
+    name: "Mônaco",
+    species: "Meowth",
+    level: 4,
+    emoji: "🐱",
+    image: "/meowth.png",
+    location: "Rota 22",
+    dead: false,
+  },
+  {
+    name: "Noruega",
+    species: "Pidgey",
+    level: 4,
+    emoji: "🐦",
+    image: "/pidgey.png",
+    location: "Rota 2",
+    dead: false,
+  },
+  {
+    name: "Costa Rica",
+    species: "Caterpie",
+    level: 4,
+    emoji: "🐛",
+    image: "/caterpie.png",
+    location: "Floresta Viridian",
+    dead: false,
+  },
 ];
 
-const RUN_2_LOCATIONS: KantoLocation[] = KANTO_LOCATIONS.map((loc) => {
-  if (loc.id === "pallet") {
-    return {
-      ...loc,
-      visited: true,
-      caught: [{ species: "Squirtle", name: "Onda", emoji: "💧" }],
-    };
-  }
-  return { ...loc, visited: false, caught: [] };
-});
+const RUN_2_CAPTURES: Record<string, KantoLocation["caught"]> = {
+  pallet: [{ species: "Squirtle", name: "Filipinas", emoji: "💧" }],
+  route1: [{ species: "Zigzagoon", name: "Canadá", emoji: "🦝" }],
+  route22: [{ species: "Meowth", name: "Mônaco", emoji: "🐱" }],
+  route2: [{ species: "Pidgey", name: "Noruega", emoji: "🐦" }],
+  "viridian-forest": [{ species: "Caterpie", name: "Costa Rica", emoji: "🐛" }],
+};
+
+const RUN_2_VISITED = new Set([
+  "pallet",
+  "route1",
+  "viridian",
+  "route22",
+  "route2",
+  "viridian-forest",
+]);
+
+const RUN_2_LOCATIONS: KantoLocation[] = KANTO_LOCATIONS.map((loc) => ({
+  ...loc,
+  visited: RUN_2_VISITED.has(loc.id),
+  caught: RUN_2_CAPTURES[loc.id] ?? [],
+}));
 
 const RUN_2: Run = {
   id: "run-2",
   label: "Temporada 2",
   status: "active",
-  episodeCount: 1,
-  progress: "Início de Kanto",
+  episodeCount: 2,
+  progress: "Floresta Viridian",
   badges: [
     { id: "boulder", name: "Pedra", emoji: "🪨", earned: false },
     { id: "cascade", name: "Cascata", emoji: "💧", earned: false },
