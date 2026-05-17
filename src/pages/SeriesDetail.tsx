@@ -437,166 +437,218 @@ export const SeriesDetail = () => {
                     <p style={{ fontSize: "0.86rem", color: "var(--ink3)", lineHeight: 1.75 }}>
                       {ev.desc}
                     </p>
-                    {ev.battle && (
-                      <div
-                        style={{
-                          marginTop: "1.1rem",
-                          background: ev.battle.result === "win" ? "var(--g50)" : "#fef2f2",
-                          border: `1.5px solid ${ev.battle.result === "win" ? "var(--g300)" : "#fca5a5"}`,
-                          borderRadius: "var(--r-md)",
-                          padding: "0.95rem 1rem",
-                        }}
-                      >
+                    {ev.battle && (() => {
+                      const isWin = ev.battle.result === "win";
+                      const renderMons = (list: typeof ev.battle.mine) => (
+                        <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                          {list.map((p, i) => (
+                            <div
+                              key={`${p.species}-${i}`}
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "0.55rem",
+                                background: "var(--surface)",
+                                border: "1.5px solid var(--rule)",
+                                borderRadius: "10px",
+                                padding: "0.35rem 0.65rem 0.35rem 0.35rem",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  width: "34px",
+                                  height: "34px",
+                                  borderRadius: "8px",
+                                  background: "var(--g50)",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  overflow: "hidden",
+                                  flexShrink: 0,
+                                }}
+                              >
+                                {p.image ? (
+                                  <img
+                                    src={p.image}
+                                    alt={p.species}
+                                    style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                                  />
+                                ) : (
+                                  <span style={{ fontSize: "1rem" }}>{p.emoji}</span>
+                                )}
+                              </div>
+                              <div style={{ flex: 1, minWidth: 0 }}>
+                                <div style={{ fontSize: "0.88rem", fontWeight: 700, color: "var(--ink)", lineHeight: 1.2 }}>
+                                  {p.species}
+                                </div>
+                                <div style={{ fontSize: "0.72rem", fontWeight: 600, color: "var(--ink3)", marginTop: "0.05rem" }}>
+                                  Nv {p.level}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      );
+
+                      return (
                         <div
                           style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "0.7rem",
-                            marginBottom: "0.85rem",
+                            marginTop: "1.1rem",
+                            background: "var(--surface)",
+                            border: "1.5px solid var(--rule)",
+                            borderRadius: "var(--r-lg)",
+                            overflow: "hidden",
+                            boxShadow: "var(--shadow-sm)",
                           }}
                         >
-                          {ev.battle.trainerImage && (
+                          <div
+                            style={{
+                              padding: "0.6rem 1rem",
+                              textAlign: "center",
+                              fontFamily: "var(--pixel)",
+                              fontSize: "0.5rem",
+                              letterSpacing: "2px",
+                              color: "#fff",
+                              background: isWin ? "var(--g600)" : "#dc2626",
+                            }}
+                          >
+                            {isWin ? "✓ VITÓRIA" : "✗ DERROTA"} · {ev.location}
+                          </div>
+
+                          <div
+                            style={{
+                              display: "grid",
+                              gridTemplateColumns: "1fr 72px 1fr",
+                              alignItems: "stretch",
+                            }}
+                          >
+                            {/* Lado: EU */}
                             <div
                               style={{
-                                width: "44px",
-                                height: "44px",
-                                borderRadius: "50%",
-                                background: "var(--surface)",
-                                border: `1.5px solid ${ev.battle.result === "win" ? "var(--g400)" : "#fca5a5"}`,
+                                padding: "1.1rem 1.1rem 1.2rem",
+                                background: "var(--g50)",
+                                borderRight: "1.5px dashed var(--rule)",
+                              }}
+                            >
+                              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.85rem" }}>
+                                <div
+                                  style={{
+                                    width: "48px",
+                                    height: "48px",
+                                    borderRadius: "50%",
+                                    background: "var(--surface)",
+                                    border: "2px solid var(--g400)",
+                                    overflow: "hidden",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    flexShrink: 0,
+                                  }}
+                                >
+                                  <img
+                                    src="/logo.png"
+                                    alt="Fwks"
+                                    style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                                  />
+                                </div>
+                                <div style={{ minWidth: 0 }}>
+                                  <div
+                                    style={{
+                                      fontFamily: "var(--pixel)",
+                                      fontSize: "0.45rem",
+                                      letterSpacing: "1.5px",
+                                      color: "var(--g700)",
+                                      marginBottom: "0.2rem",
+                                    }}
+                                  >
+                                    EU
+                                  </div>
+                                  <div style={{ fontSize: "1.05rem", fontWeight: 800, color: "var(--ink)", letterSpacing: "-0.3px" }}>
+                                    Fwks
+                                  </div>
+                                </div>
+                              </div>
+                              {renderMons(ev.battle.mine)}
+                            </div>
+
+                            {/* Faixa VS central */}
+                            <div
+                              style={{
+                                background: "var(--ink)",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                overflow: "hidden",
-                                flexShrink: 0,
-                              }}
-                            >
-                              <img
-                                src={ev.battle.trainerImage}
-                                alt={ev.battle.trainerName}
-                                style={{
-                                  width: "120%",
-                                  height: "120%",
-                                  objectFit: "contain",
-                                  imageRendering: "pixelated",
-                                }}
-                              />
-                            </div>
-                          )}
-                          <div style={{ flex: 1, minWidth: 0 }}>
-                            <div
-                              style={{
-                                fontFamily: "var(--pixel)",
-                                fontSize: "0.32rem",
-                                color: "var(--ink3)",
-                                letterSpacing: "1.5px",
-                                marginBottom: "0.2rem",
-                              }}
-                            >
-                              BATALHA vs
-                            </div>
-                            <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--ink)" }}>
-                              {ev.battle.trainerName}
-                            </div>
-                          </div>
-                          <span
-                            style={{
-                              fontFamily: "var(--pixel)",
-                              fontSize: "0.34rem",
-                              letterSpacing: "1.5px",
-                              padding: "0.4rem 0.7rem",
-                              borderRadius: "100px",
-                              background: ev.battle.result === "win" ? "var(--g600)" : "#dc2626",
-                              color: "#fff",
-                            }}
-                          >
-                            {ev.battle.result === "win" ? "✓ VITÓRIA" : "✗ DERROTA"}
-                          </span>
-                        </div>
-
-                        {(["opponent", "mine"] as const).map((side) => {
-                          const list = ev.battle![side];
-                          if (list.length === 0) return null;
-                          const isOpp = side === "opponent";
-                          return (
-                            <div
-                              key={side}
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "0.6rem",
-                                padding: "0.5rem 0",
-                                borderTop: "1px dashed var(--rule)",
                               }}
                             >
                               <span
                                 style={{
                                   fontFamily: "var(--pixel)",
-                                  fontSize: "0.3rem",
-                                  color: isOpp ? "var(--ink2)" : "var(--g700)",
-                                  letterSpacing: "1.5px",
-                                  minWidth: "84px",
+                                  fontSize: "0.8rem",
+                                  color: "var(--g300)",
+                                  letterSpacing: "2px",
+                                  textShadow: "0 0 12px rgba(74,222,128,.5)",
                                 }}
                               >
-                                {isOpp ? "OPONENTE" : "EU USEI"}
+                                VS
                               </span>
-                              <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
-                                {list.map((p, i) => (
+                            </div>
+
+                            {/* Lado: OPONENTE */}
+                            <div
+                              style={{
+                                padding: "1.1rem 1.1rem 1.2rem",
+                                background: isWin ? "#fafafa" : "#fef9f9",
+                                borderLeft: "1.5px dashed var(--rule)",
+                              }}
+                            >
+                              <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "0.85rem" }}>
+                                <div
+                                  style={{
+                                    width: "48px",
+                                    height: "48px",
+                                    borderRadius: "50%",
+                                    background: "var(--surface)",
+                                    border: `2px solid ${isWin ? "var(--ink3)" : "#fca5a5"}`,
+                                    overflow: "hidden",
+                                    display: "flex",
+                                    alignItems: "flex-end",
+                                    justifyContent: "center",
+                                    flexShrink: 0,
+                                  }}
+                                >
+                                  {ev.battle.trainerImage ? (
+                                    <img
+                                      src={ev.battle.trainerImage}
+                                      alt={ev.battle.trainerName}
+                                      style={{ width: "90%", height: "auto", imageRendering: "pixelated" }}
+                                    />
+                                  ) : (
+                                    <span style={{ fontSize: "1.5rem" }}>🧑</span>
+                                  )}
+                                </div>
+                                <div style={{ minWidth: 0 }}>
                                   <div
-                                    key={`${p.species}-${i}`}
                                     style={{
-                                      display: "inline-flex",
-                                      alignItems: "center",
-                                      gap: "0.35rem",
-                                      background: "var(--surface)",
-                                      border: "1.5px solid var(--rule)",
-                                      borderRadius: "100px",
-                                      padding: "0.2rem 0.65rem 0.2rem 0.25rem",
+                                      fontFamily: "var(--pixel)",
+                                      fontSize: "0.45rem",
+                                      letterSpacing: "1.5px",
+                                      color: "var(--ink2)",
+                                      marginBottom: "0.2rem",
                                     }}
                                   >
-                                    <div
-                                      style={{
-                                        width: "26px",
-                                        height: "26px",
-                                        borderRadius: "50%",
-                                        background: "var(--g50)",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        overflow: "hidden",
-                                        flexShrink: 0,
-                                      }}
-                                    >
-                                      {p.image ? (
-                                        <img
-                                          src={p.image}
-                                          alt={p.species}
-                                          style={{ width: "100%", height: "100%", objectFit: "contain" }}
-                                        />
-                                      ) : (
-                                        <span style={{ fontSize: "0.9rem" }}>{p.emoji}</span>
-                                      )}
-                                    </div>
-                                    <span style={{ fontSize: "0.78rem", fontWeight: 600, color: "var(--ink)" }}>
-                                      {p.species}
-                                    </span>
-                                    <span
-                                      style={{
-                                        fontFamily: "var(--pixel)",
-                                        fontSize: "0.3rem",
-                                        color: "var(--ink3)",
-                                        letterSpacing: "0.5px",
-                                      }}
-                                    >
-                                      Nv {p.level}
-                                    </span>
+                                    RIVAL
                                   </div>
-                                ))}
+                                  <div style={{ fontSize: "1.05rem", fontWeight: 800, color: "var(--ink)", letterSpacing: "-0.3px" }}>
+                                    {ev.battle.trainerName}
+                                  </div>
+                                </div>
                               </div>
+                              {renderMons(ev.battle.opponent)}
                             </div>
-                          );
-                        })}
-                      </div>
-                    )}
+                          </div>
+                        </div>
+                      );
+                    })()}
                     {(ev.catches.length > 0 || ev.deaths.length > 0 || ev.badge) && (
                       <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginTop: "1.1rem" }}>
                         {ev.catches.length > 0 && (
