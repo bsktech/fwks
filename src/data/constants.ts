@@ -21,6 +21,21 @@ export const SERIES = [
 // ─────────────────────────────────────────────────────────────────────────────
 // RUN TYPES
 // ─────────────────────────────────────────────────────────────────────────────
+export type BattlePokemon = {
+  species: string;
+  level: number;
+  image?: string;
+  emoji?: string;
+};
+
+export type TimelineBattle = {
+  trainerName: string;
+  trainerImage?: string;
+  result: "win" | "loss";
+  opponent: BattlePokemon[];
+  mine: BattlePokemon[];
+};
+
 export type TimelineEvent = {
   id: number;
   emoji: string;
@@ -32,6 +47,7 @@ export type TimelineEvent = {
   deaths: string[];
   badge: { emoji: string; name: string } | null;
   nodeColor: string;
+  battle?: TimelineBattle;
 };
 
 export type RunRule = {
@@ -95,6 +111,13 @@ export const TIMELINE_EVENTS = [
     deaths: ["Charmander (Brasa) — Nv.5"],
     badge: null,
     nodeColor: "#dc2626",
+    battle: {
+      trainerName: "Gary",
+      trainerImage: "/gary.png",
+      result: "loss",
+      opponent: [{ species: "Squirtle", level: 5, image: "/squirtle.png" }],
+      mine: [{ species: "Charmander", level: 5, image: "/charmander.png" }],
+    },
   },
   {
     id: 3,
@@ -335,6 +358,25 @@ const RUN_2_TIMELINE: TimelineEvent[] = [
   },
   {
     id: 2,
+    emoji: "⚔️",
+    location: "CIDADE PALLET",
+    ep: "EP.01",
+    title: "Revanche contra o Gary",
+    desc: "A primeira batalha contra o Gary, igual a Temporada 1. Dessa vez ele veio com Bulbasaur Lv 5, e Filipinas (Squirtle) Lv 5 derrotou ele tranquilamente. Revanche pela morte da Brasa.",
+    catches: [],
+    deaths: [],
+    badge: null,
+    nodeColor: "#15803d",
+    battle: {
+      trainerName: "Gary",
+      trainerImage: "/gary.png",
+      result: "win",
+      opponent: [{ species: "Bulbasaur", level: 5, image: "/bulbasaur.png" }],
+      mine: [{ species: "Squirtle", level: 5, image: "/squirtle.png" }],
+    },
+  },
+  {
+    id: 3,
     emoji: "🇨🇦",
     location: "ROTA 1",
     ep: "EP.01",
@@ -346,7 +388,7 @@ const RUN_2_TIMELINE: TimelineEvent[] = [
     nodeColor: "#16a34a",
   },
   {
-    id: 3,
+    id: 4,
     emoji: "🇲🇨",
     location: "ROTA 22",
     ep: "EP.02",
@@ -358,7 +400,7 @@ const RUN_2_TIMELINE: TimelineEvent[] = [
     nodeColor: "#16a34a",
   },
   {
-    id: 4,
+    id: 5,
     emoji: "🇳🇴",
     location: "ROTA 2",
     ep: "EP.02",
@@ -370,7 +412,7 @@ const RUN_2_TIMELINE: TimelineEvent[] = [
     nodeColor: "#16a34a",
   },
   {
-    id: 5,
+    id: 6,
     emoji: "🇨🇷",
     location: "FLORESTA VIRIDIAN",
     ep: "EP.02",
@@ -380,6 +422,31 @@ const RUN_2_TIMELINE: TimelineEvent[] = [
     deaths: [],
     badge: null,
     nodeColor: "#16a34a",
+  },
+  {
+    id: 7,
+    emoji: "⚔️",
+    location: "FLORESTA VIRIDIAN",
+    ep: "EP.02",
+    title: "Segundo Round com o Gary",
+    desc: "Saindo da floresta, o Gary apareceu de novo — agora com 2 Pokémon. Filipinas (Squirtle Lv 9) e Noruega (Pidgey Lv 9) deram conta. Vitória sem baixas.",
+    catches: [],
+    deaths: [],
+    badge: null,
+    nodeColor: "#15803d",
+    battle: {
+      trainerName: "Gary",
+      trainerImage: "/gary.png",
+      result: "win",
+      opponent: [
+        { species: "Pidgey", level: 9, image: "/pidgey.png" },
+        { species: "Bulbasaur", level: 8, image: "/bulbasaur.png" },
+      ],
+      mine: [
+        { species: "Squirtle", level: 9, image: "/squirtle.png" },
+        { species: "Pidgey", level: 9, image: "/pidgey.png" },
+      ],
+    },
   },
 ];
 

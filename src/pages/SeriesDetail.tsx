@@ -437,6 +437,166 @@ export const SeriesDetail = () => {
                     <p style={{ fontSize: "0.86rem", color: "var(--ink3)", lineHeight: 1.75 }}>
                       {ev.desc}
                     </p>
+                    {ev.battle && (
+                      <div
+                        style={{
+                          marginTop: "1.1rem",
+                          background: ev.battle.result === "win" ? "var(--g50)" : "#fef2f2",
+                          border: `1.5px solid ${ev.battle.result === "win" ? "var(--g300)" : "#fca5a5"}`,
+                          borderRadius: "var(--r-md)",
+                          padding: "0.95rem 1rem",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "0.7rem",
+                            marginBottom: "0.85rem",
+                          }}
+                        >
+                          {ev.battle.trainerImage && (
+                            <div
+                              style={{
+                                width: "44px",
+                                height: "44px",
+                                borderRadius: "50%",
+                                background: "var(--surface)",
+                                border: `1.5px solid ${ev.battle.result === "win" ? "var(--g400)" : "#fca5a5"}`,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                overflow: "hidden",
+                                flexShrink: 0,
+                              }}
+                            >
+                              <img
+                                src={ev.battle.trainerImage}
+                                alt={ev.battle.trainerName}
+                                style={{
+                                  width: "120%",
+                                  height: "120%",
+                                  objectFit: "contain",
+                                  imageRendering: "pixelated",
+                                }}
+                              />
+                            </div>
+                          )}
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div
+                              style={{
+                                fontFamily: "var(--pixel)",
+                                fontSize: "0.32rem",
+                                color: "var(--ink3)",
+                                letterSpacing: "1.5px",
+                                marginBottom: "0.2rem",
+                              }}
+                            >
+                              BATALHA vs
+                            </div>
+                            <div style={{ fontSize: "1rem", fontWeight: 800, color: "var(--ink)" }}>
+                              {ev.battle.trainerName}
+                            </div>
+                          </div>
+                          <span
+                            style={{
+                              fontFamily: "var(--pixel)",
+                              fontSize: "0.34rem",
+                              letterSpacing: "1.5px",
+                              padding: "0.4rem 0.7rem",
+                              borderRadius: "100px",
+                              background: ev.battle.result === "win" ? "var(--g600)" : "#dc2626",
+                              color: "#fff",
+                            }}
+                          >
+                            {ev.battle.result === "win" ? "✓ VITÓRIA" : "✗ DERROTA"}
+                          </span>
+                        </div>
+
+                        {(["opponent", "mine"] as const).map((side) => {
+                          const list = ev.battle![side];
+                          if (list.length === 0) return null;
+                          const isOpp = side === "opponent";
+                          return (
+                            <div
+                              key={side}
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "0.6rem",
+                                padding: "0.5rem 0",
+                                borderTop: "1px dashed var(--rule)",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  fontFamily: "var(--pixel)",
+                                  fontSize: "0.3rem",
+                                  color: isOpp ? "var(--ink2)" : "var(--g700)",
+                                  letterSpacing: "1.5px",
+                                  minWidth: "84px",
+                                }}
+                              >
+                                {isOpp ? "OPONENTE" : "EU USEI"}
+                              </span>
+                              <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+                                {list.map((p, i) => (
+                                  <div
+                                    key={`${p.species}-${i}`}
+                                    style={{
+                                      display: "inline-flex",
+                                      alignItems: "center",
+                                      gap: "0.35rem",
+                                      background: "var(--surface)",
+                                      border: "1.5px solid var(--rule)",
+                                      borderRadius: "100px",
+                                      padding: "0.2rem 0.65rem 0.2rem 0.25rem",
+                                    }}
+                                  >
+                                    <div
+                                      style={{
+                                        width: "26px",
+                                        height: "26px",
+                                        borderRadius: "50%",
+                                        background: "var(--g50)",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        overflow: "hidden",
+                                        flexShrink: 0,
+                                      }}
+                                    >
+                                      {p.image ? (
+                                        <img
+                                          src={p.image}
+                                          alt={p.species}
+                                          style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                                        />
+                                      ) : (
+                                        <span style={{ fontSize: "0.9rem" }}>{p.emoji}</span>
+                                      )}
+                                    </div>
+                                    <span style={{ fontSize: "0.78rem", fontWeight: 600, color: "var(--ink)" }}>
+                                      {p.species}
+                                    </span>
+                                    <span
+                                      style={{
+                                        fontFamily: "var(--pixel)",
+                                        fontSize: "0.3rem",
+                                        color: "var(--ink3)",
+                                        letterSpacing: "0.5px",
+                                      }}
+                                    >
+                                      Nv {p.level}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                     {(ev.catches.length > 0 || ev.deaths.length > 0 || ev.badge) && (
                       <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginTop: "1.1rem" }}>
                         {ev.catches.length > 0 && (
