@@ -318,12 +318,50 @@ const RUN_1: Run = {
   team: CURRENT_TEAM,
 };
 
+const RUN_2_TIMELINE: TimelineEvent[] = [
+  {
+    id: 1,
+    emoji: "🌟",
+    location: "CIDADE PALLET",
+    ep: "EP.01",
+    title: "A Jornada Começa",
+    desc: "Depois do wipe da Temporada 1, decidi mudar a estratégia. Escolhi Squirtle como inicial e o batizei de 'Onda'. Hora de tentar de novo!",
+    catches: ["Squirtle (Onda)"],
+    deaths: [],
+    badge: null,
+    nodeColor: "#d97706",
+  },
+];
+
+const RUN_2_TEAM: RunTeamMember[] = [
+  {
+    name: "Onda",
+    species: "Squirtle",
+    level: 5,
+    emoji: "💧",
+    image: "/squirtle.png",
+    location: "Cidade Pallet",
+    dead: false,
+  },
+];
+
+const RUN_2_LOCATIONS: KantoLocation[] = KANTO_LOCATIONS.map((loc) => {
+  if (loc.id === "pallet") {
+    return {
+      ...loc,
+      visited: true,
+      caught: [{ species: "Squirtle", name: "Onda", emoji: "💧" }],
+    };
+  }
+  return { ...loc, visited: false, caught: [] };
+});
+
 const RUN_2: Run = {
   id: "run-2",
   label: "Temporada 2",
   status: "active",
-  episodeCount: 0,
-  progress: "Aguardando início",
+  episodeCount: 1,
+  progress: "Início de Kanto",
   badges: [
     { id: "boulder", name: "Pedra", emoji: "🪨", earned: false },
     { id: "cascade", name: "Cascata", emoji: "💧", earned: false },
@@ -337,11 +375,11 @@ const RUN_2: Run = {
   rulesetName: RUN_1.rulesetName,
   rulesetTagline: RUN_1.rulesetTagline,
   rules: RUN_1.rules,
-  videos: [],
-  timeline: [],
-  locations: KANTO_LOCATIONS.map((loc) => ({ ...loc, visited: false, caught: [] })),
+  videos: [{ title: "Ep. 1 — A Jornada Começa", ep: "EP.01", emoji: "🌟" }],
+  timeline: RUN_2_TIMELINE,
+  locations: RUN_2_LOCATIONS,
   routes: KANTO_ROUTES,
-  team: [],
+  team: RUN_2_TEAM,
 };
 
 SERIES[0].runs = [RUN_1, RUN_2];
