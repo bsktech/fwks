@@ -52,6 +52,7 @@ export const SeriesDetail = () => {
             ["videos", "▶", "Vídeos"],
             ["timeline", "📜", "Diário"],
             ["team", "⚡", "Time"],
+            ["rules", "📋", "Regras"],
           ].map(([id, icon, label]) => {
             const isActive = tab === id;
             return (
@@ -851,6 +852,145 @@ export const SeriesDetail = () => {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Rules Tab */}
+        {tab === "rules" && (
+          <div>
+            <div
+              style={{
+                background: "linear-gradient(135deg, var(--g800), var(--g600))",
+                color: "#fff",
+                borderRadius: "var(--r-xl)",
+                padding: "2.25rem",
+                marginBottom: "1.75rem",
+                position: "relative",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "var(--pixel)",
+                  fontSize: "0.4rem",
+                  color: "var(--g300)",
+                  letterSpacing: "2.5px",
+                  marginBottom: "0.9rem",
+                }}
+              >
+                ◆ REGRAS DA TEMPORADA ◆
+              </div>
+              <h1
+                style={{
+                  fontSize: "1.85rem",
+                  fontWeight: 800,
+                  letterSpacing: "-0.5px",
+                  marginBottom: "0.7rem",
+                  lineHeight: 1.2,
+                }}
+              >
+                Estou jogando como{" "}
+                <span style={{ color: "var(--g300)" }}>{run.rulesetName}</span>
+              </h1>
+              <p
+                style={{
+                  fontSize: "1rem",
+                  color: "rgba(255,255,255,.78)",
+                  lineHeight: 1.7,
+                  maxWidth: "620px",
+                }}
+              >
+                {run.rulesetTagline}
+              </p>
+            </div>
+
+            <div
+              style={{
+                fontFamily: "var(--pixel)",
+                fontSize: "0.42rem",
+                color: "var(--g700)",
+                letterSpacing: "2px",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.7rem",
+                margin: "2rem 0 1rem",
+              }}
+            >
+              AS REGRAS
+              <div
+                style={{
+                  flex: 1,
+                  height: "1.5px",
+                  background: "var(--rule)",
+                  borderRadius: "1px",
+                }}
+              />
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              {run.rules.map((r, i) => (
+                <div
+                  key={i}
+                  style={{
+                    background: "var(--surface)",
+                    border: "1.5px solid var(--rule)",
+                    borderRadius: "var(--r-lg)",
+                    padding: "1.15rem 1.3rem",
+                    display: "flex",
+                    gap: "1.1rem",
+                    alignItems: "flex-start",
+                    boxShadow: "var(--shadow-sm)",
+                    transition: "box-shadow .2s, transform .2s",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-md)";
+                    (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-sm)";
+                    (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                  }}
+                >
+                  <div
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                      flexShrink: 0,
+                      borderRadius: "50%",
+                      background: "var(--g100)",
+                      color: "var(--g700)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontFamily: "var(--pixel)",
+                      fontSize: "0.55rem",
+                      letterSpacing: "1px",
+                    }}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <h3
+                      style={{
+                        fontSize: "0.98rem",
+                        fontWeight: 700,
+                        color: "var(--ink)",
+                        marginBottom: "0.35rem",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.5rem",
+                      }}
+                    >
+                      <span style={{ fontSize: "1.15rem" }}>{r.emoji}</span>
+                      {r.title}
+                    </h3>
+                    <p style={{ fontSize: "0.88rem", color: "var(--ink3)", lineHeight: 1.7 }}>
+                      {r.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

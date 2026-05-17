@@ -34,6 +34,12 @@ export type TimelineEvent = {
   nodeColor: string;
 };
 
+export type RunRule = {
+  emoji: string;
+  title: string;
+  desc: string;
+};
+
 export type RunTeamMember = {
   name: string;
   species: string;
@@ -52,6 +58,9 @@ export type Run = {
   episodeCount: number;
   progress: string;
   badges: { id?: string; name: string; emoji: string; earned: boolean }[];
+  rulesetName: string;
+  rulesetTagline: string;
+  rules: RunRule[];
   videos: { title: string; ep: string; emoji: string }[];
   timeline: TimelineEvent[];
   locations: KantoLocation[];
@@ -230,6 +239,35 @@ const RUN_1: Run = {
     { id: "marsh", name: "Pântano", emoji: "🧠", earned: false },
     { id: "volcano", name: "Vulcão", emoji: "🌋", earned: false },
     { id: "earth", name: "Terra", emoji: "🌍", earned: false },
+  ],
+  rulesetName: "Hardcore Nuzlocke",
+  rulesetTagline: "Regras tradicionais da comunidade. Sem itens, sem segunda chance.",
+  rules: [
+    {
+      emoji: "🎯",
+      title: "Primeiro encontro por área",
+      desc: "Só posso capturar o primeiro Pokémon que aparecer em cada rota, caverna ou cidade. Se ele desmaiar antes da pokébola, perdi o encontro daquela área.",
+    },
+    {
+      emoji: "🚫",
+      title: "Sem itens em batalha",
+      desc: "Nada de Poção, Revive, Full Heal ou X-Attack durante o combate. Itens equipados (held items) são permitidos.",
+    },
+    {
+      emoji: "♻️",
+      title: "Dupes clause",
+      desc: "Só posso ter uma de cada espécie. Se o primeiro encontro de uma área for uma espécie que já capturei, re-rolo até aparecer uma diferente.",
+    },
+    {
+      emoji: "⚔️",
+      title: "Set mode",
+      desc: "Jogo no modo Set: nada de prompt avisando qual Pokémon o adversário vai trocar, e sem trocar de Pokémon de graça depois de um KO.",
+    },
+    {
+      emoji: "💀",
+      title: "Desmaiou, morreu",
+      desc: "Pokémon que cai em batalha é considerado morto e vai pro box permanente — não pode ser usado nunca mais. Se o time inteiro cair, a run acaba e recomeço do zero.",
+    },
   ],
   videos: [
     { title: "Ep. 1 — A Jornada Começa", ep: "EP.01", emoji: "🌟" },

@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Opção 3 — Accordion compacto + modal "ver todas"</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --g900:#0d2b14;--g800:#14532d;--g700:#166534;--g600:#15803d;--g500:#16a34a;
+    --g400:#22c55e;--g300:#4ade80;--g200:#bbf7d0;--g100:#dcfce7;--g50:#f0fdf4;
+    --ink:#111827;--ink2:#374151;--ink3:#6b7280;--rule:#e5e7eb;--surface:#fff;--bg:#f8faf8;
+    --pixel:'Press Start 2P',monospace;--sans:'Inter',system-ui,sans-serif;
+    --r-sm:8px;--r-md:14px;--r-lg:20px;--r-xl:28px;
+    --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+    --shadow-md:0 4px 16px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.05);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);padding:2rem}
+  .mock-label{font-family:var(--pixel);font-size:.45rem;color:var(--g700);letter-spacing:2px;margin-bottom:1rem;display:block;max-width:1080px;margin-left:auto;margin-right:auto}
+  .mock-note{font-size:.85rem;color:var(--ink3);max-width:1080px;margin:0 auto 1.5rem;line-height:1.7}
+
+  .rules-strip{
+    max-width:1080px;margin:0 auto;
+    background:var(--surface);border:1.5px solid var(--rule);border-radius:var(--r-lg);
+    box-shadow:var(--shadow-sm);overflow:hidden;
+  }
+  .rules-strip-head{
+    padding:1rem 1.25rem;display:flex;align-items:center;gap:.85rem;cursor:pointer;
+    border-bottom:1.5px solid transparent;transition:background .15s, border-color .15s;
+    user-select:none;
+  }
+  .rules-strip.open .rules-strip-head{border-bottom-color:var(--rule);background:var(--g50)}
+  .rules-strip-head:hover{background:var(--g50)}
+
+  .seal{
+    width:38px;height:38px;flex-shrink:0;border-radius:10px;
+    background:linear-gradient(135deg,var(--g600),var(--g500));
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    font-size:1.1rem;box-shadow:0 2px 6px rgba(22,163,74,.35);
+  }
+  .head-text{flex:1;min-width:0}
+  .head-eyebrow{font-family:var(--pixel);font-size:.34rem;color:var(--g700);letter-spacing:2px;margin-bottom:.25rem}
+  .head-title{font-size:.95rem;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:.55rem}
+  .head-title small{font-weight:500;color:var(--ink3);font-size:.78rem}
+  .chev{
+    width:32px;height:32px;border-radius:50%;background:var(--g100);color:var(--g700);
+    display:flex;align-items:center;justify-content:center;font-size:.8rem;
+    transition:transform .25s, background .15s;flex-shrink:0;
+  }
+  .rules-strip.open .chev{transform:rotate(180deg)}
+
+  /* Pílulas-resumo (preview rápido sem abrir) */
+  .quick-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:.45rem}
+  .quick-tag{
+    font-family:var(--pixel);font-size:.28rem;letter-spacing:1px;
+    background:var(--g50);color:var(--g700);border:1px solid var(--g200);
+    padding:.28rem .5rem;border-radius:100px;
+  }
+
+  /* Conteúdo expansível */
+  .rules-body{padding:0 1.25rem;max-height:0;overflow:hidden;transition:max-height .3s, padding .3s}
+  .rules-strip.open .rules-body{max-height:1200px;padding:1.4rem 1.25rem 1.5rem}
+
+  .rules-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.85rem}
+  .rule{
+    border:1.5px solid var(--rule);border-radius:var(--r-md);padding:.95rem 1.05rem;
+    background:#fafdfa;display:flex;gap:.7rem;align-items:flex-start;
+  }
+  .rule-emoji{font-size:1.3rem;line-height:1;margin-top:1px}
+  .rule h4{font-size:.86rem;font-weight:700;color:var(--ink);margin-bottom:.2rem;line-height:1.3}
+  .rule p{font-size:.76rem;color:var(--ink3);line-height:1.55}
+
+  .footnote{
+    margin-top:1.1rem;padding-top:1rem;border-top:1px dashed var(--rule);
+    font-size:.78rem;color:var(--ink3);line-height:1.7;display:flex;align-items:center;gap:.6rem;
+  }
+  .footnote strong{color:var(--g700);font-weight:700}
+</style>
+</head>
+<body>
+  <span class="mock-label">▸ OPÇÃO 3 — STRIP COLAPSÁVEL</span>
+  <p class="mock-note">Barra discreta no topo do conteúdo (acima das tabs) com selo + título + pílulas-resumo. Fica fechada por padrão, mostrando só os tópicos. Clicar expande pra ver tudo. Não rouba espaço do player de vídeo, mas comunica que tem regras documentadas e quais são. Mostro <strong>aberto</strong> e <strong>fechado</strong> abaixo.</p>
+
+  <!-- versão ABERTA -->
+  <section class="rules-strip open" id="strip1">
+    <div class="rules-strip-head" onclick="document.getElementById('strip1').classList.toggle('open')">
+      <div class="seal">📜</div>
+      <div class="head-text">
+        <div class="head-eyebrow">REGRAS DA SÉRIE</div>
+        <div class="head-title">As regras que sigo <small>— valem para todas as temporadas</small></div>
+        <div class="quick-tags">
+          <span class="quick-tag">💀 PERMADEATH</span>
+          <span class="quick-tag">🎯 1º ENCONTRO</span>
+          <span class="quick-tag">🏷️ APELIDO</span>
+          <span class="quick-tag">🚫 SEM ITENS</span>
+          <span class="quick-tag">⚖️ LEVEL CAP</span>
+        </div>
+      </div>
+      <div class="chev">▾</div>
+    </div>
+
+    <div class="rules-body">
+      <div class="rules-grid">
+        <div class="rule">
+          <span class="rule-emoji">💀</span>
+          <div><h4>Desmaiou, morreu</h4><p>Pokémon caído vai pro box permanentemente. Sem revives nem reload.</p></div>
+        </div>
+        <div class="rule">
+          <span class="rule-emoji">🎯</span>
+          <div><h4>Só o primeiro encontro</h4><p>Capturo apenas o primeiro Pokémon que aparecer em cada rota nova.</p></div>
+        </div>
+        <div class="rule">
+          <span class="rule-emoji">🏷️</span>
+          <div><h4>Apelido obrigatório</h4><p>Todo membro do time recebe nickname antes de batalhar.</p></div>
+        </div>
+        <div class="rule">
+          <span class="rule-emoji">🚫</span>
+          <div><h4>Sem itens em batalha</h4><p>Nada de Poção, Revive ou X-Attack durante combate.</p></div>
+        </div>
+        <div class="rule">
+          <span class="rule-emoji">⚖️</span>
+          <div><h4>Level cap por ginásio</h4><p>Time não pode passar do level do próximo líder de ginásio.</p></div>
+        </div>
+        <div class="rule">
+          <span class="rule-emoji">♻️</span>
+          <div><h4>Dupes clause</h4><p>Se o encontro for de espécie já capturada, posso rerrolar uma vez.</p></div>
+        </div>
+      </div>
+
+      <div class="footnote">
+        <span>💡</span>
+        <div><strong>Por que existe?</strong> A Nuzlocke transforma um jogo conhecido numa aventura tensa. Cada captura importa, cada batalha pode ser a última de alguém.</div>
+      </div>
+    </div>
+  </section>
+
+  <div style="height:2rem"></div>
+
+  <!-- versão FECHADA -->
+  <section class="rules-strip" id="strip2">
+    <div class="rules-strip-head" onclick="document.getElementById('strip2').classList.toggle('open')">
+      <div class="seal">📜</div>
+      <div class="head-text">
+        <div class="head-eyebrow">REGRAS DA SÉRIE</div>
+        <div class="head-title">As regras que sigo <small>— valem para todas as temporadas</small></div>
+        <div class="quick-tags">
+          <span class="quick-tag">💀 PERMADEATH</span>
+          <span class="quick-tag">🎯 1º ENCONTRO</span>
+          <span class="quick-tag">🏷️ APELIDO</span>
+          <span class="quick-tag">🚫 SEM ITENS</span>
+          <span class="quick-tag">⚖️ LEVEL CAP</span>
+        </div>
+      </div>
+      <div class="chev">▾</div>
+    </div>
+    <div class="rules-body">
+      <div class="rules-grid">
+        <div class="rule"><span class="rule-emoji">💀</span><div><h4>Desmaiou, morreu</h4><p>...</p></div></div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
