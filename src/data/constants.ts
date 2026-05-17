@@ -90,7 +90,7 @@ export const TIMELINE_EVENTS = [
     location: "CIDADE PALLET",
     ep: "EP.01",
     title: "Brasa Cai para Gary",
-    desc: "Mal saí de casa e já encarei o Gary. O Squirtle dele tankou as chamas e veio com um Tackle crítico bem na hora errada. Brasa não resistiu.",
+    desc: "Na primeira batalha com Gary, o Squirtle dele derrotou meu Charmander. Brasa não resistiu.",
     catches: [],
     deaths: ["Charmander (Brasa) — Nv.5"],
     badge: null,
