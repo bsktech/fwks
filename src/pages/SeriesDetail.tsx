@@ -759,40 +759,48 @@ export const SeriesDetail = () => {
 
         {/* Team Tab */}
         {tab === "team" && (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(480px, 540px))", gap: "1.5rem", justifyContent: "center" }}>
+          <div style={{ maxWidth: "860px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "0.65rem" }}>
             {run.team.map((p) => (
               <div
                 key={p.name}
                 style={{
-                  background: "var(--surface)",
-                  borderRadius: "18px",
-                  border: p.dead ? "1.5px solid #fca5a5" : "1.5px solid var(--rule)",
-                  boxShadow: "0 4px 20px rgba(0,0,0,.06)",
-                  overflow: "hidden",
                   display: "grid",
-                  gridTemplateColumns: "200px 1fr",
-                  opacity: p.dead ? 0.5 : 1,
+                  gridTemplateColumns: "64px 1fr auto",
+                  alignItems: "center",
+                  gap: "1.1rem",
+                  background: "var(--surface)",
+                  border: p.dead ? "1.5px solid #fca5a5" : "1.5px solid var(--rule)",
+                  borderRadius: "var(--r-md)",
+                  padding: "0.85rem 1.1rem",
+                  boxShadow: "var(--shadow-sm)",
+                  opacity: p.dead ? 0.55 : 1,
                   filter: p.dead ? "grayscale(.8)" : "none",
-                  transition: "transform .2s, box-shadow .2s",
+                  transition: "transform .15s, box-shadow .15s, border-color .15s",
                 }}
                 onMouseEnter={(e) => {
                   if (!p.dead) {
-                    (e.currentTarget as HTMLElement).style.transform = "translateY(-4px)";
-                    (e.currentTarget as HTMLElement).style.boxShadow = "0 10px 32px rgba(217,119,6,.18)";
+                    (e.currentTarget as HTMLElement).style.transform = "translateX(4px)";
+                    (e.currentTarget as HTMLElement).style.borderColor = "var(--g300)";
+                    (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-md)";
                   }
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
-                  (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px rgba(0,0,0,.06)";
+                  (e.currentTarget as HTMLElement).style.transform = "translateX(0)";
+                  (e.currentTarget as HTMLElement).style.borderColor = p.dead ? "#fca5a5" : "var(--rule)";
+                  (e.currentTarget as HTMLElement).style.boxShadow = "var(--shadow-sm)";
                 }}
               >
                 <div
                   style={{
-                    background: "linear-gradient(135deg, #fef3c7, #fde68a)",
+                    width: "64px",
+                    height: "64px",
+                    borderRadius: "50%",
+                    background: "radial-gradient(circle at 50% 60%, var(--g100), var(--g50))",
+                    border: "1.5px solid var(--g200)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    padding: "1rem",
+                    flexShrink: 0,
                   }}
                 >
                   {p.image ? (
@@ -800,55 +808,55 @@ export const SeriesDetail = () => {
                       src={p.image}
                       alt={p.species}
                       style={{
-                        width: "100%",
-                        height: "auto",
-                        maxWidth: "180px",
-                        filter: "drop-shadow(0 4px 12px rgba(217,119,6,.35))",
+                        width: "80%",
+                        height: "80%",
+                        objectFit: "contain",
+                        filter: "drop-shadow(0 2px 4px rgba(22,163,74,.25))",
                       }}
                     />
                   ) : (
-                    <span style={{ fontSize: "5rem" }}>{p.emoji}</span>
+                    <span style={{ fontSize: "2rem" }}>{p.emoji}</span>
                   )}
                 </div>
-                <div style={{ padding: "1.4rem 1.5rem", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                  <div
+
+                <div style={{ minWidth: 0 }}>
+                  <span
                     style={{
                       fontFamily: "var(--pixel)",
-                      fontSize: "0.55rem",
-                      color: "var(--g600)",
-                      letterSpacing: "2px",
-                      marginBottom: "0.35rem",
+                      fontSize: "0.5rem",
+                      color: "var(--g700)",
+                      letterSpacing: "1.5px",
+                      display: "block",
+                      marginBottom: "0.25rem",
                     }}
                   >
                     {p.name.toUpperCase()}
-                  </div>
-                  <div style={{ fontSize: "1.05rem", fontWeight: 700, color: "var(--ink)", marginBottom: "1rem" }}>
-                    {p.species}
-                  </div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.82rem", color: "var(--ink3)", marginBottom: "0.25rem" }}>
-                    <strong style={{ color: "var(--ink)", fontWeight: 700 }}>Capturado em</strong>
-                  </div>
-                  <div style={{ fontSize: "0.78rem", color: "var(--ink3)" }}>
-                    {p.location}
-                  </div>
-                  {p.dead && (
-                    <span
-                      style={{
-                        fontFamily: "var(--pixel)",
-                        fontSize: "0.3rem",
-                        background: "#fee2e2",
-                        color: "#dc2626",
-                        border: "1px solid #fca5a5",
-                        padding: "0.3rem 0.6rem",
-                        borderRadius: "4px",
-                        display: "inline-block",
-                        marginTop: "0.9rem",
-                        alignSelf: "flex-start",
-                      }}
-                    >
-                      💀 CAÍDO
+                  </span>
+                  <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
+                    <span style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--ink)" }}>
+                      {p.species}
                     </span>
-                  )}
+                    {p.dead && (
+                      <span
+                        style={{
+                          fontFamily: "var(--pixel)",
+                          fontSize: "0.3rem",
+                          background: "#fee2e2",
+                          color: "#dc2626",
+                          border: "1px solid #fca5a5",
+                          padding: "0.25rem 0.5rem",
+                          borderRadius: "4px",
+                          letterSpacing: "1px",
+                        }}
+                      >
+                        💀 CAÍDO
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div style={{ textAlign: "right", fontSize: "0.78rem", color: "var(--ink3)", whiteSpace: "nowrap" }}>
+                  📍 {p.location}
                 </div>
               </div>
             ))}
