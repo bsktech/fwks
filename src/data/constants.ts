@@ -426,10 +426,10 @@ const RUN_2_TIMELINE: TimelineEvent[] = [
   {
     id: 7,
     emoji: "⚔️",
-    location: "FLORESTA VIRIDIAN",
+    location: "ROTA 22",
     ep: "EP.02",
     title: "Segundo Round com o Gary",
-    desc: "Saindo da floresta, o Gary apareceu de novo — agora com 2 Pokémon. Filipinas (Squirtle Lv 9) e Noruega (Pidgey Lv 9) deram conta. Vitória sem baixas.",
+    desc: "Na Rota 22 o Gary apareceu de novo — agora com 2 Pokémon. Filipinas (Squirtle Lv 9) e Noruega (Pidgey Lv 9) deram conta. Vitória sem baixas.",
     catches: [],
     deaths: [],
     badge: null,

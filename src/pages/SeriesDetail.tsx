@@ -340,7 +340,7 @@ export const SeriesDetail = () => {
                 gap: "0.7rem",
               }}
             >
-              DIÁRIO DE AVENTURA — POKÉMON RED ++ NUZLOCKE TEMPORADA 1
+              DIÁRIO DE AVENTURA — {series.title.toUpperCase()} · {run.label.toUpperCase()}
               <div
                 style={{
                   flex: 1,
