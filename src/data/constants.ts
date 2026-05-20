@@ -448,6 +448,42 @@ const RUN_2_TIMELINE: TimelineEvent[] = [
       ],
     },
   },
+  {
+    id: 8,
+    emoji: "🇵🇪",
+    location: "ROTA 3",
+    ep: "EP.02",
+    title: "Headbutt na Árvore Certa",
+    desc: "Saindo de Pewter pela Rota 3, usei Headbutt nas árvores e um Venonat caiu. Encontro inusitado — apelidei de Peru.",
+    catches: ["Venonat (Peru)"],
+    deaths: [],
+    badge: null,
+    nodeColor: "#16a34a",
+  },
+  {
+    id: 9,
+    emoji: "🇯🇵",
+    location: "ROTA 4",
+    ep: "EP.02",
+    title: "Magikarp por $500",
+    desc: "Na Rota 4 encontrei o vendedor de Magikarp e desembolsei 500 dólares. Investimento de longo prazo: um dia vira Gyarados. Bem-vindo, Japão.",
+    catches: ["Magikarp (Japão)"],
+    deaths: [],
+    badge: null,
+    nodeColor: "#16a34a",
+  },
+  {
+    id: 10,
+    emoji: "🇪🇬",
+    location: "MT. MOON",
+    ep: "EP.02",
+    title: "Tesouro do Deserto Subterrâneo",
+    desc: "Dentro da Mt. Moon, no meio das pedras e Zubats, um Sandshrew apareceu. Captura limpa — apelidei de Egito.",
+    catches: ["Sandshrew (Egito)"],
+    deaths: [],
+    badge: null,
+    nodeColor: "#16a34a",
+  },
 ];
 
 const RUN_2_TEAM: RunTeamMember[] = [
@@ -496,6 +532,33 @@ const RUN_2_TEAM: RunTeamMember[] = [
     location: "Floresta Viridian",
     dead: false,
   },
+  {
+    name: "Peru",
+    species: "Venonat",
+    level: 7,
+    emoji: "🦟",
+    image: "/venonat.png",
+    location: "Rota 3 (Headbutt)",
+    dead: false,
+  },
+  {
+    name: "Japão",
+    species: "Magikarp",
+    level: 5,
+    emoji: "🐟",
+    image: "/magikarp.png",
+    location: "Rota 4 ($500)",
+    dead: false,
+  },
+  {
+    name: "Egito",
+    species: "Sandshrew",
+    level: 8,
+    emoji: "🦔",
+    image: "/sandshrew.png",
+    location: "Mt. Moon",
+    dead: false,
+  },
 ];
 
 const RUN_2_CAPTURES: Record<string, KantoLocation["caught"]> = {
@@ -504,6 +567,9 @@ const RUN_2_CAPTURES: Record<string, KantoLocation["caught"]> = {
   route22: [{ species: "Meowth", name: "Mônaco", emoji: "🐱" }],
   route2: [{ species: "Pidgey", name: "Noruega", emoji: "🐦" }],
   "viridian-forest": [{ species: "Caterpie", name: "Costa Rica", emoji: "🐛" }],
+  route3: [{ species: "Venonat", name: "Peru", emoji: "🦟" }],
+  route4: [{ species: "Magikarp", name: "Japão", emoji: "🐟" }],
+  mtmoon: [{ species: "Sandshrew", name: "Egito", emoji: "🦔" }],
 };
 
 const RUN_2_VISITED = new Set([
@@ -513,6 +579,10 @@ const RUN_2_VISITED = new Set([
   "route22",
   "route2",
   "viridian-forest",
+  "pewter",
+  "route3",
+  "mtmoon",
+  "route4",
 ]);
 
 const RUN_2_LOCATIONS: KantoLocation[] = KANTO_LOCATIONS.map((loc) => ({
@@ -526,7 +596,7 @@ const RUN_2: Run = {
   label: "Temporada 2",
   status: "active",
   episodeCount: 2,
-  progress: "Floresta Viridian",
+  progress: "Mt. Moon",
   badges: [
     { id: "boulder", name: "Pedra", emoji: "🪨", earned: false },
     { id: "cascade", name: "Cascata", emoji: "💧", earned: false },
