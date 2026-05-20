@@ -414,20 +414,26 @@ export const SeriesDetail = () => {
                       <span
                         style={{
                           fontFamily: "var(--pixel)",
-                          fontSize: "0.3rem",
+                          fontSize: "0.62rem",
+                          letterSpacing: "1px",
                           background: "var(--ink)",
                           color: "var(--g300)",
-                          padding: "0.28rem 0.6rem",
-                          borderRadius: "100px",
+                          padding: "0.5rem 0.8rem",
+                          borderRadius: "8px",
                         }}
                       >
-                        {ev.location}
+                        📍 {ev.location}
                       </span>
                       <span
                         style={{
                           fontFamily: "var(--pixel)",
-                          fontSize: "0.3rem",
-                          color: "var(--ink3)",
+                          fontSize: "0.55rem",
+                          letterSpacing: "1px",
+                          background: "var(--g100)",
+                          color: "var(--g700)",
+                          padding: "0.45rem 0.7rem",
+                          borderRadius: "8px",
+                          border: "1.5px solid var(--g300)",
                         }}
                       >
                         {ev.ep}
@@ -651,76 +657,164 @@ export const SeriesDetail = () => {
                         </div>
                       );
                     })()}
-                    {(ev.catches.length > 0 || ev.deaths.length > 0 || ev.badge) && (
-                      <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", marginTop: "1.1rem" }}>
-                        {ev.catches.length > 0 && (
-                          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
-                            <span style={{ fontFamily: "var(--pixel)", fontSize: "0.3rem", color: "var(--g600)", minWidth: "80px" }}>
-                              CAPTURA
-                            </span>
-                            {ev.catches.map((c) => (
-                              <span
-                                key={c}
-                                style={{
-                                  fontSize: "0.88rem",
-                                  fontWeight: 600,
-                                  background: "var(--g100)",
-                                  color: "var(--g700)",
-                                  padding: "0.35rem 0.8rem",
-                                  borderRadius: "100px",
-                                  border: "1.5px solid var(--g300)",
-                                }}
-                              >
-                                🟢 {c}
+                    {(ev.catches.length > 0 || ev.deaths.length > 0 || ev.badge) && (() => {
+                      const isFlag = !!ev.emoji && /^[\u{1F1E6}-\u{1F1FF}][\u{1F1E6}-\u{1F1FF}]/u.test(ev.emoji);
+                      const parseCatch = (raw: string) => {
+                        const m = raw.match(/^(.+?) \((.+)\)$/);
+                        return m ? { species: m[1], nickname: m[2] } : { species: raw, nickname: raw };
+                      };
+                      const labelStyle = {
+                        fontFamily: "var(--pixel)",
+                        fontSize: "0.55rem",
+                        letterSpacing: "1.5px",
+                        padding: "0.7rem 0.8rem",
+                        borderRadius: "10px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        minWidth: "96px",
+                        flexShrink: 0,
+                      } as const;
+                      const rowStyle = {
+                        display: "flex",
+                        gap: "0.6rem",
+                        alignItems: "stretch",
+                      } as const;
+                      return (
+                        <div style={{ display: "flex", flexDirection: "column", gap: "0.7rem", marginTop: "1.1rem" }}>
+                          {ev.catches.length > 0 && (
+                            <div style={rowStyle}>
+                              <span style={{ ...labelStyle, color: "var(--g700)", background: "var(--g50)", border: "1.5px solid var(--g300)" }}>
+                                CAPTURA
                               </span>
-                            ))}
-                          </div>
-                        )}
-                        {ev.deaths.length > 0 && (
-                          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
-                            <span style={{ fontFamily: "var(--pixel)", fontSize: "0.3rem", color: "#dc2626", minWidth: "80px" }}>
-                              CAÍDO
-                            </span>
-                            {ev.deaths.map((d) => (
-                              <span
-                                key={d}
-                                style={{
-                                  fontSize: "0.88rem",
-                                  fontWeight: 600,
-                                  background: "#fee2e2",
-                                  color: "#dc2626",
-                                  padding: "0.35rem 0.8rem",
-                                  borderRadius: "100px",
-                                  border: "1.5px solid #fca5a5",
-                                }}
-                              >
-                                💀 {d}
+                              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", flex: 1 }}>
+                                {ev.catches.map((c) => {
+                                  const { nickname } = parseCatch(c);
+                                  const member = run.team.find((m) => m.name === nickname);
+                                  const leadIcon = isFlag && ev.catches.length === 1 ? ev.emoji : (member?.emoji ?? "🟢");
+                                  const methodMatch = member?.location.match(/\(([^)]+)\)/);
+                                  const method = methodMatch?.[1];
+                                  return (
+                                    <div
+                                      key={c}
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "0.6rem",
+                                        background: "linear-gradient(135deg, var(--g50), #fff)",
+                                        border: "1.5px solid var(--g300)",
+                                        borderRadius: "12px",
+                                        padding: "0.45rem 0.8rem 0.45rem 0.45rem",
+                                      }}
+                                    >
+                                      {member?.image && (
+                                        <img
+                                          src={member.image}
+                                          alt={nickname}
+                                          style={{
+                                            width: "42px",
+                                            height: "42px",
+                                            objectFit: "contain",
+                                            borderRadius: "8px",
+                                            background: "#fff",
+                                            filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.08))",
+                                          }}
+                                        />
+                                      )}
+                                      <div>
+                                        <div style={{ fontWeight: 700, fontSize: "0.92rem", color: "var(--g700)", lineHeight: 1.15 }}>
+                                          {leadIcon} {nickname}
+                                        </div>
+                                        {member && (
+                                          <div style={{ fontSize: "0.72rem", color: "var(--ink3)", marginTop: "0.15rem", display: "flex", gap: "0.35rem", alignItems: "center" }}>
+                                            <span>Lv {member.level}</span>
+                                            {method && <span>· {method}</span>}
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+                          {ev.deaths.length > 0 && (
+                            <div style={rowStyle}>
+                              <span style={{ ...labelStyle, color: "#dc2626", background: "#fef2f2", border: "1.5px solid #fca5a5" }}>
+                                CAÍDO
                               </span>
-                            ))}
-                          </div>
-                        )}
-                        {ev.badge && (
-                          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
-                            <span style={{ fontFamily: "var(--pixel)", fontSize: "0.3rem", color: "#b45309", minWidth: "80px" }}>
-                              INSÍGNIA
-                            </span>
-                            <span
-                              style={{
-                                fontSize: "0.88rem",
-                                fontWeight: 600,
-                                background: "#fef9c3",
-                                color: "#92400e",
-                                padding: "0.35rem 0.8rem",
-                                borderRadius: "100px",
-                                border: "1.5px solid #fde047",
-                              }}
-                            >
-                              {ev.badge.emoji} Insígnia {ev.badge.name}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    )}
+                              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", flex: 1 }}>
+                                {ev.deaths.map((d) => {
+                                  const { nickname } = parseCatch(d);
+                                  const member = run.team.find((m) => m.name === nickname);
+                                  return (
+                                    <div
+                                      key={d}
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: "0.6rem",
+                                        background: "linear-gradient(135deg, #fef2f2, #fff)",
+                                        border: "1.5px solid #fca5a5",
+                                        borderRadius: "12px",
+                                        padding: "0.45rem 0.8rem 0.45rem 0.45rem",
+                                      }}
+                                    >
+                                      {member?.image && (
+                                        <img
+                                          src={member.image}
+                                          alt={nickname}
+                                          style={{
+                                            width: "42px",
+                                            height: "42px",
+                                            objectFit: "contain",
+                                            borderRadius: "8px",
+                                            background: "#fff",
+                                            filter: "grayscale(0.6) drop-shadow(0 1px 2px rgba(0,0,0,0.08))",
+                                          }}
+                                        />
+                                      )}
+                                      <div>
+                                        <div style={{ fontWeight: 700, fontSize: "0.92rem", color: "#dc2626", lineHeight: 1.15 }}>
+                                          💀 {nickname}
+                                        </div>
+                                        {member && (
+                                          <div style={{ fontSize: "0.72rem", color: "var(--ink3)", marginTop: "0.15rem" }}>
+                                            Lv {member.level}
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+                          {ev.badge && (
+                            <div style={rowStyle}>
+                              <span style={{ ...labelStyle, color: "#b45309", background: "#fef9c3", border: "1.5px solid #fde047" }}>
+                                INSÍGNIA
+                              </span>
+                              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", flex: 1, alignItems: "center" }}>
+                                <span
+                                  style={{
+                                    fontSize: "0.92rem",
+                                    fontWeight: 700,
+                                    background: "linear-gradient(135deg, #fef9c3, #fff)",
+                                    color: "#92400e",
+                                    padding: "0.55rem 0.9rem",
+                                    borderRadius: "12px",
+                                    border: "1.5px solid #fde047",
+                                  }}
+                                >
+                                  {ev.badge.emoji} Insígnia {ev.badge.name}
+                                </span>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })()}
                   </div>
                 </div>
               ))}
