@@ -64,6 +64,7 @@ export type RunTeamMember = {
   image?: string;
   location: string;
   dead: boolean;
+  evolutionChain?: { species: string; emoji: string; image?: string }[];
 };
 
 export type Run = {
@@ -391,7 +392,7 @@ const RUN_2_TIMELINE: TimelineEvent[] = [
     id: 4,
     emoji: "🇲🇨",
     location: "ROTA 22",
-    ep: "EP.02",
+    ep: "EP.01",
     title: "Desvio pela Rota 22",
     desc: "Antes de seguir para o norte, dei uma passada na Rota 22. Encontrei um Meowth e o adicionei ao time como Mônaco.",
     catches: ["Meowth (Mônaco)"],
@@ -403,7 +404,7 @@ const RUN_2_TIMELINE: TimelineEvent[] = [
     id: 5,
     emoji: "🇳🇴",
     location: "ROTA 2",
-    ep: "EP.02",
+    ep: "EP.01",
     title: "Voador no Caminho",
     desc: "Subindo pela Rota 2, um Pidgey apareceu na grama. Captura tranquila — bem-vindo, Noruega.",
     catches: ["Pidgey (Noruega)"],
@@ -415,7 +416,7 @@ const RUN_2_TIMELINE: TimelineEvent[] = [
     id: 6,
     emoji: "🇨🇷",
     location: "FLORESTA VIRIDIAN",
-    ep: "EP.02",
+    ep: "EP.01",
     title: "Pelo Coração da Floresta",
     desc: "Na Floresta Viridian, o primeiro encontro foi um Caterpie. Não é o mais animador, mas vai virar um Butterfree decente. Apelidei de Costa Rica.",
     catches: ["Caterpie (Costa Rica)"],
@@ -427,7 +428,7 @@ const RUN_2_TIMELINE: TimelineEvent[] = [
     id: 7,
     emoji: "⚔️",
     location: "ROTA 22",
-    ep: "EP.02",
+    ep: "EP.01",
     title: "Segundo Round com o Gary",
     desc: "Na Rota 22 o Gary apareceu de novo — agora com 2 Pokémon. Filipinas (Squirtle Lv 9) e Noruega (Pidgey Lv 9) deram conta. Vitória sem baixas.",
     catches: [],
@@ -450,6 +451,31 @@ const RUN_2_TIMELINE: TimelineEvent[] = [
   },
   {
     id: 8,
+    emoji: "🪨",
+    location: "CIDADE PEWTER",
+    ep: "EP.02",
+    title: "Brock — Líder de Pewter",
+    desc: "Primeiro ginásio. Filipinas (Squirtle Lv 14) abriu derrubando o Geodude com Water Gun, e Costa Rica (Butterfree Lv 14) selou o Onix com Confusion. Vitória limpa, Pedra conquistada.",
+    catches: [],
+    deaths: [],
+    badge: { emoji: "🪨", name: "Pedra" },
+    nodeColor: "#7c3aed",
+    battle: {
+      trainerName: "Brock",
+      trainerImage: "/brock.png",
+      result: "win",
+      opponent: [
+        { species: "Geodude", level: 12, image: "/geodude.png" },
+        { species: "Onix", level: 14, image: "/onix.png" },
+      ],
+      mine: [
+        { species: "Squirtle", level: 14, image: "/squirtle.png" },
+        { species: "Butterfree", level: 14, image: "/butterfree.png" },
+      ],
+    },
+  },
+  {
+    id: 9,
     emoji: "🇵🇪",
     location: "ROTA 3",
     ep: "EP.02",
@@ -461,7 +487,7 @@ const RUN_2_TIMELINE: TimelineEvent[] = [
     nodeColor: "#16a34a",
   },
   {
-    id: 9,
+    id: 10,
     emoji: "🇯🇵",
     location: "ROTA 4",
     ep: "EP.02",
@@ -473,7 +499,7 @@ const RUN_2_TIMELINE: TimelineEvent[] = [
     nodeColor: "#16a34a",
   },
   {
-    id: 10,
+    id: 11,
     emoji: "🇪🇬",
     location: "MT. MOON",
     ep: "EP.02",
@@ -490,7 +516,7 @@ const RUN_2_TEAM: RunTeamMember[] = [
   {
     name: "Filipinas",
     species: "Squirtle",
-    level: 5,
+    level: 14,
     emoji: "💧",
     image: "/squirtle.png",
     location: "Cidade Pallet",
@@ -525,12 +551,17 @@ const RUN_2_TEAM: RunTeamMember[] = [
   },
   {
     name: "Costa Rica",
-    species: "Caterpie",
-    level: 4,
-    emoji: "🐛",
-    image: "/caterpie.png",
+    species: "Butterfree",
+    level: 14,
+    emoji: "🦋",
+    image: "/butterfree.png",
     location: "Floresta Viridian",
     dead: false,
+    evolutionChain: [
+      { species: "Caterpie", emoji: "🐛", image: "/caterpie.png" },
+      { species: "Metapod", emoji: "🛡️", image: "/metapod.png" },
+      { species: "Butterfree", emoji: "🦋", image: "/butterfree.png" },
+    ],
   },
   {
     name: "Peru",
@@ -598,7 +629,7 @@ const RUN_2: Run = {
   episodeCount: 2,
   progress: "Mt. Moon",
   badges: [
-    { id: "boulder", name: "Pedra", emoji: "🪨", earned: false },
+    { id: "boulder", name: "Pedra", emoji: "🪨", earned: true },
     { id: "cascade", name: "Cascata", emoji: "💧", earned: false },
     { id: "thunder", name: "Trovão", emoji: "⚡", earned: false },
     { id: "rainbow", name: "Arco-Íris", emoji: "🌈", earned: false },

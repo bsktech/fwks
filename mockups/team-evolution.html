@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Mockups — Visualização de Evolução (Team)</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --g900:#0d2b14; --g800:#14532d; --g700:#166534; --g600:#15803d;
+    --g500:#16a34a; --g400:#22c55e; --g300:#4ade80; --g200:#bbf7d0;
+    --g100:#dcfce7; --g50:#f0fdf4;
+    --ink:#111827; --ink2:#374151; --ink3:#6b7280;
+    --rule:#e5e7eb; --surface:#ffffff;
+    --gold:#d97706; --gold2:#fbbf24;
+    --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.06);
+    --shadow-md:0 4px 16px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.05);
+    --shadow-green:0 4px 24px rgba(22,163,74,.18);
+    --pixel:'Press Start 2P', monospace;
+    --r-md:14px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 3rem 1.5rem 5rem;
+    font-family: 'Inter', sans-serif;
+    background: var(--g50);
+    color: var(--ink);
+  }
+  .wrap { max-width: 920px; margin: 0 auto; }
+  h1 {
+    font-family: var(--pixel);
+    font-size: .75rem;
+    letter-spacing: 2px;
+    color: var(--g700);
+    text-align: center;
+    margin: 0 0 .5rem;
+  }
+  .sub {
+    text-align: center;
+    color: var(--ink3);
+    font-size: .85rem;
+    margin-bottom: 3rem;
+  }
+  .option-label {
+    font-family: var(--pixel);
+    font-size: .55rem;
+    letter-spacing: 2px;
+    color: var(--g600);
+    margin: 3rem 0 .9rem;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+  }
+  .option-label::before {
+    content: "";
+    width: 28px; height: 2px;
+    background: var(--g500);
+  }
+  .option-desc {
+    font-size: .8rem;
+    color: var(--ink3);
+    margin: 0 0 1.2rem;
+    line-height: 1.5;
+  }
+
+  /* === BASE CARD (shared) === */
+  .card {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    align-items: center;
+    gap: 1.1rem;
+    background: var(--surface);
+    border: 1.5px solid var(--rule);
+    border-radius: var(--r-md);
+    padding: .85rem 1.1rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .avatar {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 60%, var(--g100), var(--g50));
+    border: 1.5px solid var(--g200);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 2rem;
+  }
+  .name {
+    font-family: var(--pixel);
+    font-size: .5rem;
+    color: var(--g700);
+    letter-spacing: 1.5px;
+    display: block;
+    margin-bottom: .25rem;
+  }
+  .species {
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .lvl {
+    font-family: var(--pixel);
+    font-size: .55rem;
+    color: var(--g600);
+    background: var(--g100);
+    border: 1px solid var(--g200);
+    padding: .35rem .55rem;
+    border-radius: 8px;
+    letter-spacing: 1px;
+  }
+
+  /* ============================================================
+     OPTION 1 — Timeline horizontal abaixo do nome
+     ============================================================ */
+  .evo-chain {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    margin-top: .45rem;
+    padding: .3rem .55rem;
+    background: var(--g50);
+    border: 1px dashed var(--g300);
+    border-radius: 999px;
+  }
+  .evo-stage {
+    display: flex;
+    align-items: center;
+    gap: .25rem;
+    font-size: .7rem;
+    color: var(--ink3);
+  }
+  .evo-stage.current {
+    color: var(--g700);
+    font-weight: 700;
+  }
+  .evo-stage .mini {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--g200);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: .95rem;
+  }
+  .evo-stage.current .mini {
+    background: var(--g100);
+    border-color: var(--g400);
+    box-shadow: 0 0 0 2px rgba(34,197,94,.18);
+  }
+  .evo-stage.past .mini { filter: grayscale(.5); opacity: .6; }
+  .evo-arrow {
+    color: var(--g400);
+    font-size: .75rem;
+    font-weight: 700;
+  }
+
+  /* ============================================================
+     OPTION 2 — Card "expandido": sprites grandes lado a lado
+     ============================================================ */
+  .card-expanded {
+    background: var(--surface);
+    border: 1.5px solid var(--rule);
+    border-radius: var(--r-md);
+    padding: 1rem 1.2rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .card-expanded .head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: .9rem;
+  }
+  .card-expanded .head .left { display: flex; align-items: center; gap: .8rem; }
+  .card-expanded .avatar-md {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 60%, var(--g100), var(--g50));
+    border: 1.5px solid var(--g200);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+  }
+  .evo-strip {
+    display: grid;
+    grid-template-columns: 1fr 32px 1fr 32px 1fr;
+    align-items: center;
+    gap: .3rem;
+    background: linear-gradient(180deg, var(--g50), var(--surface));
+    border: 1px solid var(--g200);
+    border-radius: 10px;
+    padding: .8rem .6rem;
+  }
+  .evo-cell {
+    display: flex; flex-direction: column; align-items: center;
+    gap: .35rem;
+    position: relative;
+  }
+  .evo-cell .sprite {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1.5px solid var(--g200);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.7rem;
+  }
+  .evo-cell.current .sprite {
+    border-color: var(--g500);
+    box-shadow: 0 0 0 3px rgba(34,197,94,.2), var(--shadow-green);
+    background: var(--g100);
+  }
+  .evo-cell.past .sprite { opacity: .55; filter: grayscale(.6); }
+  .evo-cell .stage-name {
+    font-size: .7rem;
+    font-weight: 600;
+    color: var(--ink2);
+  }
+  .evo-cell.current .stage-name { color: var(--g700); font-weight: 700; }
+  .evo-cell .stage-lvl {
+    font-family: var(--pixel);
+    font-size: .45rem;
+    letter-spacing: 1px;
+    color: var(--ink3);
+  }
+  .evo-cell.current .stage-lvl { color: var(--g600); }
+  .evo-arrow-big {
+    display: flex; align-items: center; justify-content: center;
+    color: var(--g400);
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  .evo-cell .current-pill {
+    position: absolute;
+    top: -10px;
+    font-family: var(--pixel);
+    font-size: .4rem;
+    letter-spacing: 1.5px;
+    background: var(--g500);
+    color: var(--surface);
+    padding: .2rem .4rem;
+    border-radius: 999px;
+  }
+
+  /* ============================================================
+     OPTION 3 — Selo "EVOLUIU" + tooltip-style trilha
+     ============================================================ */
+  .evo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    color: var(--surface);
+    font-family: var(--pixel);
+    font-size: .45rem;
+    letter-spacing: 1.5px;
+    padding: .28rem .45rem;
+    border-radius: 6px;
+    margin-left: .5rem;
+    vertical-align: middle;
+    box-shadow: 0 2px 6px rgba(217,119,6,.3);
+  }
+  .evo-trail {
+    margin-top: .45rem;
+    display: flex; align-items: center; gap: .35rem;
+    font-size: .72rem;
+    color: var(--ink3);
+  }
+  .evo-trail .pill {
+    background: var(--g50);
+    border: 1px solid var(--g200);
+    padding: .15rem .45rem;
+    border-radius: 6px;
+    color: var(--ink2);
+  }
+  .evo-trail .pill.now {
+    background: var(--g600);
+    color: var(--surface);
+    border-color: var(--g700);
+    font-weight: 700;
+  }
+  .evo-trail .arr { color: var(--g400); font-weight: 700; }
+
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>VISUALIZAÇÃO DE EVOLUÇÃO</h1>
+  <p class="sub">3 opções para mostrar que Costa Rica passou por Caterpie → Metapod → Butterfree na aba <strong>Time</strong>.</p>
+
+  <!-- ============================== OPÇÃO 1 ============================== -->
+  <div class="option-label">OPÇÃO 1 · CHAIN INLINE</div>
+  <p class="option-desc">Pequena cadeia de sprites com setas, embaixo do nome da espécie. Discreta, ocupa pouco espaço, funciona pra todo membro que já evoluiu (e some pros que não evoluíram).</p>
+
+  <div class="card">
+    <div class="avatar">🦋</div>
+    <div>
+      <span class="name">COSTA RICA</span>
+      <div>
+        <span class="species">Butterfree</span>
+      </div>
+      <div class="evo-chain">
+        <span class="evo-stage past"><span class="mini">🐛</span>Caterpie</span>
+        <span class="evo-arrow">›</span>
+        <span class="evo-stage past"><span class="mini">🛡️</span>Metapod</span>
+        <span class="evo-arrow">›</span>
+        <span class="evo-stage current"><span class="mini">🦋</span>Butterfree</span>
+      </div>
+    </div>
+    <span class="lvl">LV 14</span>
+  </div>
+
+  <!-- ============================== OPÇÃO 2 ============================== -->
+  <div class="option-label">OPÇÃO 2 · STRIP EVOLUTIVO</div>
+  <p class="option-desc">Card com tira destacada mostrando os 3 estágios em sprites grandes. Mais visual e protagonista — bom se for um momento celebrado (ex: pós-evolução), mas ocupa mais altura.</p>
+
+  <div class="card-expanded">
+    <div class="head">
+      <div class="left">
+        <div class="avatar-md">🦋</div>
+        <div>
+          <span class="name">COSTA RICA</span>
+          <div><span class="species">Butterfree</span></div>
+        </div>
+      </div>
+      <span class="lvl">LV 14</span>
+    </div>
+
+    <div class="evo-strip">
+      <div class="evo-cell past">
+        <div class="sprite">🐛</div>
+        <div class="stage-name">Caterpie</div>
+        <div class="stage-lvl">LV 4</div>
+      </div>
+      <div class="evo-arrow-big">›</div>
+      <div class="evo-cell past">
+        <div class="sprite">🛡️</div>
+        <div class="stage-name">Metapod</div>
+        <div class="stage-lvl">LV 7</div>
+      </div>
+      <div class="evo-arrow-big">›</div>
+      <div class="evo-cell current">
+        <span class="current-pill">AGORA</span>
+        <div class="sprite">🦋</div>
+        <div class="stage-name">Butterfree</div>
+        <div class="stage-lvl">LV 14</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== OPÇÃO 3 ============================== -->
+  <div class="option-label">OPÇÃO 3 · SELO + TRILHA</div>
+  <p class="option-desc">Selo dourado "EVOLUIU x2" ao lado da espécie, com a trilha em formato de breadcrumb. Compacto como a opção 1, mas chama mais atenção pro fato de ter evoluído (gameficado).</p>
+
+  <div class="card">
+    <div class="avatar">🦋</div>
+    <div>
+      <span class="name">COSTA RICA</span>
+      <div>
+        <span class="species">Butterfree</span>
+        <span class="evo-badge">★ EVOLUIU x2</span>
+      </div>
+      <div class="evo-trail">
+        <span class="pill">🐛 Caterpie</span>
+        <span class="arr">→</span>
+        <span class="pill">🛡️ Metapod</span>
+        <span class="arr">→</span>
+        <span class="pill now">🦋 Butterfree</span>
+      </div>
+    </div>
+    <span class="lvl">LV 14</span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { SERIES } from "../data/constants";
 import { SeriesHeader } from "../components/SeriesHeader";
@@ -364,7 +364,12 @@ export const SeriesDetail = () => {
                   borderRadius: "1px",
                 }}
               />
-              {run.timeline.map((ev) => (
+              {run.timeline.map((ev) => {
+                const isFlagEmoji = !!ev.emoji && /^[\u{1F1E6}-\u{1F1FF}][\u{1F1E6}-\u{1F1FF}]/u.test(ev.emoji);
+                const firstCatchNick = ev.catches.length > 0 ? (ev.catches[0].match(/^(.+?) \((.+)\)$/)?.[2] ?? ev.catches[0]) : null;
+                const firstCatchMember = firstCatchNick ? run.team.find((m) => m.name === firstCatchNick) : null;
+                const nodeEmoji = isFlagEmoji ? (firstCatchMember?.emoji ?? ev.emoji) : ev.emoji;
+                return (
                 <div key={ev.id} style={{ position: "relative", marginBottom: "2.25rem" }}>
                   <div
                     style={{
@@ -384,7 +389,7 @@ export const SeriesDetail = () => {
                       boxShadow: `0 0 0 2px ${ev.nodeColor}40`,
                     }}
                   >
-                    {ev.emoji}
+                    {nodeEmoji}
                   </div>
                   <div
                     style={{
@@ -658,7 +663,6 @@ export const SeriesDetail = () => {
                       );
                     })()}
                     {(ev.catches.length > 0 || ev.deaths.length > 0 || ev.badge) && (() => {
-                      const isFlag = !!ev.emoji && /^[\u{1F1E6}-\u{1F1FF}][\u{1F1E6}-\u{1F1FF}]/u.test(ev.emoji);
                       const parseCatch = (raw: string) => {
                         const m = raw.match(/^(.+?) \((.+)\)$/);
                         return m ? { species: m[1], nickname: m[2] } : { species: raw, nickname: raw };
@@ -691,7 +695,7 @@ export const SeriesDetail = () => {
                                 {ev.catches.map((c) => {
                                   const { nickname } = parseCatch(c);
                                   const member = run.team.find((m) => m.name === nickname);
-                                  const leadIcon = isFlag && ev.catches.length === 1 ? ev.emoji : (member?.emoji ?? "🟢");
+                                  const leadIcon = member?.emoji ?? "🟢";
                                   const methodMatch = member?.location.match(/\(([^)]+)\)/);
                                   const method = methodMatch?.[1];
                                   return (
@@ -817,7 +821,8 @@ export const SeriesDetail = () => {
                     })()}
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -1144,6 +1149,25 @@ export const SeriesDetail = () => {
                     <span style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--ink)" }}>
                       {p.species}
                     </span>
+                    {p.evolutionChain && p.evolutionChain.length > 1 && (
+                      <span
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.25rem",
+                          background: "linear-gradient(135deg, var(--gold), var(--gold2))",
+                          color: "#fff",
+                          fontFamily: "var(--pixel)",
+                          fontSize: "0.4rem",
+                          letterSpacing: "1.5px",
+                          padding: "0.28rem 0.45rem",
+                          borderRadius: "6px",
+                          boxShadow: "0 2px 6px rgba(217,119,6,.3)",
+                        }}
+                      >
+                        ★ EVOLUIU x{p.evolutionChain.length - 1}
+                      </span>
+                    )}
                     {p.dead && (
                       <span
                         style={{
@@ -1161,6 +1185,46 @@ export const SeriesDetail = () => {
                       </span>
                     )}
                   </div>
+                  {p.evolutionChain && p.evolutionChain.length > 1 && (
+                    <div
+                      style={{
+                        marginTop: "0.45rem",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.35rem",
+                        fontSize: "0.72rem",
+                        color: "var(--ink3)",
+                        flexWrap: "wrap",
+                      }}
+                    >
+                      {p.evolutionChain.map((stage, i) => {
+                        const isLast = i === p.evolutionChain!.length - 1;
+                        return (
+                          <React.Fragment key={stage.species}>
+                            <span
+                              style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "0.3rem",
+                                background: isLast ? "var(--g600)" : "var(--g50)",
+                                color: isLast ? "#fff" : "var(--ink2)",
+                                border: `1px solid ${isLast ? "var(--g700)" : "var(--g200)"}`,
+                                padding: "0.15rem 0.45rem",
+                                borderRadius: "6px",
+                                fontWeight: isLast ? 700 : 400,
+                              }}
+                            >
+                              <span>{stage.emoji}</span>
+                              <span>{stage.species}</span>
+                            </span>
+                            {!isLast && (
+                              <span style={{ color: "var(--g400)", fontWeight: 700 }}>→</span>
+                            )}
+                          </React.Fragment>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
 
                 <div style={{ textAlign: "right", fontSize: "0.78rem", color: "var(--ink3)", whiteSpace: "nowrap" }}>
