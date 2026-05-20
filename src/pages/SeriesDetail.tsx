@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { SERIES } from "../data/constants";
 import { SeriesHeader } from "../components/SeriesHeader";
+import { BossesTab } from "../components/BossesTab";
 
 export const SeriesDetail = () => {
   const { seriesId, runId } = useParams<{ seriesId: string; runId: string }>();
@@ -52,6 +53,7 @@ export const SeriesDetail = () => {
             ["videos", "▶", "Vídeos"],
             ["timeline", "📜", "Diário"],
             ["team", "⚡", "Time"],
+            ["bosses", "🏆", "Bosses"],
             ["rules", "📋", "Regras"],
           ].map(([id, icon, label]) => {
             const isActive = tab === id;
@@ -1074,6 +1076,9 @@ export const SeriesDetail = () => {
             ))}
           </div>
         )}
+
+        {/* Bosses Tab */}
+        {tab === "bosses" && <BossesTab />}
 
         {/* Rules Tab */}
         {tab === "rules" && (

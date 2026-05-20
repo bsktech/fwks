@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>Bosses — Versão C · Planilha de Combate</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --g900:#0d2b14; --g800:#14532d; --g700:#166534; --g600:#15803d;
+    --g500:#16a34a; --g400:#22c55e; --g300:#4ade80; --g100:#dcfce7; --g50:#f0fdf4;
+    --ink:#111827; --ink2:#374151; --ink3:#6b7280; --rule:#e5e7eb;
+    --surface:#fff; --bg:#f8faf8;
+    --pixel:'Press Start 2P', monospace; --sans:'Inter', system-ui, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--sans);background:var(--bg);color:var(--ink);min-height:100vh}
+  .wrap{max-width:1320px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+  h1{font-family:var(--pixel);font-size:1.4rem;color:var(--g700);letter-spacing:1px;margin-bottom:.6rem}
+  .sub{color:var(--ink3);font-size:.95rem;margin-bottom:1.6rem;max-width:680px;line-height:1.5}
+
+  .toolbar{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:.7rem;align-items:center;padding:1rem 1.2rem;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border:1.5px solid var(--rule);border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.04);margin-bottom:1.5rem}
+  .toolbar > span{font-weight:700;font-size:.85rem;color:var(--ink2)}
+  .pill{font-family:var(--sans);font-weight:600;font-size:.82rem;padding:.45rem .95rem;border-radius:100px;border:1.5px solid var(--rule);background:#fff;color:var(--ink2);cursor:pointer;transition:all .15s}
+  .pill:hover{border-color:var(--g400);color:var(--g700)}
+  .pill.active{background:var(--g500);color:#fff;border-color:var(--g500);box-shadow:0 2px 8px rgba(22,163,74,.3)}
+  .toolbar .sep{width:1px;height:24px;background:var(--rule);margin:0 .3rem}
+  .legend{display:flex;gap:.7rem;font-size:.74rem;color:var(--ink3);margin-left:auto;align-items:center;flex-wrap:wrap}
+  .leg{display:inline-flex;align-items:center;gap:.35rem}
+  .leg .sw{width:10px;height:10px;border-radius:3px}
+
+  .sheet{background:var(--surface);border:1.5px solid var(--rule);border-radius:14px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .sheet-head{display:grid;grid-template-columns:54px 1fr 130px 90px 1.4fr 1fr;gap:.8rem;padding:.9rem 1.1rem;background:var(--g50);border-bottom:1.5px solid var(--rule);font-family:var(--pixel);font-size:.6rem;letter-spacing:1.5px;color:var(--g700);text-transform:uppercase}
+  .row{display:grid;grid-template-columns:54px 1fr 130px 90px 1.4fr 1fr;gap:.8rem;padding:.9rem 1.1rem;border-bottom:1px solid var(--rule);align-items:center;transition:background .12s;cursor:pointer}
+  .row:last-child{border-bottom:none}
+  .row:hover{background:var(--g50)}
+  .row.open{background:var(--g50)}
+  .num-cell{font-family:var(--pixel);font-size:.7rem;color:var(--ink3);display:flex;align-items:center;gap:.5rem}
+  .cat-stripe{width:6px;height:32px;border-radius:3px;background:var(--g500)}
+  .row[data-cat="rival"] .cat-stripe{background:#dc2626}
+  .row[data-cat="gym"] .cat-stripe{background:#15803d}
+  .row[data-cat="villain"] .cat-stripe{background:#581c87}
+  .row[data-cat="e4"] .cat-stripe{background:#b45309}
+  .row[data-cat="champ"] .cat-stripe{background:linear-gradient(180deg,#d97706,#fbbf24)}
+
+  .name{font-weight:700;font-size:.95rem;color:var(--ink);line-height:1.25}
+  .name-sub{font-size:.75rem;color:var(--ink3);margin-top:.15rem;display:flex;gap:.4rem;align-items:center;flex-wrap:wrap}
+  .tag{display:inline-flex;align-items:center;gap:.25rem;padding:.12rem .5rem;border-radius:100px;font-size:.62rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
+  .loc-cell{font-size:.82rem;color:var(--ink2)}
+  .cap-cell{font-family:var(--pixel);font-size:.85rem;text-align:center;padding:.45rem .5rem;border-radius:8px;background:linear-gradient(135deg,var(--g500),var(--g700));color:#fff;box-shadow:0 2px 6px rgba(22,163,74,.25);width:fit-content;justify-self:center}
+  .team-cell{display:flex;flex-wrap:wrap;gap:.3rem}
+  .mini{font-size:.7rem;font-weight:600;padding:.18rem .45rem;border-radius:6px;background:var(--bg);border:1px solid var(--rule);color:var(--ink2);display:inline-flex;gap:.3rem;align-items:center}
+  .mini-lvl{font-family:var(--pixel);font-size:.5rem;color:var(--ink3)}
+  .dot{width:7px;height:7px;border-radius:50%}
+  .reward-cell{font-family:var(--pixel);font-size:.65rem;color:var(--g700)}
+
+  .detail{grid-column:1/-1;padding:.5rem 1.1rem 1.2rem;display:none;background:var(--bg)}
+  .row.open + .detail{display:block}
+  .note{font-size:.88rem;color:var(--ink2);background:#fff;border-left:3px solid var(--g400);padding:.7rem 1rem;border-radius:8px;margin:.6rem 0 1rem;line-height:1.5;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+  .team-full{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.6rem}
+  .mon{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:.6rem .75rem}
+  .mon-name{font-weight:700;font-size:.85rem;color:var(--ink);display:flex;justify-content:space-between;gap:.4rem;margin-bottom:.35rem}
+  .mon-lvl{color:var(--ink3);font-family:var(--pixel);font-size:.55rem}
+  .types{display:flex;gap:.22rem;flex-wrap:wrap}
+  .type{font-size:.6rem;font-weight:700;padding:.18rem .45rem;border-radius:6px;color:#fff;text-transform:uppercase;letter-spacing:.3px}
+
+  @media (max-width: 900px){
+    .sheet-head{display:none}
+    .row{grid-template-columns:54px 1fr 90px;grid-template-areas:"num title cap" "num sub cap" "team team team" "reward reward reward";gap:.5rem .8rem}
+    .num-cell{grid-area:num}
+    .name{grid-area:title}
+    .name-sub{grid-area:sub}
+    .loc-cell{display:none}
+    .cap-cell{grid-area:cap;justify-self:end}
+    .team-cell{grid-area:team}
+    .reward-cell{grid-area:reward;text-align:right}
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>📋 Bosses — Planilha</h1>
+    <p class="sub">Visão densa de todas as batalhas obrigatórias, ideal para planejamento de Nuzlocke. Filtre, escolha seu starter, e clique numa linha para abrir o detalhe do time.</p>
+
+    <div class="toolbar">
+      <span>Starter:</span>
+      <button class="pill starter active" data-starter="char">🔥 Char</button>
+      <button class="pill starter" data-starter="bulba">🌱 Bulba</button>
+      <button class="pill starter" data-starter="squir">💧 Squirtle</button>
+      <div class="sep"></div>
+      <span>Filtro:</span>
+      <button class="pill filter active" data-filter="all">Todos</button>
+      <button class="pill filter" data-filter="rival">⚔️ Rival</button>
+      <button class="pill filter" data-filter="gym">🏅 Gym</button>
+      <button class="pill filter" data-filter="villain">🦹 Rocket</button>
+      <button class="pill filter" data-filter="e4">👑 E4</button>
+      <button class="pill filter" data-filter="champ">🏆 Champ</button>
+      <div class="legend">
+        <span class="leg"><span class="sw" style="background:#dc2626"></span>Rival</span>
+        <span class="leg"><span class="sw" style="background:#15803d"></span>Gym</span>
+        <span class="leg"><span class="sw" style="background:#581c87"></span>Rocket</span>
+        <span class="leg"><span class="sw" style="background:#b45309"></span>E4</span>
+        <span class="leg"><span class="sw" style="background:#d97706"></span>Champ</span>
+      </div>
+    </div>
+
+    <div class="sheet">
+      <div class="sheet-head">
+        <div>#</div><div>Batalha</div><div>Local</div><div style="text-align:center">Lv Cap</div><div>Time</div><div>Reward</div>
+      </div>
+      <div id="rows"></div>
+    </div>
+  </div>
+
+<script>
+// Shared boss data for mockups A/B/C. Inline in each standalone HTML.
+window.BOSSES = (function () {
+  // rival starter map (always super effective vs player)
+  const RIVAL = { bulba: 'Charmander', char: 'Squirtle', squir: 'Bulbasaur' };
+
+  // pokémon helper: [name, lvl, types]
+  const p = (n, l, t) => ({ n, l, t });
+
+  // build rival team variants
+  function rivalTeam(common, byStarter) {
+    return {
+      bulba: [...common, ...(byStarter.bulba || [])],
+      char: [...common, ...(byStarter.char || [])],
+      squir: [...common, ...(byStarter.squir || [])],
+    };
+  }
+
+  return [
+    {
+      n: 1, cat: 'rival', name: 'Rival — Lab. Prof. Carvalho',
+      loc: 'Pallet Town', cap: 5, reward: 175,
+      note: 'Primeira luta. Starter do rival é sempre vantajoso ao seu.',
+      teams: {
+        bulba: [p('Charmander', 5, ['Fire'])],
+        char: [p('Squirtle', 5, ['Water'])],
+        squir: [p('Bulbasaur', 5, ['Grass', 'Poison'])],
+      },
+    },
+    {
+      n: 2, cat: 'rival', name: 'Rival 2 — Route 22',
+      loc: 'Route 22', cap: 9, reward: 280,
+      note: 'Adicionou Pidgey. Squirtle do rival aprende Bubble (cuidado se você for Charmander).',
+      teams: {
+        bulba: [p('Pidgey', 9, ['Normal', 'Flying']), p('Charmander', 8, ['Fire'])],
+        char: [p('Pidgey', 9, ['Normal', 'Flying']), p('Squirtle', 8, ['Water'])],
+        squir: [p('Pidgey', 9, ['Normal', 'Flying']), p('Bulbasaur', 8, ['Grass', 'Poison'])],
+      },
+    },
+    {
+      n: 3, cat: 'gym', badge: 'Boulder', name: 'Brock — Ginásio Pewter',
+      loc: 'Pewter City', cap: 14, reward: 1386,
+      note: 'Geodude e Onix. Grass/Water arrasam. Bide do Onix devolve dano em dobro.',
+      teams: {
+        all: [p('Geodude', 12, ['Rock', 'Ground']), p('Onix', 14, ['Rock', 'Ground'])],
+      },
+    },
+    {
+      n: 4, cat: 'rival', name: 'Rival 3 — Cerulean City',
+      loc: 'Cerulean City', cap: 18, reward: 595,
+      note: 'Pidgeotto, Abra e Rattata. Starter agora tem move STAB.',
+      teams: {
+        bulba: [
+          p('Pidgeotto', 18, ['Normal', 'Flying']),
+          p('Abra', 15, ['Psychic']),
+          p('Rattata', 15, ['Normal']),
+          p('Charmander', 17, ['Fire']),
+        ],
+        char: [
+          p('Pidgeotto', 18, ['Normal', 'Flying']),
+          p('Abra', 15, ['Psychic']),
+          p('Rattata', 15, ['Normal']),
+          p('Squirtle', 17, ['Water']),
+        ],
+        squir: [
+          p('Pidgeotto', 18, ['Normal', 'Flying']),
+          p('Abra', 15, ['Psychic']),
+          p('Rattata', 15, ['Normal']),
+          p('Bulbasaur', 17, ['Grass', 'Poison']),
+        ],
+      },
+    },
+    {
+      n: 5, cat: 'gym', badge: 'Cascade', name: 'Misty — Ginásio Cerulean',
+      loc: 'Cerulean City', cap: 21, reward: 2079,
+      note: 'Starmie usa BubbleBeam — pode reduzir Speed. Electric/Grass = win.',
+      teams: {
+        all: [p('Staryu', 18, ['Water']), p('Starmie', 21, ['Water', 'Psychic'])],
+      },
+    },
+    {
+      n: 6, cat: 'rival', name: 'Rival 4 — S.S. Anne',
+      loc: 'S.S. Anne', cap: 20, reward: 1330,
+      note: 'Abra evoluiu pra Kadabra. Rattata → Raticate (Hyper Fang dói).',
+      teams: {
+        bulba: [
+          p('Pidgeotto', 19, ['Normal', 'Flying']),
+          p('Raticate', 16, ['Normal']),
+          p('Kadabra', 18, ['Psychic']),
+          p('Charmeleon', 20, ['Fire']),
+        ],
+        char: [
+          p('Pidgeotto', 19, ['Normal', 'Flying']),
+          p('Raticate', 16, ['Normal']),
+          p('Kadabra', 18, ['Psychic']),
+          p('Wartortle', 20, ['Water']),
+        ],
+        squir: [
+          p('Pidgeotto', 19, ['Normal', 'Flying']),
+          p('Raticate', 16, ['Normal']),
+          p('Kadabra', 18, ['Psychic']),
+          p('Ivysaur', 20, ['Grass', 'Poison']),
+        ],
+      },
+    },
+    {
+      n: 7, cat: 'gym', badge: 'Thunder', name: 'Lt. Surge — Ginásio Vermilion',
+      loc: 'Vermilion City', cap: 24, reward: 2376,
+      note: 'Raichu com Thunderbolt. Voltorb pode usar Selfdestruct em sims.',
+      teams: {
+        all: [
+          p('Voltorb', 21, ['Electric']),
+          p('Pikachu', 18, ['Electric']),
+          p('Raichu', 24, ['Electric']),
+        ],
+      },
+    },
+    {
+      n: 8, cat: 'gym', badge: 'Rainbow', name: 'Erika — Ginásio Celadon',
+      loc: 'Celadon City', cap: 29, reward: 2871,
+      note: 'Sleep Powder no Victreebel e Vileplume. Cuidado com status.',
+      teams: {
+        all: [
+          p('Victreebel', 29, ['Grass', 'Poison']),
+          p('Tangela', 24, ['Grass']),
+          p('Vileplume', 29, ['Grass', 'Poison']),
+        ],
+      },
+    },
+    {
+      n: 9, cat: 'villain', name: 'Giovanni — Rocket Hideout',
+      loc: 'Celadon City', cap: 29, reward: 2871,
+      note: 'Rage no Onix e Kangaskhan: cada hit aumenta Attack deles.',
+      teams: {
+        all: [
+          p('Onix', 25, ['Rock', 'Ground']),
+          p('Rhyhorn', 24, ['Ground', 'Rock']),
+          p('Kangaskhan', 29, ['Normal']),
+        ],
+      },
+    },
+    {
+      n: 10, cat: 'rival', name: 'Rival 5 — Pokémon Tower',
+      loc: 'Lavender Town', cap: 25, reward: 1625,
+      note: 'Equipe ganha cobertura: Grass + Fire + Water + Psychic.',
+      teams: {
+        bulba: [
+          p('Pidgeotto', 25, ['Normal', 'Flying']),
+          p('Exeggcute', 23, ['Grass', 'Psychic']),
+          p('Gyarados', 22, ['Water', 'Flying']),
+          p('Kadabra', 20, ['Psychic']),
+          p('Charmeleon', 25, ['Fire']),
+        ],
+        char: [
+          p('Pidgeotto', 25, ['Normal', 'Flying']),
+          p('Growlithe', 23, ['Fire']),
+          p('Exeggcute', 22, ['Grass', 'Psychic']),
+          p('Kadabra', 20, ['Psychic']),
+          p('Wartortle', 25, ['Water']),
+        ],
+        squir: [
+          p('Pidgeotto', 25, ['Normal', 'Flying']),
+          p('Gyarados', 23, ['Water', 'Flying']),
+          p('Growlithe', 22, ['Fire']),
+          p('Kadabra', 20, ['Psychic']),
+          p('Ivysaur', 25, ['Grass', 'Poison']),
+        ],
+      },
+    },
+    {
+      n: 11, cat: 'rival', name: 'Rival 6 — Silph Co.',
+      loc: 'Saffron City', cap: 40, reward: 2600,
+      note: 'Kadabra → Alakazam (Recover!). Starter na 3ª evolução.',
+      teams: {
+        bulba: [
+          p('Pidgeot', 37, ['Normal', 'Flying']),
+          p('Exeggcute', 38, ['Grass', 'Psychic']),
+          p('Gyarados', 35, ['Water', 'Flying']),
+          p('Alakazam', 35, ['Psychic']),
+          p('Charizard', 40, ['Fire', 'Flying']),
+        ],
+        char: [
+          p('Pidgeot', 37, ['Normal', 'Flying']),
+          p('Growlithe', 38, ['Fire']),
+          p('Exeggcute', 35, ['Grass', 'Psychic']),
+          p('Alakazam', 35, ['Psychic']),
+          p('Blastoise', 40, ['Water']),
+        ],
+        squir: [
+          p('Pidgeot', 37, ['Normal', 'Flying']),
+          p('Gyarados', 38, ['Water', 'Flying']),
+          p('Growlithe', 35, ['Fire']),
+          p('Alakazam', 35, ['Psychic']),
+          p('Venusaur', 40, ['Grass', 'Poison']),
+        ],
+      },
+    },
+    {
+      n: 12, cat: 'villain', name: 'Giovanni — Silph Co.',
+      loc: 'Saffron City', cap: 41, reward: 4059,
+      note: 'Ground attacks (Dig/Earthquake) detonam 3 dos 4. Fighting vs Kangaskhan.',
+      teams: {
+        all: [
+          p('Nidorino', 37, ['Poison']),
+          p('Kangaskhan', 35, ['Normal']),
+          p('Rhyhorn', 37, ['Ground', 'Rock']),
+          p('Nidoqueen', 41, ['Poison', 'Ground']),
+        ],
+      },
+    },
+    {
+      n: 13, cat: 'gym', badge: 'Marsh', name: 'Sabrina — Ginásio Saffron',
+      loc: 'Saffron City', cap: 43, reward: 4257,
+      note: 'Time Psychic puro. Bug é melhor mas raro — Dark não existe na 1ª gen.',
+      teams: {
+        all: [
+          p('Kadabra', 38, ['Psychic']),
+          p('Mr. Mime', 37, ['Psychic']),
+          p('Venomoth', 38, ['Bug', 'Poison']),
+          p('Alakazam', 43, ['Psychic']),
+        ],
+      },
+    },
+    {
+      n: 14, cat: 'gym', badge: 'Soul', name: 'Koga — Ginásio Fuchsia',
+      loc: 'Fuchsia City', cap: 43, reward: 4257,
+      note: 'Weezing tem Selfdestruct + Toxic. Psychic destrói Poison.',
+      teams: {
+        all: [
+          p('Koffing', 37, ['Poison']),
+          p('Muk', 39, ['Poison']),
+          p('Koffing', 37, ['Poison']),
+          p('Weezing', 43, ['Poison']),
+        ],
+      },
+    },
+    {
+      n: 15, cat: 'gym', badge: 'Volcano', name: 'Blaine — Ginásio Cinnabar',
+      loc: 'Cinnabar Island', cap: 47, reward: 4653,
+      note: 'Arcanine com Fire Blast e Take Down. Rock/Water dominam.',
+      teams: {
+        all: [
+          p('Growlithe', 42, ['Fire']),
+          p('Ponyta', 40, ['Fire']),
+          p('Rapidash', 42, ['Fire']),
+          p('Arcanine', 47, ['Fire']),
+        ],
+      },
+    },
+    {
+      n: 16, cat: 'gym', badge: 'Earth', name: 'Giovanni — Ginásio Viridian',
+      loc: 'Viridian City', cap: 50, reward: 4950,
+      note: 'Rhydon com Horn Drill (OHKO). Water/Grass + Ice contra Nidoking.',
+      teams: {
+        all: [
+          p('Rhyhorn', 45, ['Ground', 'Rock']),
+          p('Dugtrio', 42, ['Ground']),
+          p('Nidoqueen', 44, ['Poison', 'Ground']),
+          p('Nidoking', 45, ['Poison', 'Ground']),
+          p('Rhydon', 50, ['Ground', 'Rock']),
+        ],
+      },
+    },
+    {
+      n: 17, cat: 'rival', name: 'Rival 7 — Route 22',
+      loc: 'Route 22', cap: 53, reward: 3445,
+      note: 'Última luta antes da E4. Alakazam com Reflect + Recover.',
+      teams: {
+        bulba: [
+          p('Pidgeot', 47, ['Normal', 'Flying']),
+          p('Rhyhorn', 45, ['Ground', 'Rock']),
+          p('Exeggcute', 45, ['Grass', 'Psychic']),
+          p('Gyarados', 47, ['Water', 'Flying']),
+          p('Alakazam', 50, ['Psychic']),
+          p('Charizard', 53, ['Fire', 'Flying']),
+        ],
+        char: [
+          p('Pidgeot', 47, ['Normal', 'Flying']),
+          p('Rhyhorn', 45, ['Ground', 'Rock']),
+          p('Growlithe', 45, ['Fire']),
+          p('Exeggcute', 47, ['Grass', 'Psychic']),
+          p('Alakazam', 50, ['Psychic']),
+          p('Blastoise', 53, ['Water']),
+        ],
+        squir: [
+          p('Pidgeot', 47, ['Normal', 'Flying']),
+          p('Rhyhorn', 45, ['Ground', 'Rock']),
+          p('Gyarados', 45, ['Water', 'Flying']),
+          p('Growlithe', 47, ['Fire']),
+          p('Alakazam', 50, ['Psychic']),
+          p('Venusaur', 53, ['Grass', 'Poison']),
+        ],
+      },
+    },
+    {
+      n: 18, cat: 'e4', name: 'Lorelei — Elite 4',
+      loc: 'Indigo Plateau', cap: 56, reward: 5544,
+      note: 'Ice/Water. Electric arrasa metade — Jolteon/Raichu MVP.',
+      teams: {
+        all: [
+          p('Dewgong', 54, ['Water', 'Ice']),
+          p('Cloyster', 53, ['Water', 'Ice']),
+          p('Slowbro', 54, ['Water', 'Psychic']),
+          p('Jynx', 56, ['Ice', 'Psychic']),
+          p('Lapras', 56, ['Water', 'Ice']),
+        ],
+      },
+    },
+    {
+      n: 19, cat: 'e4', name: 'Bruno — Elite 4',
+      loc: 'Indigo Plateau', cap: 58, reward: 5742,
+      note: '2 Onix + 3 Fighting. Slowbro/Starmie cobrem tudo.',
+      teams: {
+        all: [
+          p('Onix', 53, ['Rock', 'Ground']),
+          p('Hitmonchan', 55, ['Fighting']),
+          p('Hitmonlee', 55, ['Fighting']),
+          p('Onix', 56, ['Rock', 'Ground']),
+          p('Machamp', 58, ['Fighting']),
+        ],
+      },
+    },
+    {
+      n: 20, cat: 'e4', name: 'Agatha — Elite 4',
+      loc: 'Indigo Plateau', cap: 60, reward: 5940,
+      note: 'Ghost/Poison. Psychic e Ground dominam (bug: Ghost ↔ Normal não funciona na gen 1).',
+      teams: {
+        all: [
+          p('Gengar', 56, ['Ghost', 'Poison']),
+          p('Golbat', 56, ['Poison', 'Flying']),
+          p('Haunter', 55, ['Ghost', 'Poison']),
+          p('Arbok', 58, ['Poison']),
+          p('Gengar', 60, ['Ghost', 'Poison']),
+        ],
+      },
+    },
+    {
+      n: 21, cat: 'e4', name: 'Lance — Elite 4',
+      loc: 'Indigo Plateau', cap: 62, reward: 6138,
+      note: 'Só Gyarados e Aerodactyl são "dragões" no nome. Ice Beam = MVP.',
+      teams: {
+        all: [
+          p('Gyarados', 58, ['Water', 'Flying']),
+          p('Dragonair', 56, ['Dragon']),
+          p('Dragonair', 56, ['Dragon']),
+          p('Aerodactyl', 60, ['Rock', 'Flying']),
+          p('Dragonite', 62, ['Dragon', 'Flying']),
+        ],
+      },
+    },
+    {
+      n: 22, cat: 'champ', name: 'Campeão Blue — Indigo Plateau',
+      loc: 'Indigo Plateau', cap: 65, reward: 6435,
+      note: 'Pidgeot + Alakazam + Rhydon fixos. Resto depende do starter dele.',
+      teams: {
+        bulba: [
+          p('Pidgeot', 61, ['Normal', 'Flying']),
+          p('Alakazam', 59, ['Psychic']),
+          p('Rhydon', 61, ['Ground', 'Rock']),
+          p('Exeggutor', 61, ['Grass', 'Psychic']),
+          p('Gyarados', 63, ['Water', 'Flying']),
+          p('Charizard', 65, ['Fire', 'Flying']),
+        ],
+        char: [
+          p('Pidgeot', 61, ['Normal', 'Flying']),
+          p('Alakazam', 59, ['Psychic']),
+          p('Rhydon', 61, ['Ground', 'Rock']),
+          p('Arcanine', 61, ['Fire']),
+          p('Exeggutor', 63, ['Grass', 'Psychic']),
+          p('Blastoise', 65, ['Water']),
+        ],
+        squir: [
+          p('Pidgeot', 61, ['Normal', 'Flying']),
+          p('Alakazam', 59, ['Psychic']),
+          p('Rhydon', 61, ['Ground', 'Rock']),
+          p('Gyarados', 61, ['Water', 'Flying']),
+          p('Arcanine', 63, ['Fire']),
+          p('Venusaur', 65, ['Grass', 'Poison']),
+        ],
+      },
+    },
+  ];
+})();
+
+window.TYPE_COLORS = {
+  Normal: '#A8A878', Fire: '#F08030', Water: '#6890F0', Electric: '#F8D030',
+  Grass: '#78C850', Ice: '#98D8D8', Fighting: '#C03028', Poison: '#A040A0',
+  Ground: '#E0C068', Flying: '#A890F0', Psychic: '#F85888', Bug: '#A8B820',
+  Rock: '#B8A038', Ghost: '#705898', Dragon: '#7038F8', Dark: '#705848',
+  Steel: '#B8B8D0', Fairy: '#EE99AC',
+};
+
+window.CAT_META = {
+  rival: { label: 'Rival', color: '#dc2626', bg: '#fee2e2', icon: '⚔️' },
+  gym: { label: 'Líder de Ginásio', color: '#15803d', bg: '#dcfce7', icon: '🏅' },
+  villain: { label: 'Team Rocket', color: '#581c87', bg: '#f3e8ff', icon: '🦹' },
+  e4: { label: 'Elite dos Quatro', color: '#b45309', bg: '#fef3c7', icon: '👑' },
+  champ: { label: 'Campeão', color: '#d97706', bg: '#fef3c7', icon: '🏆' },
+};
+
+</script>
+<script>
+  let starter = 'char';
+  let filter = 'all';
+  const $rows = document.getElementById('rows');
+  const teamFor = b => b.teams.all || b.teams[starter] || [];
+
+  function render() {
+    $rows.innerHTML = '';
+    BOSSES.filter(b => filter === 'all' || b.cat === filter).forEach(b => {
+      const meta = CAT_META[b.cat];
+      const team = teamFor(b);
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.dataset.cat = b.cat;
+      row.innerHTML = `
+        <div class="num-cell"><span class="cat-stripe"></span>#${String(b.n).padStart(2,'0')}</div>
+        <div>
+          <div class="name">${b.name.replace(/ — .*$/, '')}</div>
+          <div class="name-sub">
+            <span class="tag" style="background:${meta.bg};color:${meta.color}">${meta.icon} ${meta.label}${b.badge ? ' · ' + b.badge : ''}</span>
+          </div>
+        </div>
+        <div class="loc-cell">📍 ${b.loc}</div>
+        <div><div class="cap-cell">Lv ${b.cap}</div></div>
+        <div class="team-cell">
+          ${team.map(m => `
+            <span class="mini">
+              <span class="dot" style="background:${TYPE_COLORS[m.t[0]] || '#888'}"></span>
+              ${m.n} <span class="mini-lvl">L${m.l}</span>
+            </span>
+          `).join('')}
+        </div>
+        <div class="reward-cell">💰 $${b.reward.toLocaleString('pt-BR')}</div>
+      `;
+      const detail = document.createElement('div');
+      detail.className = 'detail';
+      detail.innerHTML = `
+        <div class="note">💡 ${b.note}</div>
+        <div class="team-full">
+          ${team.map(m => `
+            <div class="mon">
+              <div class="mon-name"><span>${m.n}</span><span class="mon-lvl">Lv${m.l}</span></div>
+              <div class="types">${m.t.map(t => `<span class="type" style="background:${TYPE_COLORS[t] || '#888'}">${t}</span>`).join('')}</div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      row.addEventListener('click', () => row.classList.toggle('open'));
+      $rows.appendChild(row);
+      $rows.appendChild(detail);
+    });
+  }
+
+  document.querySelectorAll('.pill.starter').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.pill.starter').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); starter = b.dataset.starter; render();
+  }));
+  document.querySelectorAll('.pill.filter').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.pill.filter').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); filter = b.dataset.filter; render();
+  }));
+
+  render();
+</script>
+</body>
+</html>

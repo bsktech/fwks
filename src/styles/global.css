@@ -532,3 +532,224 @@ footer span {
     padding: 4rem 1.25rem;
   }
 }
+
+/* ─── Bosses tab ─────────────────────────────────────────────────────────── */
+.bosses-starter-bar {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  padding: 1rem 1.2rem;
+  background: var(--surface);
+  border: 1.5px solid var(--rule);
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  flex-wrap: wrap;
+}
+.bosses-starter-bar > span {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--ink2);
+  margin-right: 0.4rem;
+}
+.bosses-starter-btn {
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 100px;
+  border: 1.5px solid var(--rule);
+  background: #fff;
+  color: var(--ink2);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.bosses-starter-btn:hover {
+  border-color: var(--g400);
+  color: var(--g700);
+}
+.bosses-starter-btn.active {
+  background: var(--g500);
+  color: #fff;
+  border-color: var(--g500);
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
+}
+
+.bosses-trail {
+  position: relative;
+  padding-left: 3.5rem;
+}
+.bosses-trail::before {
+  content: "";
+  position: absolute;
+  left: 1.25rem;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--g300), var(--g600));
+  border-radius: 2px;
+}
+.bosses-region {
+  font-family: var(--pixel);
+  font-size: 0.7rem;
+  color: var(--g700);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin: 2rem 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.bosses-region::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: var(--g500);
+  border-radius: 2px;
+  box-shadow: 0 0 0 4px var(--g100);
+  margin-left: -2.6rem;
+}
+.bosses-node {
+  position: relative;
+  margin-bottom: 1.2rem;
+}
+.bosses-node::before {
+  content: "";
+  position: absolute;
+  left: -2.5rem;
+  top: 1.4rem;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--g500);
+  box-shadow: 0 0 0 4px var(--bg);
+}
+.bosses-node[data-cat="rival"]::before { border-color: #dc2626; }
+.bosses-node[data-cat="gym"]::before { border-color: #15803d; }
+.bosses-node[data-cat="villain"]::before { border-color: #581c87; }
+.bosses-node[data-cat="e4"]::before { border-color: #b45309; }
+.bosses-node[data-cat="champ"]::before { border-color: #d97706; background: #fbbf24; }
+
+.bosses-card {
+  background: var(--surface);
+  border: 1.5px solid var(--rule);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.bosses-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: var(--g300);
+}
+.bosses-card-head {
+  padding: 1rem 1.3rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+.bosses-num {
+  font-family: var(--pixel);
+  font-size: 0.7rem;
+  color: var(--ink3);
+  min-width: 32px;
+}
+.bosses-head-main { flex: 1; min-width: 0; }
+.bosses-title { font-weight: 700; font-size: 1rem; color: var(--ink); }
+.bosses-loc { color: var(--ink3); font-size: 0.82rem; }
+.bosses-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+.bosses-cap {
+  font-family: var(--pixel);
+  font-size: 0.75rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--g500), var(--g700));
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
+  white-space: nowrap;
+}
+.bosses-chev {
+  color: var(--ink3);
+  transition: transform 0.2s;
+  font-size: 1.1rem;
+}
+.bosses-card.open .bosses-chev { transform: rotate(90deg); }
+.bosses-body {
+  display: none;
+  padding: 0 1.3rem 1.3rem;
+  border-top: 1px solid var(--rule);
+}
+.bosses-card.open .bosses-body { display: block; }
+.bosses-team {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  padding-top: 1rem;
+}
+.bosses-mon {
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 0.7rem 0.85rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 128px;
+  flex: 0 0 128px;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.bosses-mon:hover {
+  border-color: var(--g300);
+  transform: translateY(-2px);
+}
+.bosses-mon-img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+}
+.bosses-mon-name {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--ink);
+  text-align: center;
+  line-height: 1.15;
+}
+.bosses-mon-lvl {
+  color: var(--g700);
+  font-family: var(--pixel);
+  font-size: 0.6rem;
+  background: var(--g100);
+  padding: 0.18rem 0.45rem;
+  border-radius: 6px;
+}
+.bosses-types {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.bosses-type {
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 0.2rem 0.45rem;
+  border-radius: 6px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
